@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calculus Fennicus — reader</title>
-<meta name="description" content="Embedded, deep-linkable reader for Calculus Fennicus (Finnish and English PDFs). Link to any section, theorem or definition by its LaTeX label.">
+<meta name="description" content="Embedded, deep-linkable reader for Calculus Fennicus (Finnish and English PDFs). Page or continuous view, full-text search, and links to any section, theorem or definition by its LaTeX label.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -14,46 +14,70 @@
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;overflow:hidden}
 a{color:var(--accent);text-decoration:none}
-.vtop{flex:0 0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 14px;background:var(--chrome);border-bottom:1px solid var(--border);box-shadow:var(--sh);z-index:5}
+.vtop{flex:0 0 auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:7px 12px;background:var(--chrome);border-bottom:1px solid var(--border);box-shadow:var(--sh);z-index:5}
 .back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:9px;padding:6px 11px}
 .title{font-family:"Newsreader",Georgia,serif;font-weight:700;font-size:15px;white-space:nowrap}
 .spacer{flex:1 1 auto}
-.grp{display:inline-flex;align-items:center;gap:2px;background:var(--chrome-2);border:1px solid var(--border);border-radius:9px;padding:3px}
-.grp button{border:0;background:transparent;color:var(--soft);font:600 13px/1 inherit;padding:6px 10px;border-radius:6px;cursor:pointer}
-.grp button.active{background:var(--chrome);color:var(--accent);box-shadow:var(--sh)}
-.grp button:disabled{opacity:.4;cursor:default}
-.pagebox{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--soft)}
-.pagebox input{width:56px;text-align:right;font:600 13px "JetBrains Mono",monospace;border:1px solid var(--border);border-radius:6px;padding:5px 7px;background:var(--chrome);color:var(--ink)}
-.loc{font-size:12.5px;color:var(--muted);max-width:34ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg{display:inline-flex;align-items:center;gap:2px;background:var(--chrome-2);border:1px solid var(--border);border-radius:9px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--soft);font:600 12.5px/1 inherit;padding:6px 9px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.seg button.active{background:var(--chrome);color:var(--accent);box-shadow:var(--sh)}
+.seg button:disabled{opacity:.4;cursor:default}
+.pagebox{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--soft)}
+.pagebox input{width:52px;text-align:right;font:600 13px "JetBrains Mono",monospace;border:1px solid var(--border);border-radius:6px;padding:5px 7px;background:var(--chrome);color:var(--ink)}
+.search{display:inline-flex;align-items:center;gap:4px;background:var(--chrome-2);border:1px solid var(--border);border-radius:9px;padding:2px 4px 2px 9px;min-width:170px}
+.search svg{width:14px;height:14px;color:var(--muted);flex:0 0 auto}
+.search input{border:0;background:transparent;color:var(--ink);font:500 13px inherit;padding:6px 2px;width:100%;outline:none}
+.search .sbtn{border:0;background:transparent;color:var(--soft);cursor:pointer;font-size:13px;padding:5px 7px;border-radius:6px}
+.search .sbtn:disabled{opacity:.35;cursor:default}
+.search .scount{font-size:11.5px;color:var(--muted);white-space:nowrap;padding:0 3px;min-width:20px;text-align:center}
+.loc{font-size:12.5px;color:var(--muted);max-width:26ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .loc b{color:var(--soft)}
 .copybtn{font-weight:600;font-size:12.5px;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:8px;padding:6px 11px;cursor:pointer}
-#stage{flex:1 1 auto;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:22px}
-#canvas{background:#fff;box-shadow:0 3px 16px rgba(15,23,42,.18);border-radius:2px;max-width:100%;height:auto}
+#stage{flex:1 1 auto;overflow:auto;padding:20px 0 60px;overflow-anchor:none;scroll-behavior:smooth}
+#pages{margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;overflow-anchor:none}
+.page{position:relative;background:#fff;box-shadow:0 2px 12px rgba(15,23,42,.16);border-radius:2px;overflow-anchor:none}
+.page canvas{display:block;border-radius:2px}
+.page .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c2c8d2;font:500 13px "JetBrains Mono",monospace}
+.page.flash::after{content:"";position:absolute;inset:0;box-shadow:0 0 0 3px var(--accent) inset;border-radius:2px;pointer-events:none;animation:fade 2.4s forwards}
+@keyframes fade{0%,50%{opacity:1}100%{opacity:0}}
+.hl{position:absolute;background:rgba(255,206,0,.45);border-radius:2px;pointer-events:none;mix-blend-mode:multiply}
+.hl.cur{background:rgba(255,145,0,.55)}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:9px 16px;border-radius:20px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.err{margin:auto;max-width:520px;background:var(--chrome);border:1px solid var(--border);border-radius:12px;padding:22px;font-size:14px;color:var(--soft)}
-.spin{margin:auto;color:var(--muted);font-size:13px}
-@media(max-width:720px){.title,.loc{display:none}}
+.err{margin:40px auto;max-width:520px;background:var(--chrome);border:1px solid var(--border);border-radius:12px;padding:22px;font-size:14px;color:var(--soft)}
+@media(max-width:900px){.title,.loc{display:none}}
+@media(max-width:680px){.search{min-width:120px}}
 </style>
 </head>
 <body>
 <div class="vtop">
   <a class="back" href="index.html"><span>←</span> Calculus Fennicus</a>
   <span class="title">Reader</span>
-  <div class="grp" role="group" aria-label="Language">
+  <div class="seg" role="group" aria-label="Language">
     <button id="doc-en" class="active" onclick="app.setDoc('en')">EN</button>
     <button id="doc-fi" onclick="app.setDoc('fi')">FI</button>
   </div>
-  <div class="pagebox"><button class="grp" style="border:1px solid var(--border)" onclick="app.rel(-1)" aria-label="Previous page">‹</button>
+  <div class="seg" role="group" aria-label="View mode">
+    <button id="mode-single" class="active" onclick="app.setMode('single')" title="One page at a time">▭ Page</button>
+    <button id="mode-cont" onclick="app.setMode('continuous')" title="Continuous scroll">☰ Scroll</button>
+  </div>
+  <div class="pagebox"><button class="seg" style="border:1px solid var(--border)" onclick="app.rel(-1)" aria-label="Previous page">‹</button>
     <input id="pageinput" inputmode="numeric" value="1" aria-label="Page"> <span id="pagetotal">/ –</span>
-    <button class="grp" style="border:1px solid var(--border)" onclick="app.rel(1)" aria-label="Next page">›</button></div>
-  <div class="grp"><button onclick="app.zoom(-1)" aria-label="Zoom out">−</button><button onclick="app.zoom(1)" aria-label="Zoom in">+</button></div>
+    <button class="seg" style="border:1px solid var(--border)" onclick="app.rel(1)" aria-label="Next page">›</button></div>
+  <div class="seg"><button onclick="app.zoom(-1)" aria-label="Zoom out">−</button><button onclick="app.zoom(1)" aria-label="Zoom in">+</button></div>
+  <div class="search" role="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input id="searchinput" type="search" placeholder="Search text…" autocomplete="off" aria-label="Search the book">
+    <button class="sbtn" id="s-prev" onclick="app.searchStep(-1)" disabled aria-label="Previous match">‹</button>
+    <span class="scount" id="s-count"></span>
+    <button class="sbtn" id="s-next" onclick="app.searchStep(1)" disabled aria-label="Next match">›</button>
+  </div>
   <span class="loc" id="loc"></span>
   <span class="spacer"></span>
   <a class="loc" href="links.html" style="color:var(--accent)">Link directory ↗</a>
   <button class="copybtn" onclick="app.copyLink()">Copy link</button>
 </div>
-<div id="stage"><div class="spin" id="spin">Loading…</div><canvas id="canvas" style="display:none"></canvas><div class="err" id="err" style="display:none"></div></div>
+<div id="stage"><div id="pages"></div><div class="err" id="err" style="display:none"></div></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -65,133 +89,251 @@ const DOCS = {
   fi: { pdf: ['calculus-fi.pdf', '../fi/calculus.pdf'], labels: 'labels-fi.json' },
 };
 const $ = (id) => document.getElementById(id);
-const stage = $('stage'), canvas = $('canvas');
+const stage = $('stage'), pagesEl = $('pages');
 const st = {
   doc: 'en', pdf: null, labels: {}, numPages: 0, curPage: 1,
-  zoom: 0, pageOffset: 0, sections: [], target: null, renderId: 0,
+  zoom: 0, pageOffset: 0, sections: [], target: null,
+  mode: 'single', baseW: 612, baseH: 792,
+  rendered: new Map(), tasks: new Map(), observer: null, renderId: 0,
+  textCache: new Map(), search: { q: '', matches: [], idx: -1, running: false },
 };
+try { st.mode = localStorage.getItem('cf_mode') === 'continuous' ? 'continuous' : 'single'; } catch (e) {}
 const printed = (phys) => Math.max(1, phys - st.pageOffset);
 const physical = (pr) => Math.min(st.numPages || 9999, pr + st.pageOffset);
+const clampP = (p) => Math.max(1, Math.min(st.numPages, p));
 
-function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1600); }
-function showErr(h) { $('spin').style.display = 'none'; canvas.style.display = 'none'; const e = $('err'); e.style.display = 'block'; e.innerHTML = h; }
+function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1700); }
+function showErr(h) { const e = $('err'); e.style.display = 'block'; e.innerHTML = h; }
 async function pickUrl(cands) { for (const u of cands) { try { const r = await fetch(u, { method: 'HEAD' }); if (r.ok) return u; } catch (e) {} } return cands[0]; }
 
+function scaleFor(unscaledW) {
+  const avail = Math.min(stage.clientWidth - 40, 1050);
+  return (avail / unscaledW) * Math.pow(1.14, st.zoom);
+}
+
+// ---------- deep-link resolution ----------
+async function resolveDestPage(name) { try { const d = await st.pdf.getDestination(name); if (!d) return null; return (await st.pdf.getPageIndex(d[0])) + 1; } catch (e) { return null; } }
+async function computeOffset() {
+  st.pageOffset = 0;
+  for (const k in st.labels) { const L = st.labels[k]; if ((L.kind === 'section' || L.kind === 'chapter') && L.dest && L.page > 0) { const ph = await resolveDestPage(L.dest); if (ph) { st.pageOffset = ph - L.page; return; } } }
+}
+function nearestSection(phys) { const pr = phys - st.pageOffset; let best = null; for (const s of st.sections) { if (s.page <= pr) best = s; else break; } return best; }
+function updateLoc(meta) { const L = meta || nearestSection(st.curPage); $('loc').innerHTML = L ? ('<b>§' + (L.ref || '') + '</b> ' + (L.title || '')) : ''; }
 function parseHash() {
   const h = new URLSearchParams((location.hash || '').replace(/^#/, ''));
   const doc = h.get('doc') === 'fi' ? 'fi' : 'en';
   const label = h.get('label'), dest = h.get('dest'), page = parseInt(h.get('page'), 10);
-  let target = null;
-  if (label) target = { label }; else if (dest) target = { dest }; else if (page) target = { page };
+  let target = null; if (label) target = { label }; else if (dest) target = { dest }; else if (page) target = { page };
   return { doc, target };
 }
-function writeHash() {
-  const t = st.target || {}; const p = new URLSearchParams(); p.set('doc', st.doc);
-  if (t.label) p.set('label', t.label); else if (t.dest) p.set('dest', t.dest); else p.set('page', String(t.page || printed(st.curPage)));
-  history.replaceState(null, '', '#' + p.toString());
-}
+function writeHash() { const t = st.target || {}; const p = new URLSearchParams(); p.set('doc', st.doc); if (t.label) p.set('label', t.label); else if (t.dest) p.set('dest', t.dest); else p.set('page', String(t.page || printed(st.curPage))); history.replaceState(null, '', '#' + p.toString()); }
 
-async function resolveDestPage(destName) {
-  try { const d = await st.pdf.getDestination(destName); if (!d) return null; return (await st.pdf.getPageIndex(d[0])) + 1; }
-  catch (e) { return null; }
-}
-async function computeOffset() {
-  st.pageOffset = 0;
-  for (const k in st.labels) {
-    const L = st.labels[k];
-    if ((L.kind === 'section' || L.kind === 'chapter') && L.dest && L.page > 0) {
-      const ph = await resolveDestPage(L.dest);
-      if (ph) { st.pageOffset = ph - L.page; return; }
-    }
-  }
-}
-function nearestSection(phys) {
-  const pr = phys - st.pageOffset; let best = null;
-  for (const s of st.sections) { if (s.page <= pr) best = s; else break; }
-  return best;
-}
-function updateLoc(meta) {
-  const L = meta || nearestSection(st.curPage);
-  $('loc').innerHTML = L ? ('<b>§' + (L.ref || '') + '</b> ' + (L.title || '')) : '';
-}
-
+// ---------- loading ----------
 async function loadDoc(doc) {
   st.doc = doc;
-  $('doc-en').classList.toggle('active', doc === 'en');
-  $('doc-fi').classList.toggle('active', doc === 'fi');
+  $('doc-en').classList.toggle('active', doc === 'en'); $('doc-fi').classList.toggle('active', doc === 'fi');
+  st.textCache.clear(); clearSearch();
   try { st.labels = await (await fetch(DOCS[doc].labels)).json(); } catch (e) { st.labels = {}; }
   if (st.pdf) { try { await st.pdf.destroy(); } catch (e) {} }
   const url = await pickUrl(DOCS[doc].pdf);
   try { st.pdf = await pdfjsLib.getDocument({ url, disableAutoFetch: true, disableStream: false }).promise; }
   catch (e) { showErr(`Could not load the PDF (<code>${url}</code>).<br>Locally, run <code>make ${doc}</code> first, or use the published site.`); return false; }
   st.numPages = st.pdf.numPages;
+  const vp1 = (await st.pdf.getPage(1)).getViewport({ scale: 1 });
+  st.baseW = vp1.width; st.baseH = vp1.height;
   st.sections = Object.keys(st.labels).map(k => st.labels[k]).filter(L => L.kind === 'section' || L.kind === 'chapter').sort((a, b) => a.page - b.page);
   await computeOffset();
   $('pagetotal').textContent = '/ ' + printed(st.numPages);
+  buildStage();
   return true;
 }
 
-async function renderPage(phys, meta) {
-  phys = Math.max(1, Math.min(st.numPages, phys));
-  st.curPage = phys;
-  $('pageinput').value = printed(phys);
-  updateLoc(meta);
-  const rid = ++st.renderId;
+// ---------- rendering (shared .page element with canvas + highlights) ----------
+async function renderInto(el, phys) {
+  phys = clampP(phys);
+  const rid = ++st.renderId; el._rid = rid;
   const page = await st.pdf.getPage(phys);
-  if (rid !== st.renderId) return;
-  const avail = Math.min(stage.clientWidth - 44, 1100);
-  const base = page.getViewport({ scale: 1 });
-  const scale = (avail / base.width) * Math.pow(1.15, st.zoom);
+  if (el._rid !== rid && st.mode === 'single') return;
+  const scale = scaleFor(st.baseW);
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const vp = page.getViewport({ scale });
+  const canvas = document.createElement('canvas');
   canvas.width = Math.floor(vp.width * dpr); canvas.height = Math.floor(vp.height * dpr);
   canvas.style.width = Math.floor(vp.width) + 'px'; canvas.style.height = Math.floor(vp.height) + 'px';
   const ctx = canvas.getContext('2d', { alpha: false });
-  await page.render({ canvasContext: ctx, viewport: vp, transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null }).promise;
-  if (rid !== st.renderId) return;
-  $('spin').style.display = 'none'; $('err').style.display = 'none'; canvas.style.display = 'block';
-  stage.scrollTop = 0;
+  const task = page.render({ canvasContext: ctx, viewport: vp, transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null });
+  st.tasks.set(phys, task);
+  try { await task.promise; } catch (e) { return; } finally { st.tasks.delete(phys); }
+  if (el._rid !== rid && st.mode === 'single') return;
+  el.style.width = Math.floor(vp.width) + 'px'; el.style.height = Math.floor(vp.height) + 'px';
+  el.innerHTML = ''; el.appendChild(canvas); el.dataset.rendered = '1';
+  if (st.search.q) await drawHighlights(el, page, vp, phys);
+}
+async function drawHighlights(el, page, vp, phys) {
+  el.querySelectorAll('.hl').forEach(n => n.remove());
+  const q = st.search.q; if (!q) return;
+  const isCur = st.search.cur === phys;
+  const tc = await page.getTextContent();
+  for (const it of tc.items) {
+    const s = (it.str || '').toLowerCase(); if (!s.includes(q)) continue;
+    const tx = pdfjsLib.Util.transform(vp.transform, it.transform);
+    const fh = Math.hypot(tx[2], tx[3]); const w = (it.width || 0) * vp.scale;
+    const d = document.createElement('div'); d.className = 'hl' + (isCur ? ' cur' : '');
+    d.style.cssText = `left:${tx[4]}px;top:${tx[5] - fh}px;width:${Math.max(w, 6)}px;height:${fh * 1.12}px`;
+    el.appendChild(d);
+  }
 }
 
+function buildStage() {
+  if (st.observer) { st.observer.disconnect(); st.observer = null; }
+  st.rendered.clear();
+  pagesEl.innerHTML = '';
+  $('mode-single').classList.toggle('active', st.mode === 'single');
+  $('mode-cont').classList.toggle('active', st.mode === 'continuous');
+  if (st.mode === 'single') {
+    const el = document.createElement('div'); el.className = 'page'; el.id = 'single-page';
+    el.style.width = Math.round(st.baseW * scaleFor(st.baseW)) + 'px'; el.style.height = Math.round(st.baseH * scaleFor(st.baseW)) + 'px';
+    pagesEl.appendChild(el);
+  } else {
+    const s = scaleFor(st.baseW), w = Math.round(st.baseW * s), h = Math.round(st.baseH * s);
+    const frag = document.createDocumentFragment();
+    for (let i = 1; i <= st.numPages; i++) {
+      const d = document.createElement('div'); d.className = 'page'; d.dataset.page = i;
+      d.style.width = w + 'px'; d.style.height = h + 'px'; d.innerHTML = '<div class="ph">' + printed(i) + '</div>';
+      frag.appendChild(d);
+    }
+    pagesEl.appendChild(frag);
+    st.observer = new IntersectionObserver(onIntersect, { root: stage, rootMargin: '800px 0px' });
+    pagesEl.querySelectorAll('.page').forEach(n => st.observer.observe(n));
+  }
+}
+function onIntersect(entries) {
+  for (const e of entries) {
+    const i = +e.target.dataset.page;
+    if (e.isIntersecting) { if (!st.rendered.has(i)) { st.rendered.set(i, 1); renderInto(e.target, i); } }
+    else if (st.rendered.has(i)) { const t = st.tasks.get(i); if (t) try { t.cancel(); } catch (x) {} el_reset(e.target, i); st.rendered.delete(i); }
+  }
+}
+function el_reset(el, i) { el.innerHTML = '<div class="ph">' + printed(i) + '</div>'; el.style.height = Math.round(st.baseH * scaleFor(st.baseW)) + 'px'; delete el.dataset.rendered; }
+function updateCurFromScroll() {
+  if (st.mode !== 'continuous') return;
+  const first = pagesEl.querySelector('.page'); if (!first) return;
+  const stride = Math.round(st.baseH * scaleFor(st.baseW)) + 14;
+  let p = clampP(Math.floor((stage.scrollTop + 60 - first.offsetTop) / stride) + 1);
+  if (p !== st.curPage) { st.curPage = p; $('pageinput').value = printed(p); if (!st.target || st.target.page) { updateLoc(); writeHashPage(); } }
+}
+function writeHashPage() { if (st.target && (st.target.label || st.target.dest)) return; st.target = { page: printed(st.curPage) }; writeHash(); }
+
+// ---------- navigation ----------
+async function goToPage(phys, flash) {
+  phys = clampP(phys); st.curPage = phys; $('pageinput').value = printed(phys); updateLoc();
+  if (st.mode === 'single') {
+    const el = $('single-page'); await renderInto(el, phys);
+    stage.scrollTop = 0;
+    if (flash) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+  } else {
+    const el = pagesEl.querySelector(`.page[data-page="${phys}"]`); if (!el) return;
+    if (!st.rendered.has(phys)) { st.rendered.set(phys, 1); renderInto(el, phys); }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (flash) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+    clearTimeout(st._re); st._re = setTimeout(() => { el.scrollIntoView({ block: 'start' }); st.curPage = phys; $('pageinput').value = printed(phys); }, 700);
+  }
+}
 async function goTarget(target) {
-  if (!target) { renderPage(st.curPage); return; }
+  if (!target) { await goToPage(st.curPage, false); return; }
   st.target = target;
   let page = null, meta = null;
   if (target.label && st.labels[target.label]) { meta = st.labels[target.label]; page = (await resolveDestPage(meta.dest)) || physical(meta.page); }
   else if (target.dest) { page = await resolveDestPage(target.dest); }
   else if (target.page) { page = physical(target.page); }
-  if (!page) { toast('Target not found'); renderPage(st.curPage); return; }
-  await renderPage(page, meta);
-  writeHash();
+  if (!page) { toast('Target not found'); return; }
+  await goToPage(page, true); if (meta) updateLoc(meta); writeHash();
 }
 
+// ---------- search ----------
+async function pageText(phys) {
+  if (st.textCache.has(phys)) return st.textCache.get(phys);
+  let t = '';
+  try { const c = await (await st.pdf.getPage(phys)).getTextContent(); t = c.items.map(i => i.str).join(' ').toLowerCase(); } catch (e) {}
+  st.textCache.set(phys, t); return t;
+}
+function clearSearch() {
+  st.search = { q: '', cur: null, _t: (st.search && st.search._t) || 0 };
+  $('s-count').textContent = ''; $('s-prev').disabled = true; $('s-next').disabled = true;
+  pagesEl.querySelectorAll('.hl').forEach(n => n.remove());
+}
+// Lazy scan: find the next page (in direction dir, wrapping) whose text contains
+// the query, starting from startPhys. Returns page, null (none), or -2 (superseded).
+async function findFrom(startPhys, dir) {
+  const n = st.numPages, tok = st.search._t;
+  for (let k = 0; k < n; k++) {
+    if (st.search._t !== tok) return -2;
+    const p = (((startPhys - 1 + dir * k) % n) + n) % n + 1;
+    if ((await pageText(p)).includes(st.search.q)) return p;
+    if (k % 25 === 0) await new Promise(r => setTimeout(r));
+  }
+  return null;
+}
+async function doSearch(qraw) {
+  const q = (qraw || '').trim().toLowerCase();
+  if (!q) { clearSearch(); refreshVisibleHighlights(); return; }
+  st.search.q = q; st.search.cur = null; st.search._t = (st.search._t || 0) + 1;
+  $('s-count').textContent = '…';
+  const p = await findFrom(st.curPage, 1);
+  if (p === -2) return;
+  if (p == null) { $('s-count').textContent = '0'; $('s-prev').disabled = $('s-next').disabled = true; toast('No matches'); return; }
+  st.search.cur = p; $('s-prev').disabled = $('s-next').disabled = false;
+  await showMatch(p);
+}
+async function stepMatch(dir) {
+  if (!st.search.q || st.search.cur == null) return;
+  st.search._t = (st.search._t || 0) + 1; $('s-count').textContent = '…';
+  const p = await findFrom(st.search.cur + dir, dir);
+  if (p === -2) return;
+  if (p == null) { toast('No more matches'); return; }
+  st.search.cur = p; await showMatch(p);
+}
+async function showMatch(p) {
+  $('s-count').textContent = 'p ' + printed(p);
+  await goToPage(p, false);
+  refreshVisibleHighlights();
+}
+function refreshVisibleHighlights() {
+  if (st.mode !== 'continuous') return;
+  pagesEl.querySelectorAll('.page[data-rendered]').forEach(async el => {
+    const phys = +el.dataset.page; const page = await st.pdf.getPage(phys);
+    await drawHighlights(el, page, page.getViewport({ scale: scaleFor(st.baseW) }), phys);
+  });
+}
+
+// ---------- controls ----------
 window.app = {
-  async setDoc(doc) {
-    if (doc === st.doc) return;
-    const t = st.target;
-    if (!(await loadDoc(doc))) return;
-    if (t && (t.label || t.dest)) await goTarget(t);
-    else await renderPage(Math.min(st.curPage, st.numPages));
-  },
-  rel(d) { st.target = null; renderPage(st.curPage + d); st.target = { page: printed(st.curPage) }; writeHash(); },
-  goto(v) { const n = parseInt(v, 10); if (n) { st.target = { page: n }; renderPage(physical(n)); writeHash(); } },
-  zoom(d) { st.zoom = Math.max(-3, Math.min(6, st.zoom + d)); renderPage(st.curPage); },
+  async setDoc(doc) { if (doc === st.doc) return; const t = st.target; if (!(await loadDoc(doc))) return; if (t && (t.label || t.dest)) await goTarget(t); else await goToPage(Math.min(st.curPage, st.numPages), false); },
+  async setMode(m) { if (m === st.mode) return; st.mode = m; try { localStorage.setItem('cf_mode', m); } catch (e) {} const cur = st.curPage; buildStage(); await goToPage(cur, false); if (st.search.q && st.mode === 'continuous') refreshVisibleHighlights(); },
+  rel(d) { st.target = null; goToPage(st.curPage + d, false).then(() => { st.target = { page: printed(st.curPage) }; writeHash(); }); },
+  goto(v) { const n = parseInt(v, 10); if (n) { st.target = { page: n }; goToPage(physical(n), st.mode === 'single'); writeHash(); } },
+  zoom(d) { st.zoom = Math.max(-3, Math.min(6, st.zoom + d)); const cur = st.curPage; buildStage(); goToPage(cur, false); if (st.search.q) setTimeout(refreshVisibleHighlights, 300); },
+  searchStep(d) { stepMatch(d); },
   copyLink() { const u = location.href.split('#')[0] + location.hash; navigator.clipboard?.writeText(u).then(() => toast('Link copied'), () => toast('Copy failed')); },
 };
 $('pageinput').addEventListener('change', (e) => app.goto(e.target.value));
+let sdeb; $('searchinput').addEventListener('input', (e) => { clearTimeout(sdeb); const v = e.target.value; sdeb = setTimeout(() => doSearch(v), 350); });
+$('searchinput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); if (st.search.q && st.search.cur != null) stepMatch(e.shiftKey ? -1 : 1); else doSearch(e.target.value); } });
 document.addEventListener('keydown', (e) => {
   if (e.target.tagName === 'INPUT') return;
-  if (e.key === 'ArrowRight' || e.key === 'PageDown') app.rel(1);
-  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') app.rel(-1);
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') { if (st.mode === 'single') app.rel(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { if (st.mode === 'single') app.rel(-1); }
+  else if (e.key === '/') { e.preventDefault(); $('searchinput').focus(); }
 });
+let stcr; stage.addEventListener('scroll', () => { clearTimeout(stcr); stcr = setTimeout(updateCurFromScroll, 80); });
+let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { const c = st.curPage; buildStage(); goToPage(c, false); }, 200); });
 window.addEventListener('hashchange', async () => { const { doc, target } = parseHash(); if (doc !== st.doc) { await app.setDoc(doc); await goTarget(target); } else goTarget(target); });
-let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => renderPage(st.curPage), 200); });
 if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'slate');
 
 (async function () {
   const { doc, target } = parseHash();
   if (!(await loadDoc(doc))) return;
-  if (target) await goTarget(target); else { await renderPage(1); writeHash(); }
+  if (target) await goTarget(target); else { await goToPage(1, false); writeHash(); }
 })();
 </script>
 <script>window.__MYPA_SITE__="calculus-fennicus";window.__MYPA_ENDPOINT__="https://mypa.longshoreforrest.workers.dev/collect";window.__MYPA_PAGE__="viewer";</script>
