@@ -33,6 +33,9 @@ a{color:var(--accent);text-decoration:none}
 .loc{font-size:12.5px;color:var(--muted);max-width:26ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .loc b{color:var(--soft)}
 .copybtn{font-weight:600;font-size:12.5px;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:8px;padding:6px 11px;cursor:pointer}
+.iconbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:600;font-size:12.5px;color:var(--soft);background:var(--chrome-2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;text-decoration:none}
+.iconbtn:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.iconbtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #stage{flex:1 1 auto;overflow:auto;padding:20px 0 60px;overflow-anchor:none;scroll-behavior:smooth}
 #pages{margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;overflow-anchor:none}
 .page{position:relative;background:#fff;box-shadow:0 2px 12px rgba(15,23,42,.16);border-radius:2px;overflow-anchor:none}
@@ -75,6 +78,8 @@ a{color:var(--accent);text-decoration:none}
   <span class="loc" id="loc"></span>
   <span class="spacer"></span>
   <a class="loc" href="links.html" style="color:var(--accent)">Link directory ↗</a>
+  <a class="iconbtn" id="dlpdf" href="calculus-en.pdf" download title="Download this PDF to your device" onclick="app.trackDownload()">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>PDF</a>
   <button class="copybtn" onclick="app.copyLink()">Copy link</button>
 </div>
 <div id="stage"><div id="pages"></div><div class="err" id="err" style="display:none"></div></div>
@@ -91,7 +96,7 @@ const DOCS = {
 const $ = (id) => document.getElementById(id);
 const stage = $('stage'), pagesEl = $('pages');
 const st = {
-  doc: 'en', pdf: null, labels: {}, numPages: 0, curPage: 1,
+  doc: 'en', pdf: null, pdfUrl: '', labels: {}, numPages: 0, curPage: 1,
   zoom: 0, pageOffset: 0, sections: [], target: null,
   mode: 'single', baseW: 612, baseH: 792,
   rendered: new Map(), tasks: new Map(), observer: null, renderId: 0,
@@ -102,6 +107,11 @@ const printed = (phys) => Math.max(1, phys - st.pageOffset);
 const physical = (pr) => Math.min(st.numPages || 9999, pr + st.pageOffset);
 const clampP = (p) => Math.max(1, Math.min(st.numPages, p));
 
+// MyPublicAnalytics — the beacon (window.mypa) is inlined into this page only in
+// the published build, so track() is a silent no-op locally. `embedded` marks
+// events fired while the reader runs inside the landing-page iframe.
+const EMBEDDED = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+function track(ev, extra) { try { if (window.mypa && window.mypa.send) window.mypa.send(ev, Object.assign({ page: 'viewer', doc: st.doc, embedded: EMBEDDED }, extra || {})); } catch (e) {} }
 function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1700); }
 function showErr(h) { const e = $('err'); e.style.display = 'block'; e.innerHTML = h; }
 async function pickUrl(cands) { for (const u of cands) { try { const r = await fetch(u, { method: 'HEAD' }); if (r.ok) return u; } catch (e) {} } return cands[0]; }
@@ -136,6 +146,8 @@ async function loadDoc(doc) {
   try { st.labels = await (await fetch(DOCS[doc].labels)).json(); } catch (e) { st.labels = {}; }
   if (st.pdf) { try { await st.pdf.destroy(); } catch (e) {} }
   const url = await pickUrl(DOCS[doc].pdf);
+  st.pdfUrl = url;
+  const dl = $('dlpdf'); if (dl) { dl.href = url; dl.setAttribute('download', doc === 'fi' ? 'Calculus-Fennicus-FI.pdf' : 'Calculus-Fennicus-EN.pdf'); }
   try { st.pdf = await pdfjsLib.getDocument({ url, disableAutoFetch: true, disableStream: false }).promise; }
   catch (e) { showErr(`Could not load the PDF (<code>${url}</code>).<br>Locally, run <code>make ${doc}</code> first, or use the published site.`); return false; }
   st.numPages = st.pdf.numPages;
@@ -246,7 +258,8 @@ async function goTarget(target) {
   if (target.label && st.labels[target.label]) { meta = st.labels[target.label]; page = (await resolveDestPage(meta.dest)) || physical(meta.page); }
   else if (target.dest) { page = await resolveDestPage(target.dest); }
   else if (target.page) { page = physical(target.page); }
-  if (!page) { toast('Target not found'); return; }
+  if (!page) { track('viewer_deeplink', { target: target.label || target.dest || target.page, found: false }); toast('Target not found'); return; }
+  if (target.label || target.dest) track('viewer_deeplink', { target: target.label || target.dest, ref: meta && meta.ref, kind: meta && meta.kind, dpage: printed(page), found: true });
   await goToPage(page, true); if (meta) updateLoc(meta); writeHash();
 }
 
@@ -281,6 +294,7 @@ async function doSearch(qraw) {
   $('s-count').textContent = '…';
   const p = await findFrom(st.curPage, 1);
   if (p === -2) return;
+  track('viewer_search', { q: q.slice(0, 60), hit: p != null });
   if (p == null) { $('s-count').textContent = '0'; $('s-prev').disabled = $('s-next').disabled = true; toast('No matches'); return; }
   st.search.cur = p; $('s-prev').disabled = $('s-next').disabled = false;
   await showMatch(p);
@@ -308,13 +322,14 @@ function refreshVisibleHighlights() {
 
 // ---------- controls ----------
 window.app = {
-  async setDoc(doc) { if (doc === st.doc) return; const t = st.target; if (!(await loadDoc(doc))) return; if (t && (t.label || t.dest)) await goTarget(t); else await goToPage(Math.min(st.curPage, st.numPages), false); },
-  async setMode(m) { if (m === st.mode) return; st.mode = m; try { localStorage.setItem('cf_mode', m); } catch (e) {} const cur = st.curPage; buildStage(); await goToPage(cur, false); if (st.search.q && st.mode === 'continuous') refreshVisibleHighlights(); },
+  async setDoc(doc) { if (doc === st.doc) return; const t = st.target; if (!(await loadDoc(doc))) return; track('viewer_lang', { to: doc }); if (t && (t.label || t.dest)) await goTarget(t); else await goToPage(Math.min(st.curPage, st.numPages), false); },
+  async setMode(m) { if (m === st.mode) return; st.mode = m; try { localStorage.setItem('cf_mode', m); } catch (e) {} track('viewer_mode', { mode: m }); const cur = st.curPage; buildStage(); await goToPage(cur, false); if (st.search.q && st.mode === 'continuous') refreshVisibleHighlights(); },
   rel(d) { st.target = null; goToPage(st.curPage + d, false).then(() => { st.target = { page: printed(st.curPage) }; writeHash(); }); },
   goto(v) { const n = parseInt(v, 10); if (n) { st.target = { page: n }; goToPage(physical(n), st.mode === 'single'); writeHash(); } },
   zoom(d) { st.zoom = Math.max(-3, Math.min(6, st.zoom + d)); const cur = st.curPage; buildStage(); goToPage(cur, false); if (st.search.q) setTimeout(refreshVisibleHighlights, 300); },
   searchStep(d) { stepMatch(d); },
-  copyLink() { const u = location.href.split('#')[0] + location.hash; navigator.clipboard?.writeText(u).then(() => toast('Link copied'), () => toast('Copy failed')); },
+  trackDownload() { track('viewer_download', { file: st.pdfUrl }); },
+  copyLink() { const u = location.href.split('#')[0] + location.hash; const t = st.target || {}; track('viewer_copylink', { target: t.label || t.dest || ('page ' + (t.page || printed(st.curPage))) }); navigator.clipboard?.writeText(u).then(() => toast('Link copied'), () => toast('Copy failed')); },
 };
 $('pageinput').addEventListener('change', (e) => app.goto(e.target.value));
 let sdeb; $('searchinput').addEventListener('input', (e) => { clearTimeout(sdeb); const v = e.target.value; sdeb = setTimeout(() => doSearch(v), 350); });
@@ -330,10 +345,15 @@ let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTime
 window.addEventListener('hashchange', async () => { const { doc, target } = parseHash(); if (doc !== st.doc) { await app.setDoc(doc); await goTarget(target); } else goTarget(target); });
 if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'slate');
 
+// When embedded in the landing-page iframe, break same-origin nav out to the
+// top window so the whole tab navigates rather than the frame.
+if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.target) a.target = '_top'; });
+
 (async function () {
   const { doc, target } = parseHash();
   if (!(await loadDoc(doc))) return;
   if (target) await goTarget(target); else { await goToPage(1, false); writeHash(); }
+  track('viewer_open', { deeplink: target ? (target.label || target.dest || ('page ' + target.page)) : null });
 })();
 </script>
 <script>window.__MYPA_SITE__="calculus-fennicus";window.__MYPA_ENDPOINT__="https://mypa.longshoreforrest.workers.dev/collect";window.__MYPA_PAGE__="viewer";</script>
