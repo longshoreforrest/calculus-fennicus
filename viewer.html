@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculus Fennicus — reader</title>
+<meta name="description" content="Embedded, deep-linkable reader for Calculus Fennicus (Finnish and English PDFs). Link to any section, theorem or definition by its LaTeX label.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eceef1;--chrome:#fff;--chrome-2:#f5f5f7;--ink:#1a1f36;--soft:#4a5568;--muted:#718096;--border:#e5e7eb;--accent:#4f46e5;--accent-soft:#eef2ff;--warn:#d97706;--sh:0 1px 3px rgba(15,23,42,.08)}
+[data-theme=slate]{--bg:#0b1020;--chrome:#161b22;--chrome-2:#1e242c;--ink:#e7ecf2;--soft:#cbd5e1;--muted:#94a3b8;--border:#2a323c;--accent:#818cf8;--accent-soft:rgba(129,140,248,.16);--sh:0 1px 3px rgba(0,0,0,.4)}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;overflow:hidden}
+a{color:var(--accent);text-decoration:none}
+.vtop{flex:0 0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 14px;background:var(--chrome);border-bottom:1px solid var(--border);box-shadow:var(--sh);z-index:5}
+.back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:9px;padding:6px 11px}
+.title{font-family:"Newsreader",Georgia,serif;font-weight:700;font-size:15px;white-space:nowrap}
+.spacer{flex:1 1 auto}
+.grp{display:inline-flex;align-items:center;gap:2px;background:var(--chrome-2);border:1px solid var(--border);border-radius:9px;padding:3px}
+.grp button{border:0;background:transparent;color:var(--soft);font:600 13px/1 inherit;padding:6px 10px;border-radius:6px;cursor:pointer}
+.grp button.active{background:var(--chrome);color:var(--accent);box-shadow:var(--sh)}
+.grp button:disabled{opacity:.4;cursor:default}
+.pagebox{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--soft)}
+.pagebox input{width:56px;text-align:right;font:600 13px "JetBrains Mono",monospace;border:1px solid var(--border);border-radius:6px;padding:5px 7px;background:var(--chrome);color:var(--ink)}
+.loc{font-size:12.5px;color:var(--muted);max-width:34ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.loc b{color:var(--soft)}
+.copybtn{font-weight:600;font-size:12.5px;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:8px;padding:6px 11px;cursor:pointer}
+#stage{flex:1 1 auto;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:22px}
+#canvas{background:#fff;box-shadow:0 3px 16px rgba(15,23,42,.18);border-radius:2px;max-width:100%;height:auto}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:9px 16px;border-radius:20px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.err{margin:auto;max-width:520px;background:var(--chrome);border:1px solid var(--border);border-radius:12px;padding:22px;font-size:14px;color:var(--soft)}
+.spin{margin:auto;color:var(--muted);font-size:13px}
+@media(max-width:720px){.title,.loc{display:none}}
+</style>
+</head>
+<body>
+<div class="vtop">
+  <a class="back" href="index.html"><span>←</span> Calculus Fennicus</a>
+  <span class="title">Reader</span>
+  <div class="grp" role="group" aria-label="Language">
+    <button id="doc-en" class="active" onclick="app.setDoc('en')">EN</button>
+    <button id="doc-fi" onclick="app.setDoc('fi')">FI</button>
+  </div>
+  <div class="pagebox"><button class="grp" style="border:1px solid var(--border)" onclick="app.rel(-1)" aria-label="Previous page">‹</button>
+    <input id="pageinput" inputmode="numeric" value="1" aria-label="Page"> <span id="pagetotal">/ –</span>
+    <button class="grp" style="border:1px solid var(--border)" onclick="app.rel(1)" aria-label="Next page">›</button></div>
+  <div class="grp"><button onclick="app.zoom(-1)" aria-label="Zoom out">−</button><button onclick="app.zoom(1)" aria-label="Zoom in">+</button></div>
+  <span class="loc" id="loc"></span>
+  <span class="spacer"></span>
+  <a class="loc" href="links.html" style="color:var(--accent)">Link directory ↗</a>
+  <button class="copybtn" onclick="app.copyLink()">Copy link</button>
+</div>
+<div id="stage"><div class="spin" id="spin">Loading…</div><canvas id="canvas" style="display:none"></canvas><div class="err" id="err" style="display:none"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import * as pdfjsLib from './vendor/pdfjs/pdf.min.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdfjs/pdf.worker.min.mjs';
+
+const DOCS = {
+  en: { pdf: ['calculus-en.pdf', '../en/calculus.pdf'], labels: 'labels-en.json' },
+  fi: { pdf: ['calculus-fi.pdf', '../fi/calculus.pdf'], labels: 'labels-fi.json' },
+};
+const $ = (id) => document.getElementById(id);
+const stage = $('stage'), canvas = $('canvas');
+const st = {
+  doc: 'en', pdf: null, labels: {}, numPages: 0, curPage: 1,
+  zoom: 0, pageOffset: 0, sections: [], target: null, renderId: 0,
+};
+const printed = (phys) => Math.max(1, phys - st.pageOffset);
+const physical = (pr) => Math.min(st.numPages || 9999, pr + st.pageOffset);
+
+function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1600); }
+function showErr(h) { $('spin').style.display = 'none'; canvas.style.display = 'none'; const e = $('err'); e.style.display = 'block'; e.innerHTML = h; }
+async function pickUrl(cands) { for (const u of cands) { try { const r = await fetch(u, { method: 'HEAD' }); if (r.ok) return u; } catch (e) {} } return cands[0]; }
+
+function parseHash() {
+  const h = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+  const doc = h.get('doc') === 'fi' ? 'fi' : 'en';
+  const label = h.get('label'), dest = h.get('dest'), page = parseInt(h.get('page'), 10);
+  let target = null;
+  if (label) target = { label }; else if (dest) target = { dest }; else if (page) target = { page };
+  return { doc, target };
+}
+function writeHash() {
+  const t = st.target || {}; const p = new URLSearchParams(); p.set('doc', st.doc);
+  if (t.label) p.set('label', t.label); else if (t.dest) p.set('dest', t.dest); else p.set('page', String(t.page || printed(st.curPage)));
+  history.replaceState(null, '', '#' + p.toString());
+}
+
+async function resolveDestPage(destName) {
+  try { const d = await st.pdf.getDestination(destName); if (!d) return null; return (await st.pdf.getPageIndex(d[0])) + 1; }
+  catch (e) { return null; }
+}
+async function computeOffset() {
+  st.pageOffset = 0;
+  for (const k in st.labels) {
+    const L = st.labels[k];
+    if ((L.kind === 'section' || L.kind === 'chapter') && L.dest && L.page > 0) {
+      const ph = await resolveDestPage(L.dest);
+      if (ph) { st.pageOffset = ph - L.page; return; }
+    }
+  }
+}
+function nearestSection(phys) {
+  const pr = phys - st.pageOffset; let best = null;
+  for (const s of st.sections) { if (s.page <= pr) best = s; else break; }
+  return best;
+}
+function updateLoc(meta) {
+  const L = meta || nearestSection(st.curPage);
+  $('loc').innerHTML = L ? ('<b>§' + (L.ref || '') + '</b> ' + (L.title || '')) : '';
+}
+
+async function loadDoc(doc) {
+  st.doc = doc;
+  $('doc-en').classList.toggle('active', doc === 'en');
+  $('doc-fi').classList.toggle('active', doc === 'fi');
+  try { st.labels = await (await fetch(DOCS[doc].labels)).json(); } catch (e) { st.labels = {}; }
+  if (st.pdf) { try { await st.pdf.destroy(); } catch (e) {} }
+  const url = await pickUrl(DOCS[doc].pdf);
+  try { st.pdf = await pdfjsLib.getDocument({ url, disableAutoFetch: true, disableStream: false }).promise; }
+  catch (e) { showErr(`Could not load the PDF (<code>${url}</code>).<br>Locally, run <code>make ${doc}</code> first, or use the published site.`); return false; }
+  st.numPages = st.pdf.numPages;
+  st.sections = Object.keys(st.labels).map(k => st.labels[k]).filter(L => L.kind === 'section' || L.kind === 'chapter').sort((a, b) => a.page - b.page);
+  await computeOffset();
+  $('pagetotal').textContent = '/ ' + printed(st.numPages);
+  return true;
+}
+
+async function renderPage(phys, meta) {
+  phys = Math.max(1, Math.min(st.numPages, phys));
+  st.curPage = phys;
+  $('pageinput').value = printed(phys);
+  updateLoc(meta);
+  const rid = ++st.renderId;
+  const page = await st.pdf.getPage(phys);
+  if (rid !== st.renderId) return;
+  const avail = Math.min(stage.clientWidth - 44, 1100);
+  const base = page.getViewport({ scale: 1 });
+  const scale = (avail / base.width) * Math.pow(1.15, st.zoom);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const vp = page.getViewport({ scale });
+  canvas.width = Math.floor(vp.width * dpr); canvas.height = Math.floor(vp.height * dpr);
+  canvas.style.width = Math.floor(vp.width) + 'px'; canvas.style.height = Math.floor(vp.height) + 'px';
+  const ctx = canvas.getContext('2d', { alpha: false });
+  await page.render({ canvasContext: ctx, viewport: vp, transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null }).promise;
+  if (rid !== st.renderId) return;
+  $('spin').style.display = 'none'; $('err').style.display = 'none'; canvas.style.display = 'block';
+  stage.scrollTop = 0;
+}
+
+async function goTarget(target) {
+  if (!target) { renderPage(st.curPage); return; }
+  st.target = target;
+  let page = null, meta = null;
+  if (target.label && st.labels[target.label]) { meta = st.labels[target.label]; page = (await resolveDestPage(meta.dest)) || physical(meta.page); }
+  else if (target.dest) { page = await resolveDestPage(target.dest); }
+  else if (target.page) { page = physical(target.page); }
+  if (!page) { toast('Target not found'); renderPage(st.curPage); return; }
+  await renderPage(page, meta);
+  writeHash();
+}
+
+window.app = {
+  async setDoc(doc) {
+    if (doc === st.doc) return;
+    const t = st.target;
+    if (!(await loadDoc(doc))) return;
+    if (t && (t.label || t.dest)) await goTarget(t);
+    else await renderPage(Math.min(st.curPage, st.numPages));
+  },
+  rel(d) { st.target = null; renderPage(st.curPage + d); st.target = { page: printed(st.curPage) }; writeHash(); },
+  goto(v) { const n = parseInt(v, 10); if (n) { st.target = { page: n }; renderPage(physical(n)); writeHash(); } },
+  zoom(d) { st.zoom = Math.max(-3, Math.min(6, st.zoom + d)); renderPage(st.curPage); },
+  copyLink() { const u = location.href.split('#')[0] + location.hash; navigator.clipboard?.writeText(u).then(() => toast('Link copied'), () => toast('Copy failed')); },
+};
+$('pageinput').addEventListener('change', (e) => app.goto(e.target.value));
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') app.rel(1);
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') app.rel(-1);
+});
+window.addEventListener('hashchange', async () => { const { doc, target } = parseHash(); if (doc !== st.doc) { await app.setDoc(doc); await goTarget(target); } else goTarget(target); });
+let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => renderPage(st.curPage), 200); });
+if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'slate');
+
+(async function () {
+  const { doc, target } = parseHash();
+  if (!(await loadDoc(doc))) return;
+  if (target) await goTarget(target); else { await renderPage(1); writeHash(); }
+})();
+</script>
+<script>window.__MYPA_SITE__="calculus-fennicus";window.__MYPA_ENDPOINT__="https://mypa.longshoreforrest.workers.dev/collect";window.__MYPA_PAGE__="viewer";</script>
+<script>
+/*!
+ * MyPublicAnalytics beacon — selainpuolen snippet.
+ *
+ * Lähetys:
+ *   - 'pageview' automaattisesti sivun latautuessa
+ *   - Custom-eventit: window.mypa.send('section_view', { section: 'experience' })
+ *
+ * Käyttää navigator.sendBeacon() (eloonjäänti sivu-vaihdoksen yli) ja
+ * fetch keepalive:n fallbackia.
+ *
+ * Self-tagging (oman vierailusi erottelu):
+ *   Käy kerran sivulla URL:lla ?_mypa_self=1 → localStorageen tallentuu lippu,
+ *   ja kaikki tulevat eventit lähetetään {self:true}. Pois: ?_mypa_self=0.
+ */
+(function () {
+  if (typeof window === "undefined") return;
+  if (window.mypa && window.mypa.__initialized) return;
+
+  var SITE = window.__MYPA_SITE__ || "unknown";
+  var ENDPOINT = window.__MYPA_ENDPOINT__ || "";
+  var AUTO_EVENT = window.__MYPA_AUTO_EVENT__ || "pageview";
+
+  if (!ENDPOINT) return;
+
+  // Self-marker: URL-parametri tai localStorage-lippu.
+  var SELF = false;
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    if (sp.get("_mypa_self") === "1") {
+      try { localStorage.setItem("mypa_self", "1"); } catch (e) {}
+    } else if (sp.get("_mypa_self") === "0") {
+      try { localStorage.removeItem("mypa_self"); } catch (e) {}
+    }
+    try { SELF = localStorage.getItem("mypa_self") === "1"; } catch (e) {}
+  } catch (e) {}
+
+  function utm() {
+    try {
+      var p = new URLSearchParams(window.location.search);
+      return {
+        source: p.get("utm_source") || null,
+        medium: p.get("utm_medium") || null,
+        campaign: p.get("utm_campaign") || null,
+      };
+    } catch (e) {
+      return { source: null, medium: null, campaign: null };
+    }
+  }
+
+  // Käyttäjäidentiteetti (esim. Google Sign-In) jaetusta localStoragesta.
+  // Kirjoitettu muotoon { email, name, sub, idToken, t }. Worker varmentaa
+  // idTokenin RS256/JWKS:llä; user-kenttä on varauloskäynti (varmentamaton).
+  var IDENTITY_KEY = window.__MYPA_IDENTITY_KEY__ || "unitas:identity";
+  function identity() {
+    try {
+      var raw = localStorage.getItem(IDENTITY_KEY);
+      if (!raw) return null;
+      var o = JSON.parse(raw);
+      if (!o || !o.email) return null;
+      return o;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Korkean entropian UA Client Hints (tarkka laitemalli). Vain Chromium.
+  // navigator.userAgentData.getHighEntropyValues on asynkroninen, joten
+  // populoimme tämän kertaalleen ja liitämme sen kaikkiin lähetettäviin
+  // eventteihin. resolveHighEntropy() kutsuu callbackin joka tapauksessa —
+  // myös silloin kun rajapintaa ei ole tai se hylkää — jottei pageview jää
+  // lähettämättä.
+  var UACH = null;
+  function resolveHighEntropy(cb) {
+    try {
+      var uad = navigator.userAgentData;
+      if (uad && typeof uad.getHighEntropyValues === "function") {
+        uad
+          .getHighEntropyValues([
+            "model",
+            "platformVersion",
+            "architecture",
+            "bitness",
+            "uaFullVersion",
+          ])
+          .then(function (he) {
+            UACH = {
+              model: he.model || null,
+              platform_version: he.platformVersion || null,
+              arch: he.architecture || null,
+              bitness: he.bitness || null,
+              full_version: he.uaFullVersion || null,
+            };
+          })
+          .catch(function () {})
+          .then(function () { cb(); });
+        return;
+      }
+    } catch (e) {}
+    cb();
+  }
+
+  function clientContext() {
+    var ctx = {};
+    try {
+      ctx.screen_w = window.screen && screen.width || null;
+      ctx.screen_h = window.screen && screen.height || null;
+      ctx.viewport_w = window.innerWidth || null;
+      ctx.viewport_h = window.innerHeight || null;
+      ctx.dpr = window.devicePixelRatio || null;
+      ctx.language = (navigator.language || "").slice(0, 16);
+      ctx.languages = Array.isArray(navigator.languages)
+        ? navigator.languages.slice(0, 4).join(",")
+        : null;
+      ctx.color_scheme =
+        (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches)
+          ? "dark" : "light";
+      ctx.tz =
+        (Intl && Intl.DateTimeFormat &&
+         new Intl.DateTimeFormat().resolvedOptions().timeZone) || null;
+      ctx.tz_offset = -new Date().getTimezoneOffset();
+      var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (c) {
+        ctx.net_type = c.effectiveType || null;
+        ctx.net_downlink = c.downlink || null;
+        ctx.net_rtt = c.rtt || null;
+        ctx.net_save_data = !!c.saveData;
+      }
+      ctx.touch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+      ctx.hardware_concurrency = navigator.hardwareConcurrency || null;
+      ctx.device_memory = navigator.deviceMemory || null;
+    } catch (e) {}
+    return ctx;
+  }
+
+  function send(event, extra) {
+    try {
+      // Liitä client-konteksti pageview-eventtiin (kerran per session).
+      var ev = event || "pageview";
+      var enriched = extra ? Object.assign({}, extra) : {};
+      if (ev === "pageview" || ev === "login_pageview") {
+        Object.assign(enriched, clientContext());
+      }
+      var id = identity();
+      var body = JSON.stringify({
+        site: SITE,
+        path: window.location.pathname + window.location.search,
+        event: ev,
+        referrer: document.referrer || "",
+        utm: utm(),
+        extra: Object.keys(enriched).length ? enriched : null,
+        ch: UACH || undefined,
+        self: SELF || undefined,
+        user: id ? { email: id.email, name: id.name, sub: id.sub } : undefined,
+        idToken: id && id.idToken ? id.idToken : undefined,
+      });
+      if (
+        navigator.sendBeacon &&
+        navigator.sendBeacon(
+          ENDPOINT,
+          new Blob([body], { type: "text/plain;charset=UTF-8" }),
+        )
+      ) {
+        return;
+      }
+      fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "text/plain;charset=UTF-8" },
+        body: body,
+        keepalive: true,
+        mode: "cors",
+        credentials: "omit",
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  function autoSend() {
+    // Odota korkean entropian client hintit ennen ensimmäistä lähetystä, jotta
+    // laitemalli ehtii mukaan. UACH jää talteen myös custom-eventtejä varten.
+    resolveHighEntropy(function () { send(AUTO_EVENT); });
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    autoSend();
+  } else {
+    document.addEventListener("DOMContentLoaded", autoSend);
+  }
+
+  window.mypa = { send: send, __initialized: true, __self: SELF };
+})();
+
+</script>
+<script>
+/*!
+ * MyPublicAnalytics auto-instrument — generic behavioral tracking companion.
+ *
+ * Load this AFTER beacon/analytics.js. The beacon sends the automatic
+ * 'pageview'; this adds the richer behavioral events the dashboard already
+ * understands, WITHOUT any site-specific code:
+ *
+ *   - section_view   once per `section[id]` (or [data-section]) scrolled into view
+ *   - nav_jump       clicks on same-origin page navigation (*.html links)
+ *   - click          outbound links, mailto/tel, and PDF opens
+ *   - engagement_end visible time + total time + max scroll % + sections seen,
+ *                    sent on tab-hide / page-exit (checkpoint-safe)
+ *
+ * It is a no-op if the beacon (window.mypa) is not present, and never throws.
+ * CV does its own bespoke instrumentation in script.js, so it does NOT load
+ * this file — this is for sites (PhD, future) that just want sensible defaults.
+ *
+ * Optional config (set before this script runs):
+ *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true };
+ */
+(function () {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+  if (window.__mypaAutoInit) return;
+  window.__mypaAutoInit = true;
+
+  var CFG = window.__MYPA_AUTO__ || {};
+  var DO_SECTIONS    = CFG.sections    !== false;
+  var DO_NAV         = CFG.nav         !== false;
+  var DO_CLICKS      = CFG.clicks      !== false;
+  var DO_ENGAGEMENT  = CFG.engagement  !== false;
+  var PAGE = window.__MYPA_PAGE__ || null;
+
+  function send(event, extra) {
+    try {
+      if (window.mypa && window.mypa.send) {
+        var e = extra || {};
+        if (PAGE && e.page == null) e.page = PAGE;
+        window.mypa.send(event, e);
+      }
+    } catch (err) { /* never break the page */ }
+  }
+
+  // ── section_view ───────────────────────────────────────────────────────────
+  var sentSections = {};
+  var seenCount = 0;
+  function observeSections() {
+    if (!DO_SECTIONS || typeof IntersectionObserver === "undefined") return;
+    var nodes = document.querySelectorAll(
+      "section[id], [data-section], article[id], h2[id], h3[id]"
+    );
+    if (!nodes.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var t = entry.target;
+        var id = t.getAttribute("data-section") || t.id;
+        if (!id || sentSections[id]) return;
+        sentSections[id] = true;
+        seenCount++;
+        send("section_view", { section: String(id).slice(0, 80) });
+      });
+    }, { threshold: 0.25 });
+    nodes.forEach(function (n) { io.observe(n); });
+  }
+
+  // ── nav_jump + click (outbound / pdf / contact) ─────────────────────────────
+  function onClick(e) {
+    try {
+      var a = e.target && e.target.closest && e.target.closest("a[href]");
+      if (!a) return;
+      var href = a.getAttribute("href") || "";
+      if (!href || href.charAt(0) === "#") return;            // in-page anchor
+      var label = (a.textContent || "").trim().slice(0, 80);
+
+      if (href.indexOf("mailto:") === 0) {
+        if (DO_CLICKS) send("click", { target: "email", href: href.slice(0, 160) });
+        return;
+      }
+      if (href.indexOf("tel:") === 0) {
+        if (DO_CLICKS) send("click", { target: "phone", href: href.slice(0, 160) });
+        return;
+      }
+
+      // Resolve to compare origins reliably.
+      var url = null;
+      try { url = new URL(href, window.location.href); } catch (e2) {}
+      var external = url && url.origin !== window.location.origin;
+
+      if (/\.pdf($|[?#])/i.test(href)) {
+        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: href.slice(0, 160) });
+        return;
+      }
+      if (external) {
+        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: href.slice(0, 160) });
+        return;
+      }
+      // Same-origin navigation to another page bundle (*.html) → nav_jump.
+      if (DO_NAV && /\.html($|[?#])/i.test(href)) {
+        var dest = url ? (url.pathname.split("/").pop() + (url.hash || "")) : href;
+        send("nav_jump", { to: String(dest).slice(0, 120), label: label });
+      }
+    } catch (err) { /* ignore */ }
+  }
+  if (DO_NAV || DO_CLICKS) {
+    document.addEventListener("click", onClick, true);
+  }
+
+  // ── engagement_end (visible time, total time, max scroll %, sections) ────────
+  var startMs = nowMs();
+  var visibleAccum = 0;
+  var lastVisibleStart = document.visibilityState === "visible" ? nowMs() : 0;
+  var maxScrollPct = 0;
+  var sent = false;
+
+  function nowMs() {
+    try { return (performance && performance.now) ? performance.timeOrigin + performance.now() : +new Date(); }
+    catch (e) { return +new Date(); }
+  }
+  function updateScrollDepth() {
+    try {
+      var sh = document.documentElement.scrollHeight - window.innerHeight;
+      // Many pages scroll an inner container, not the window — pick the larger.
+      var main = document.querySelector(".content, main, .page");
+      if (main && main.scrollHeight - main.clientHeight > sh) {
+        var sh2 = main.scrollHeight - main.clientHeight;
+        if (sh2 > 0) {
+          var p2 = Math.round((main.scrollTop / sh2) * 100);
+          if (p2 > maxScrollPct) maxScrollPct = Math.min(100, p2);
+        }
+        return;
+      }
+      if (sh <= 0) return;
+      var pct = Math.round((window.scrollY / sh) * 100);
+      if (pct > maxScrollPct) maxScrollPct = Math.min(100, pct);
+    } catch (e) {}
+  }
+
+  function sendEngagement(reason) {
+    if (!DO_ENGAGEMENT || sent) return;
+    sent = true;
+    if (lastVisibleStart) {
+      visibleAccum += nowMs() - lastVisibleStart;
+      lastVisibleStart = 0;
+    }
+    send("engagement_end", {
+      reason: reason,
+      time_visible_ms: Math.round(visibleAccum),
+      time_total_ms: Math.round(nowMs() - startMs),
+      max_scroll_pct: maxScrollPct,
+      sections_seen: seenCount
+    });
+  }
+
+  function initEngagement() {
+    if (!DO_ENGAGEMENT) return;
+    window.addEventListener("scroll", updateScrollDepth, { passive: true, capture: true });
+    updateScrollDepth();
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        sendEngagement("hidden");           // checkpoint — may not be a real exit
+      } else if (document.visibilityState === "visible" && sent) {
+        sent = false;                        // user returned — new engagement window
+        startMs = nowMs();
+        visibleAccum = 0;
+        lastVisibleStart = nowMs();
+      } else if (document.visibilityState === "visible") {
+        lastVisibleStart = nowMs();
+      }
+    });
+    window.addEventListener("pagehide", function () { sendEngagement("pagehide"); });
+  }
+
+  function boot() {
+    observeSections();
+    initEngagement();
+  }
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    boot();
+  } else {
+    document.addEventListener("DOMContentLoaded", boot);
+  }
+})();
+
+</script>
+</body>
+</html>

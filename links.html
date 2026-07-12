@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculus Fennicus — deep-link directory</title>
+<meta name="description" content="Directory of stable deep links into Calculus Fennicus. Search any section, theorem, definition, example or equation by its LaTeX label and copy a permalink that opens the book at that exact spot (Finnish or English).">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fafafa;--surface:#fff;--surface-2:#f5f5f7;--ink:#1a1f36;--soft:#4a5568;--muted:#718096;--border:#e5e7eb;--border-soft:#eef0f3;--accent:#4f46e5;--accent-strong:#4338ca;--accent-soft:#eef2ff;
+ --display:"Newsreader",Georgia,serif;--body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1216;--surface:#171b21;--surface-2:#20262e;--ink:#e8ebef;--soft:#cbd5e1;--muted:#9aa3af;--border:#262c34;--border-soft:#20262e;--accent:#6d9bff;--accent-strong:#a5b4fc;--accent-soft:rgba(109,155,255,.14)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:940px;margin:0 auto;padding:30px 22px 80px}
+.back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:9px;padding:6px 11px}
+h1{font-family:var(--display);font-size:30px;margin:16px 0 6px;letter-spacing:-.01em}
+.lede{color:var(--muted);max-width:74ch;margin:0 0 22px}
+.controls{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);padding:12px 0;border-bottom:1px solid var(--border-soft);z-index:5}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#q{flex:1 1 260px;min-width:200px;font:500 15px var(--body);border:1px solid var(--border);border-radius:10px;padding:10px 13px;background:var(--surface);color:var(--ink)}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 12.5px var(--body);padding:6px 11px;border-radius:7px;cursor:pointer}
+.seg button.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font-size:12px;font-weight:600;color:var(--soft);background:var(--surface-2);border:1px solid var(--border);border-radius:20px;padding:5px 11px;cursor:pointer}
+.chip.active{background:var(--accent-soft);color:var(--accent-strong);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
+.count{color:var(--muted);font-size:13px;margin:14px 0 6px}
+.item{display:grid;grid-template-columns:70px 1fr auto;gap:14px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--border-soft)}
+.ref{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent-strong)}
+.it-t{font-size:14px}
+.it-k{font-size:11.5px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.kind{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--soft);background:var(--surface-2);border-radius:20px;padding:2px 7px;margin-left:6px}
+.acts{display:flex;gap:6px;white-space:nowrap}
+.acts a,.acts button{font-size:12.5px;font-weight:600;border-radius:8px;padding:6px 11px;cursor:pointer;border:1px solid var(--border)}
+.acts .open{color:var(--accent);background:var(--surface)}
+.acts .copy{color:var(--accent-strong);background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 25%,transparent)}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:9px 16px;border-radius:20px;opacity:0;transition:.25s;z-index:9}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:640px){.item{grid-template-columns:1fr;gap:6px}.acts{margin-top:4px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html"><span>←</span> Calculus Fennicus</a>
+  <h1>Deep-link directory</h1>
+  <p class="lede">Every section, theorem, definition, example and numbered equation in <em>Calculus Fennicus</em> has a stable
+  <strong>LaTeX label</strong>. Search below and copy a permalink that opens the book in the embedded reader at that exact spot.
+  Links are stable across re-typesetting and resolve in both the Finnish and English PDFs.</p>
+
+  <div class="controls">
+    <div class="row">
+      <input id="q" type="search" placeholder="Search — e.g. jacobi, gradient, Stokes, XI.6 …" autocomplete="off">
+      <div class="seg" title="Which PDF the copied links open">
+        <button id="d-en" class="active" onclick="setDoc('en')">EN</button>
+        <button id="d-fi" onclick="setDoc('fi')">FI</button>
+      </div>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+const KINDS = [['all','All'],['section','Sections'],['theorem','Theorems'],['example','Examples'],['equation','Equations'],['display','Displayed'],['item','Items'],['chapter','Chapters']];
+let LABELS = {}, entries = [], doc = 'en', kind = 'all';
+const $ = (s) => document.querySelector(s);
+
+function slug(k){ return encodeURIComponent(k); }
+function viewerUrl(key){ return `viewer.html#doc=${doc}&label=${slug(key)}`; }
+function absUrl(key){ return new URL(viewerUrl(key), location.href).href; }
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1500); }
+
+function refKey(r){ // sortable key from a ref like "XI.6.1"
+  const rom={I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7,VIII:8,IX:9,X:10,XI:11,XII:12,XIII:13,XIV:14};
+  const parts=(r||'').split('.'); const c=rom[parts[0]]||99;
+  const rest=parts.slice(1).map(x=>('0000'+ (parseInt(x,10)||0)).slice(-4)).join('.');
+  return (''+('0'+c).slice(-2))+'.'+rest;
+}
+function render(){
+  const q=$('#q').value.trim().toLowerCase();
+  let list=entries.filter(e=>{
+    if(kind!=='all' && e.kind!==kind) return false;
+    if(!q) return true;
+    return (e.key.toLowerCase().includes(q) || (e.title||'').toLowerCase().includes(q) || (e.ref||'').toLowerCase().includes(q));
+  });
+  $('#count').textContent = `${list.length} of ${entries.length} labels`;
+  const html = list.slice(0,600).map(e=>`
+    <div class="item">
+      <div class="ref">§${e.ref||''}</div>
+      <div><div class="it-t">${e.title||'<span style="color:var(--muted)">('+e.kind+')</span>'}<span class="kind">${e.kind}</span></div>
+        <div class="it-k">${e.key}</div></div>
+      <div class="acts">
+        <a class="open" href="${viewerUrl(e.key)}" target="_blank" rel="noopener">Open</a>
+        <button class="copy" data-key="${encodeURIComponent(e.key)}">Copy link</button>
+      </div>
+    </div>`).join('');
+  $('#list').innerHTML = html + (list.length>600?'<div class="count">Showing first 600 — refine your search.</div>':'');
+  $('#list').querySelectorAll('.copy').forEach(b=>b.onclick=()=>{
+    const key=decodeURIComponent(b.dataset.key);
+    navigator.clipboard?.writeText(absUrl(key)).then(()=>toast('Link copied — '+doc.toUpperCase()),()=>toast('Copy failed'));
+  });
+}
+window.setDoc=(d)=>{ doc=d; $('#d-en').classList.toggle('active',d==='en'); $('#d-fi').classList.toggle('active',d==='fi'); render(); };
+function buildChips(){
+  $('#chips').innerHTML = KINDS.map(([k,l])=>`<span class="chip${k==='all'?' active':''}" data-k="${k}">${l}</span>`).join('');
+  $('#chips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ kind=c.dataset.k; $('#chips').querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c)); render(); });
+}
+(async function(){
+  try{ LABELS = await (await fetch('labels-en.json')).json(); }
+  catch(e){ $('#list').innerHTML='<div class="count">Could not load labels-en.json. Generate it with <code>node tools/gen-labels.mjs en site/labels-en.json</code>.</div>'; return; }
+  entries = Object.keys(LABELS).map(k=>({key:k,...LABELS[k]}))
+    .filter(e=>e.kind!=='other')
+    .sort((a,b)=> refKey(a.ref)<refKey(b.ref)?-1: refKey(a.ref)>refKey(b.ref)?1: a.key.localeCompare(b.key));
+  buildChips();
+  $('#q').addEventListener('input', render);
+  render();
+})();
+</script>
+<script>window.__MYPA_SITE__="calculus-fennicus";window.__MYPA_ENDPOINT__="https://mypa.longshoreforrest.workers.dev/collect";window.__MYPA_PAGE__="links";</script>
+<script>
+/*!
+ * MyPublicAnalytics beacon — selainpuolen snippet.
+ *
+ * Lähetys:
+ *   - 'pageview' automaattisesti sivun latautuessa
+ *   - Custom-eventit: window.mypa.send('section_view', { section: 'experience' })
+ *
+ * Käyttää navigator.sendBeacon() (eloonjäänti sivu-vaihdoksen yli) ja
+ * fetch keepalive:n fallbackia.
+ *
+ * Self-tagging (oman vierailusi erottelu):
+ *   Käy kerran sivulla URL:lla ?_mypa_self=1 → localStorageen tallentuu lippu,
+ *   ja kaikki tulevat eventit lähetetään {self:true}. Pois: ?_mypa_self=0.
+ */
+(function () {
+  if (typeof window === "undefined") return;
+  if (window.mypa && window.mypa.__initialized) return;
+
+  var SITE = window.__MYPA_SITE__ || "unknown";
+  var ENDPOINT = window.__MYPA_ENDPOINT__ || "";
+  var AUTO_EVENT = window.__MYPA_AUTO_EVENT__ || "pageview";
+
+  if (!ENDPOINT) return;
+
+  // Self-marker: URL-parametri tai localStorage-lippu.
+  var SELF = false;
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    if (sp.get("_mypa_self") === "1") {
+      try { localStorage.setItem("mypa_self", "1"); } catch (e) {}
+    } else if (sp.get("_mypa_self") === "0") {
+      try { localStorage.removeItem("mypa_self"); } catch (e) {}
+    }
+    try { SELF = localStorage.getItem("mypa_self") === "1"; } catch (e) {}
+  } catch (e) {}
+
+  function utm() {
+    try {
+      var p = new URLSearchParams(window.location.search);
+      return {
+        source: p.get("utm_source") || null,
+        medium: p.get("utm_medium") || null,
+        campaign: p.get("utm_campaign") || null,
+      };
+    } catch (e) {
+      return { source: null, medium: null, campaign: null };
+    }
+  }
+
+  // Käyttäjäidentiteetti (esim. Google Sign-In) jaetusta localStoragesta.
+  // Kirjoitettu muotoon { email, name, sub, idToken, t }. Worker varmentaa
+  // idTokenin RS256/JWKS:llä; user-kenttä on varauloskäynti (varmentamaton).
+  var IDENTITY_KEY = window.__MYPA_IDENTITY_KEY__ || "unitas:identity";
+  function identity() {
+    try {
+      var raw = localStorage.getItem(IDENTITY_KEY);
+      if (!raw) return null;
+      var o = JSON.parse(raw);
+      if (!o || !o.email) return null;
+      return o;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Korkean entropian UA Client Hints (tarkka laitemalli). Vain Chromium.
+  // navigator.userAgentData.getHighEntropyValues on asynkroninen, joten
+  // populoimme tämän kertaalleen ja liitämme sen kaikkiin lähetettäviin
+  // eventteihin. resolveHighEntropy() kutsuu callbackin joka tapauksessa —
+  // myös silloin kun rajapintaa ei ole tai se hylkää — jottei pageview jää
+  // lähettämättä.
+  var UACH = null;
+  function resolveHighEntropy(cb) {
+    try {
+      var uad = navigator.userAgentData;
+      if (uad && typeof uad.getHighEntropyValues === "function") {
+        uad
+          .getHighEntropyValues([
+            "model",
+            "platformVersion",
+            "architecture",
+            "bitness",
+            "uaFullVersion",
+          ])
+          .then(function (he) {
+            UACH = {
+              model: he.model || null,
+              platform_version: he.platformVersion || null,
+              arch: he.architecture || null,
+              bitness: he.bitness || null,
+              full_version: he.uaFullVersion || null,
+            };
+          })
+          .catch(function () {})
+          .then(function () { cb(); });
+        return;
+      }
+    } catch (e) {}
+    cb();
+  }
+
+  function clientContext() {
+    var ctx = {};
+    try {
+      ctx.screen_w = window.screen && screen.width || null;
+      ctx.screen_h = window.screen && screen.height || null;
+      ctx.viewport_w = window.innerWidth || null;
+      ctx.viewport_h = window.innerHeight || null;
+      ctx.dpr = window.devicePixelRatio || null;
+      ctx.language = (navigator.language || "").slice(0, 16);
+      ctx.languages = Array.isArray(navigator.languages)
+        ? navigator.languages.slice(0, 4).join(",")
+        : null;
+      ctx.color_scheme =
+        (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches)
+          ? "dark" : "light";
+      ctx.tz =
+        (Intl && Intl.DateTimeFormat &&
+         new Intl.DateTimeFormat().resolvedOptions().timeZone) || null;
+      ctx.tz_offset = -new Date().getTimezoneOffset();
+      var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (c) {
+        ctx.net_type = c.effectiveType || null;
+        ctx.net_downlink = c.downlink || null;
+        ctx.net_rtt = c.rtt || null;
+        ctx.net_save_data = !!c.saveData;
+      }
+      ctx.touch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+      ctx.hardware_concurrency = navigator.hardwareConcurrency || null;
+      ctx.device_memory = navigator.deviceMemory || null;
+    } catch (e) {}
+    return ctx;
+  }
+
+  function send(event, extra) {
+    try {
+      // Liitä client-konteksti pageview-eventtiin (kerran per session).
+      var ev = event || "pageview";
+      var enriched = extra ? Object.assign({}, extra) : {};
+      if (ev === "pageview" || ev === "login_pageview") {
+        Object.assign(enriched, clientContext());
+      }
+      var id = identity();
+      var body = JSON.stringify({
+        site: SITE,
+        path: window.location.pathname + window.location.search,
+        event: ev,
+        referrer: document.referrer || "",
+        utm: utm(),
+        extra: Object.keys(enriched).length ? enriched : null,
+        ch: UACH || undefined,
+        self: SELF || undefined,
+        user: id ? { email: id.email, name: id.name, sub: id.sub } : undefined,
+        idToken: id && id.idToken ? id.idToken : undefined,
+      });
+      if (
+        navigator.sendBeacon &&
+        navigator.sendBeacon(
+          ENDPOINT,
+          new Blob([body], { type: "text/plain;charset=UTF-8" }),
+        )
+      ) {
+        return;
+      }
+      fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "text/plain;charset=UTF-8" },
+        body: body,
+        keepalive: true,
+        mode: "cors",
+        credentials: "omit",
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  function autoSend() {
+    // Odota korkean entropian client hintit ennen ensimmäistä lähetystä, jotta
+    // laitemalli ehtii mukaan. UACH jää talteen myös custom-eventtejä varten.
+    resolveHighEntropy(function () { send(AUTO_EVENT); });
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    autoSend();
+  } else {
+    document.addEventListener("DOMContentLoaded", autoSend);
+  }
+
+  window.mypa = { send: send, __initialized: true, __self: SELF };
+})();
+
+</script>
+<script>
+/*!
+ * MyPublicAnalytics auto-instrument — generic behavioral tracking companion.
+ *
+ * Load this AFTER beacon/analytics.js. The beacon sends the automatic
+ * 'pageview'; this adds the richer behavioral events the dashboard already
+ * understands, WITHOUT any site-specific code:
+ *
+ *   - section_view   once per `section[id]` (or [data-section]) scrolled into view
+ *   - nav_jump       clicks on same-origin page navigation (*.html links)
+ *   - click          outbound links, mailto/tel, and PDF opens
+ *   - engagement_end visible time + total time + max scroll % + sections seen,
+ *                    sent on tab-hide / page-exit (checkpoint-safe)
+ *
+ * It is a no-op if the beacon (window.mypa) is not present, and never throws.
+ * CV does its own bespoke instrumentation in script.js, so it does NOT load
+ * this file — this is for sites (PhD, future) that just want sensible defaults.
+ *
+ * Optional config (set before this script runs):
+ *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true };
+ */
+(function () {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+  if (window.__mypaAutoInit) return;
+  window.__mypaAutoInit = true;
+
+  var CFG = window.__MYPA_AUTO__ || {};
+  var DO_SECTIONS    = CFG.sections    !== false;
+  var DO_NAV         = CFG.nav         !== false;
+  var DO_CLICKS      = CFG.clicks      !== false;
+  var DO_ENGAGEMENT  = CFG.engagement  !== false;
+  var PAGE = window.__MYPA_PAGE__ || null;
+
+  function send(event, extra) {
+    try {
+      if (window.mypa && window.mypa.send) {
+        var e = extra || {};
+        if (PAGE && e.page == null) e.page = PAGE;
+        window.mypa.send(event, e);
+      }
+    } catch (err) { /* never break the page */ }
+  }
+
+  // ── section_view ───────────────────────────────────────────────────────────
+  var sentSections = {};
+  var seenCount = 0;
+  function observeSections() {
+    if (!DO_SECTIONS || typeof IntersectionObserver === "undefined") return;
+    var nodes = document.querySelectorAll(
+      "section[id], [data-section], article[id], h2[id], h3[id]"
+    );
+    if (!nodes.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var t = entry.target;
+        var id = t.getAttribute("data-section") || t.id;
+        if (!id || sentSections[id]) return;
+        sentSections[id] = true;
+        seenCount++;
+        send("section_view", { section: String(id).slice(0, 80) });
+      });
+    }, { threshold: 0.25 });
+    nodes.forEach(function (n) { io.observe(n); });
+  }
+
+  // ── nav_jump + click (outbound / pdf / contact) ─────────────────────────────
+  function onClick(e) {
+    try {
+      var a = e.target && e.target.closest && e.target.closest("a[href]");
+      if (!a) return;
+      var href = a.getAttribute("href") || "";
+      if (!href || href.charAt(0) === "#") return;            // in-page anchor
+      var label = (a.textContent || "").trim().slice(0, 80);
+
+      if (href.indexOf("mailto:") === 0) {
+        if (DO_CLICKS) send("click", { target: "email", href: href.slice(0, 160) });
+        return;
+      }
+      if (href.indexOf("tel:") === 0) {
+        if (DO_CLICKS) send("click", { target: "phone", href: href.slice(0, 160) });
+        return;
+      }
+
+      // Resolve to compare origins reliably.
+      var url = null;
+      try { url = new URL(href, window.location.href); } catch (e2) {}
+      var external = url && url.origin !== window.location.origin;
+
+      if (/\.pdf($|[?#])/i.test(href)) {
+        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: href.slice(0, 160) });
+        return;
+      }
+      if (external) {
+        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: href.slice(0, 160) });
+        return;
+      }
+      // Same-origin navigation to another page bundle (*.html) → nav_jump.
+      if (DO_NAV && /\.html($|[?#])/i.test(href)) {
+        var dest = url ? (url.pathname.split("/").pop() + (url.hash || "")) : href;
+        send("nav_jump", { to: String(dest).slice(0, 120), label: label });
+      }
+    } catch (err) { /* ignore */ }
+  }
+  if (DO_NAV || DO_CLICKS) {
+    document.addEventListener("click", onClick, true);
+  }
+
+  // ── engagement_end (visible time, total time, max scroll %, sections) ────────
+  var startMs = nowMs();
+  var visibleAccum = 0;
+  var lastVisibleStart = document.visibilityState === "visible" ? nowMs() : 0;
+  var maxScrollPct = 0;
+  var sent = false;
+
+  function nowMs() {
+    try { return (performance && performance.now) ? performance.timeOrigin + performance.now() : +new Date(); }
+    catch (e) { return +new Date(); }
+  }
+  function updateScrollDepth() {
+    try {
+      var sh = document.documentElement.scrollHeight - window.innerHeight;
+      // Many pages scroll an inner container, not the window — pick the larger.
+      var main = document.querySelector(".content, main, .page");
+      if (main && main.scrollHeight - main.clientHeight > sh) {
+        var sh2 = main.scrollHeight - main.clientHeight;
+        if (sh2 > 0) {
+          var p2 = Math.round((main.scrollTop / sh2) * 100);
+          if (p2 > maxScrollPct) maxScrollPct = Math.min(100, p2);
+        }
+        return;
+      }
+      if (sh <= 0) return;
+      var pct = Math.round((window.scrollY / sh) * 100);
+      if (pct > maxScrollPct) maxScrollPct = Math.min(100, pct);
+    } catch (e) {}
+  }
+
+  function sendEngagement(reason) {
+    if (!DO_ENGAGEMENT || sent) return;
+    sent = true;
+    if (lastVisibleStart) {
+      visibleAccum += nowMs() - lastVisibleStart;
+      lastVisibleStart = 0;
+    }
+    send("engagement_end", {
+      reason: reason,
+      time_visible_ms: Math.round(visibleAccum),
+      time_total_ms: Math.round(nowMs() - startMs),
+      max_scroll_pct: maxScrollPct,
+      sections_seen: seenCount
+    });
+  }
+
+  function initEngagement() {
+    if (!DO_ENGAGEMENT) return;
+    window.addEventListener("scroll", updateScrollDepth, { passive: true, capture: true });
+    updateScrollDepth();
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        sendEngagement("hidden");           // checkpoint — may not be a real exit
+      } else if (document.visibilityState === "visible" && sent) {
+        sent = false;                        // user returned — new engagement window
+        startMs = nowMs();
+        visibleAccum = 0;
+        lastVisibleStart = nowMs();
+      } else if (document.visibilityState === "visible") {
+        lastVisibleStart = nowMs();
+      }
+    });
+    window.addEventListener("pagehide", function () { sendEngagement("pagehide"); });
+  }
+
+  function boot() {
+    observeSections();
+    initEngagement();
+  }
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    boot();
+  } else {
+    document.addEventListener("DOMContentLoaded", boot);
+  }
+})();
+
+</script>
+</body>
+</html>
