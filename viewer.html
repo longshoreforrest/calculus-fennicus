@@ -48,6 +48,15 @@ a{color:var(--accent);text-decoration:none}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:9px 16px;border-radius:20px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .err{margin:40px auto;max-width:520px;background:var(--chrome);border:1px solid var(--border);border-radius:12px;padding:22px;font-size:14px;color:var(--soft)}
+.loading{position:fixed;left:0;right:0;bottom:0;top:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(2px);z-index:6}
+.loading.on{display:flex}
+.loading .spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading .lmsg{font-size:13.5px;font-weight:600;color:var(--soft)}
+.loading .bar{width:190px;height:6px;background:var(--chrome-2);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.loading .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.loading .bar.indet>i{width:35%;animation:indet 1.1s ease-in-out infinite}
+@keyframes indet{0%{margin-left:-35%}100%{margin-left:100%}}
 @media(max-width:900px){.title,.loc{display:none}}
 @media(max-width:680px){.search{min-width:120px}}
 </style>
@@ -83,6 +92,7 @@ a{color:var(--accent);text-decoration:none}
   <button class="copybtn" onclick="app.copyLink()">Copy link</button>
 </div>
 <div id="stage"><div id="pages"></div><div class="err" id="err" style="display:none"></div></div>
+<div class="loading" id="loading"><div class="spin"></div><div class="lmsg" id="loadmsg">Loading…</div><div class="bar indet" id="loadbarwrap"><i id="loadbar"></i></div></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -113,6 +123,19 @@ const clampP = (p) => Math.max(1, Math.min(st.numPages, p));
 const EMBEDDED = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 function track(ev, extra) { try { if (window.mypa && window.mypa.send) window.mypa.send(ev, Object.assign({ page: 'viewer', doc: st.doc, embedded: EMBEDDED }, extra || {})); } catch (e) {} }
 function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1700); }
+const LANGNAME = { en: 'English', fi: 'Finnish' };
+function setLoading(on, msg) {
+  const l = $('loading'); if (!l) return;
+  if (on) {
+    const bar = document.querySelector('.vtop'); if (bar) l.style.top = Math.round(bar.getBoundingClientRect().bottom) + 'px';
+    $('loadmsg').textContent = msg || 'Loading…'; $('loadbar').style.width = '0%'; $('loadbarwrap').classList.add('indet');
+    l.classList.add('on');
+  } else l.classList.remove('on');
+}
+function setLoadProgress(loaded, total) {
+  const w = $('loadbarwrap'); if (!w) return;
+  if (total && total > 0) { w.classList.remove('indet'); $('loadbar').style.width = Math.min(99, Math.round(loaded / total * 100)) + '%'; }
+}
 function showErr(h) { const e = $('err'); e.style.display = 'block'; e.innerHTML = h; }
 async function pickUrl(cands) { for (const u of cands) { try { const r = await fetch(u, { method: 'HEAD' }); if (r.ok) return u; } catch (e) {} } return cands[0]; }
 
@@ -142,14 +165,17 @@ function writeHash() { const t = st.target || {}; const p = new URLSearchParams(
 async function loadDoc(doc) {
   st.doc = doc;
   $('doc-en').classList.toggle('active', doc === 'en'); $('doc-fi').classList.toggle('active', doc === 'fi');
+  setLoading(true, 'Loading the ' + (LANGNAME[doc] || '') + ' edition…');
   st.textCache.clear(); clearSearch();
   try { st.labels = await (await fetch(DOCS[doc].labels)).json(); } catch (e) { st.labels = {}; }
   if (st.pdf) { try { await st.pdf.destroy(); } catch (e) {} }
   const url = await pickUrl(DOCS[doc].pdf);
   st.pdfUrl = url;
   const dl = $('dlpdf'); if (dl) { dl.href = url; dl.setAttribute('download', doc === 'fi' ? 'Calculus-Fennicus-FI.pdf' : 'Calculus-Fennicus-EN.pdf'); }
-  try { st.pdf = await pdfjsLib.getDocument({ url, disableAutoFetch: true, disableStream: false }).promise; }
-  catch (e) { showErr(`Could not load the PDF (<code>${url}</code>).<br>Locally, run <code>make ${doc}</code> first, or use the published site.`); return false; }
+  const task = pdfjsLib.getDocument({ url, disableAutoFetch: true, disableStream: false });
+  task.onProgress = (p) => { if (p) setLoadProgress(p.loaded, p.total); };
+  try { st.pdf = await task.promise; }
+  catch (e) { setLoading(false); showErr(`Could not load the PDF (<code>${url}</code>).<br>Locally, run <code>make ${doc}</code> first, or use the published site.`); return false; }
   st.numPages = st.pdf.numPages;
   const vp1 = (await st.pdf.getPage(1)).getViewport({ scale: 1 });
   st.baseW = vp1.width; st.baseH = vp1.height;
@@ -322,7 +348,7 @@ function refreshVisibleHighlights() {
 
 // ---------- controls ----------
 window.app = {
-  async setDoc(doc) { if (doc === st.doc) return; const t = st.target; if (!(await loadDoc(doc))) return; track('viewer_lang', { to: doc }); if (t && (t.label || t.dest)) await goTarget(t); else await goToPage(Math.min(st.curPage, st.numPages), false); },
+  async setDoc(doc) { if (doc === st.doc) return; const t = st.target; if (!(await loadDoc(doc))) return; track('viewer_lang', { to: doc }); if (t && (t.label || t.dest)) await goTarget(t); else await goToPage(Math.min(st.curPage, st.numPages), false); setLoading(false); },
   async setMode(m) { if (m === st.mode) return; st.mode = m; try { localStorage.setItem('cf_mode', m); } catch (e) {} track('viewer_mode', { mode: m }); const cur = st.curPage; buildStage(); await goToPage(cur, false); if (st.search.q && st.mode === 'continuous') refreshVisibleHighlights(); },
   rel(d) { st.target = null; goToPage(st.curPage + d, false).then(() => { st.target = { page: printed(st.curPage) }; writeHash(); }); },
   goto(v) { const n = parseInt(v, 10); if (n) { st.target = { page: n }; goToPage(physical(n), st.mode === 'single'); writeHash(); } },
@@ -353,6 +379,7 @@ if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.t
   const { doc, target } = parseHash();
   if (!(await loadDoc(doc))) return;
   if (target) await goTarget(target); else { await goToPage(1, false); writeHash(); }
+  setLoading(false);
   track('viewer_open', { deeplink: target ? (target.label || target.dest || ('page ' + target.page)) : null });
 })();
 </script>
