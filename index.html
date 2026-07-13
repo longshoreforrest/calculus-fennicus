@@ -159,9 +159,6 @@ footer{margin-top:56px;border-top:1px solid var(--border-soft);padding-top:22px;
         <button class="lang-btn active" data-lang="en" onclick="setLang('en')" aria-pressed="true">EN</button>
         <button class="lang-btn" data-lang="fi" onclick="setLang('fi')" aria-pressed="false">FI</button>
       </div>
-      <div class="tool-row">
-        <button class="theme-btn" onclick="cycleTheme()" title="Theme" aria-label="Theme"><span class="theme-dot"></span><span id="theme-label" data-i18n="themePaper">Paper</span></button>
-      </div>
     </div>
 
     <nav class="nav">
@@ -204,7 +201,7 @@ footer{margin-top:56px;border-top:1px solid var(--border-soft);padding-top:22px;
         </div>
         <p class="lead" data-i18n="lead">A rigorous, from-the-foundations introduction to calculus and linear algebra — built up, with proofs, from the construction of the real numbers to the theorems of Gauss and Stokes. Distilled from thirteen years of teaching the advanced first-year mathematics at Helsinki University of Technology, it is written for anyone who would rather understand mathematics than merely compute with it. This page offers the Finnish original and a complete English translation as freely downloadable PDFs.</p>
         <div class="cover-stats">
-          <div class="stat"><div class="stat-num">1126</div><div class="stat-label" data-i18n="stEnPp">pages · English</div></div>
+          <div class="stat"><div class="stat-num">1124</div><div class="stat-label" data-i18n="stEnPp">pages · English</div></div>
           <div class="stat"><div class="stat-num">1040</div><div class="stat-label" data-i18n="stFiPp">pages · Finnish</div></div>
           <div class="stat"><div class="stat-num">14</div><div class="stat-label" data-i18n="stParts">parts (I–XIV)</div></div>
           <div class="stat"><div class="stat-num">CC BY</div><div class="stat-label" data-i18n="stLicense">free to share &amp; adapt</div></div>
@@ -231,7 +228,7 @@ footer{margin-top:56px;border-top:1px solid var(--border-soft);padding-top:22px;
           <div class="dlrow">
             <a class="dlbtn" href="calculus-en.pdf" download="Calculus-Fennicus-EN.pdf">
               <span class="dlicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
-              <span class="dlmeta"><b data-i18n="dlDlEn">Download PDF</b><span data-i18n="dlDlEnSub">English translation · 1126 pp · 7.5 MB</span></span>
+              <span class="dlmeta"><b data-i18n="dlDlEn">Download PDF</b><span data-i18n="dlDlEnSub">English translation · 1124 pp · 7.5 MB</span></span>
             </a>
             <a class="dlbtn" href="calculus-fi.pdf" download="Calculus-Fennicus-FI.pdf">
               <span class="dlicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
@@ -303,7 +300,7 @@ const I18N = {
   dlEmbedLead:{en:"Read the whole book right here — page-by-page or continuous scroll, full-text search, and deep links to any section, theorem or definition. Choose the language, or open it full-screen.",fi:"Lue koko kirja suoraan tässä — sivu kerrallaan tai jatkuvana vierityksenä, tekstihaku ja deep-linkit mihin tahansa sektioon, lauseeseen tai määritelmään. Valitse kieli tai avaa koko näytölle."},
   dlOpenFull:{en:"Open full-screen",fi:"Avaa koko näytölle"},
   dlDlEn:{en:"Download PDF",fi:"Lataa PDF"}, dlDlFi:{en:"Download PDF",fi:"Lataa PDF"},
-  dlDlEnSub:{en:"English translation · 1126 pp · 7.5 MB",fi:"Englanninkielinen käännös · 1126 s. · 7,5 MB"},
+  dlDlEnSub:{en:"English translation · 1124 pp · 7.5 MB",fi:"Englanninkielinen käännös · 1124 s. · 7,5 MB"},
   dlDlFiSub:{en:"Finnish original · 1040 pp · 6.1 MB",fi:"Suomenkielinen alkuteos · 1040 s. · 6,1 MB"},
   maReaderLink:{en:"Open the reader →",fi:"Avaa lukija →"}, maDirLink:{en:"Browse the link directory →",fi:"Selaa linkkihakemistoa →"},
   abAuthorLink:{en:"Read more about the author, Juhani Pitkäranta, and his complete scientific bibliography →",fi:"Lue lisää kirjan tekijästä Juhani Pitkärannasta ja hänen täydellisestä julkaisuluettelostaan →"},
@@ -316,7 +313,7 @@ const I18N = {
   stEnPp:{en:"pages · English",fi:"sivua · englanti"}, stFiPp:{en:"pages · Finnish",fi:"sivua · suomi"},
   stParts:{en:"parts (I–XIV)",fi:"osaa (I–XIV)"}, stLicense:{en:"free to share &amp; adapt",fi:"vapaa jakaa ja muokata"},
   dlNum:{en:"Downloads",fi:"Lataukset"}, dlTitle:{en:"Read the book",fi:"Lue kirja"},
-  dlEnMeta:{en:"English translation · 1126 pages · PDF",fi:"Englanninkielinen käännös · 1126 sivua · PDF"},
+  dlEnMeta:{en:"English translation · 1124 pages · PDF",fi:"Englanninkielinen käännös · 1124 sivua · PDF"},
   dlFiMeta:{en:"Finnish original · 1040 pages · PDF",fi:"Alkuperäinen suomenkielinen · 1040 sivua · PDF"},
   dlDownload:{en:"Download →",fi:"Lataa →"}, dlDownloadFi:{en:"Download →",fi:"Lataa →"},
   dlHint:{en:"Both PDFs have a clickable table of contents and internal cross-reference links.",fi:"Molemmissa PDF:issä on klikattava sisällysluettelo ja sisäiset ristiviittauslinkit."},
@@ -376,8 +373,7 @@ function cycleTheme(){
 }
 (function init(){
   let lang='en',theme='paper',sb='shown';
-  try{lang=localStorage.getItem('cf_lang')||'en';theme=localStorage.getItem('cf_theme')||'paper';sb=localStorage.getItem('cf_sidebar')||'shown';}catch(e){}
-  if(theme==='slate')document.documentElement.setAttribute('data-theme','slate');
+  try{lang=localStorage.getItem('cf_lang')||'en';sb=localStorage.getItem('cf_sidebar')||'shown';}catch(e){}
   if(sb==='hidden'&&!window.matchMedia('(max-width:820px)').matches){document.body.classList.add('sidebar-hidden');document.getElementById('sidebar-toggle').setAttribute('aria-expanded','false');}
   setLang(lang);
   setReaderDoc(lang);
