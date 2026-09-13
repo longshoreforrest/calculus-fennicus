@@ -253,6 +253,13 @@ function cycleTheme(){const cur=document.documentElement.getAttribute('data-them
  *   - 'pageview' automaattisesti sivun latautuessa
  *   - Custom-eventit: window.mypa.send('section_view', { section: 'experience' })
  *
+ * Sivukohtainen perus-extra (valinnainen, aseta ennen latausta):
+ *   window.__MYPA_EXTRA__ = { assignment: '0018' };   // liitetään joka eventtiin
+ *
+ * HUOM: lähetettävä `path` on pathname + search — location.hash EI koskaan
+ * kulje mukana. Salatut sivut (MyAssistant) pitävät purkuavaimen juuri
+ * #-osassa, joten avain ei päädy analytiikkaan.
+ *
  * Käyttää navigator.sendBeacon() (eloonjäänti sivu-vaihdoksen yli) ja
  * fetch keepalive:n fallbackia.
  *
@@ -269,6 +276,17 @@ function cycleTheme(){const cur=document.documentElement.getAttribute('data-them
   var AUTO_EVENT = window.__MYPA_AUTO_EVENT__ || "pageview";
 
   if (!ENDPOINT) return;
+
+  // Perus-extra, joka liitetään JOKAISEEN tämän sivun eventtiin. Julkaisija
+  // asettaa tämän ennen beaconin latausta, esim. MyAssistantin salattu
+  // raportti: window.__MYPA_EXTRA__ = { assignment: '0018', doc: 0 }.
+  // Näin sivukohtainen identiteetti kulkee mukana ilman että polkuun tai
+  // otsikkoon tarvitsee laittaa mitään sisällöstä kertovaa.
+  var BASE_EXTRA = null;
+  try {
+    var be = window.__MYPA_EXTRA__;
+    if (be && typeof be === "object") BASE_EXTRA = be;
+  } catch (e) {}
 
   // Self-marker: URL-parametri tai localStorage-lippu.
   var SELF = false;
@@ -384,7 +402,7 @@ function cycleTheme(){const cur=document.documentElement.getAttribute('data-them
     try {
       // Liitä client-konteksti pageview-eventtiin (kerran per session).
       var ev = event || "pageview";
-      var enriched = extra ? Object.assign({}, extra) : {};
+      var enriched = Object.assign({}, BASE_EXTRA || {}, extra || {});
       if (ev === "pageview" || ev === "login_pageview") {
         Object.assign(enriched, clientContext());
       }
@@ -456,7 +474,13 @@ function cycleTheme(){const cur=document.documentElement.getAttribute('data-them
  * this file — this is for sites (PhD, future) that just want sensible defaults.
  *
  * Optional config (set before this script runs):
- *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true };
+ *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true,
+ *                            hash: true };
+ *
+ * `hash: false` riisuu #-fragmentin kaikista lähetettävistä osoitteista. Käytä
+ * sivustoilla, joilla fragmentti on salaisuus — esim. MyAssistantin salatut
+ * raportit, joiden purkuavain on linkin #-osassa. Oletus (true) säilyttää
+ * fragmentin, koska muilla sivustoilla se on merkityksellistä navigaatiotietoa.
  */
 (function () {
   if (typeof window === "undefined" || typeof document === "undefined") return;
@@ -468,7 +492,14 @@ function cycleTheme(){const cur=document.documentElement.getAttribute('data-them
   var DO_NAV         = CFG.nav         !== false;
   var DO_CLICKS      = CFG.clicks      !== false;
   var DO_ENGAGEMENT  = CFG.engagement  !== false;
+  var KEEP_HASH      = CFG.hash        !== false;
   var PAGE = window.__MYPA_PAGE__ || null;
+
+  // Riisu #-fragmentti kun se on salaisuus (KEEP_HASH === false).
+  function safeUrl(s) {
+    var v = String(s == null ? "" : s);
+    return KEEP_HASH ? v : v.split("#")[0];
+  }
 
   function send(event, extra) {
     try {
@@ -527,16 +558,18 @@ function cycleTheme(){const cur=document.documentElement.getAttribute('data-them
       var external = url && url.origin !== window.location.origin;
 
       if (/\.pdf($|[?#])/i.test(href)) {
-        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: href.slice(0, 160) });
+        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: safeUrl(href).slice(0, 160) });
         return;
       }
       if (external) {
-        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: href.slice(0, 160) });
+        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: safeUrl(href).slice(0, 160) });
         return;
       }
       // Same-origin navigation to another page bundle (*.html) → nav_jump.
       if (DO_NAV && /\.html($|[?#])/i.test(href)) {
-        var dest = url ? (url.pathname.split("/").pop() + (url.hash || "")) : href;
+        var dest = url
+          ? (url.pathname.split("/").pop() + (KEEP_HASH ? (url.hash || "") : ""))
+          : safeUrl(href);
         send("nav_jump", { to: String(dest).slice(0, 120), label: label });
       }
     } catch (err) { /* ignore */ }

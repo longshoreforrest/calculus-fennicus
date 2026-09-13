@@ -7,6 +7,9 @@
 <meta name="description" content="Embedded, deep-linkable reader for Calculus Fennicus (Finnish and English PDFs). Page or continuous view, full-text search, and links to any section, theorem or definition by its LaTeX label.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://accounts.google.com">
+<link rel="stylesheet" href="reader/reader.css?v=20260913-0940">
+<script src="reader/config.js?v=20260913-0940"></script>
 <style>
 :root{--bg:#eceef1;--chrome:#fff;--chrome-2:#f5f5f7;--ink:#1a1f36;--soft:#4a5568;--muted:#718096;--border:#e5e7eb;--accent:#4f46e5;--accent-soft:#eef2ff;--warn:#d97706;--sh:0 1px 3px rgba(15,23,42,.08)}
 [data-theme=slate]{--bg:#0b1020;--chrome:#161b22;--chrome-2:#1e242c;--ink:#e7ecf2;--soft:#cbd5e1;--muted:#94a3b8;--border:#2a323c;--accent:#818cf8;--accent-soft:rgba(129,140,248,.16);--sh:0 1px 3px rgba(0,0,0,.4)}
@@ -67,6 +70,8 @@ a{color:var(--accent);text-decoration:none}
 .loading .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 .loading .bar.indet>i{width:35%;animation:indet 1.1s ease-in-out infinite}
 @keyframes indet{0%{margin-left:-35%}100%{margin-left:100%}}
+#fsbtn{padding:6px 8px}
+body.fs .back{display:none}
 @media(max-width:900px){.title,.loc{display:none}}
 @media(max-width:680px){.search{min-width:120px}}
 </style>
@@ -100,6 +105,10 @@ a{color:var(--accent);text-decoration:none}
   <a class="iconbtn" id="dlpdf" href="calculus-en.pdf" download title="Download this PDF to your device" onclick="app.trackDownload()">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>PDF</a>
   <button class="copybtn" onclick="app.copyLink()">Copy link</button>
+  <button class="iconbtn" id="cmtPage" type="button">💬 Comment page</button>
+  <button class="iconbtn" id="ownerBtn" type="button" style="display:none" title="All readers' comments (owner)">🗂 <span id="ownerN" class="n">0</span></button>
+  <div id="who"></div><div id="gbtn"></div>
+  <button class="iconbtn" id="fsbtn" type="button" onclick="app.fullscreen()" title="Full screen (F)" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 3h3a2 2 0 0 1 2 2v3"></path><path d="M8 21H5a2 2 0 0 1-2-2v-3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
 </div>
 <div id="stage"><div id="pages"></div><div class="err" id="err" style="display:none"></div></div>
 <div class="loading" id="loading"><div class="spin"></div><div class="lmsg" id="loadmsg">Loading…</div><div class="bar indet" id="loadbarwrap"><i id="loadbar"></i></div></div>
@@ -126,6 +135,43 @@ try { st.mode = localStorage.getItem('cf_mode') === 'continuous' ? 'continuous' 
 const printed = (phys) => Math.max(1, phys - st.pageOffset);
 const physical = (pr) => Math.min(st.numPages || 9999, pr + st.pageOffset);
 const clampP = (p) => Math.max(1, Math.min(st.numPages, p));
+
+// ---------- Reader adapter: the small API reader/{anchors,auth,comments,owner}.js build on ----------
+// Same surface as the PhD reader's window.Reader (onPainted / cmtLayer / pageOfNode / …) so those
+// modules port almost verbatim. Ready when the first edition has loaded; 'doc' fires on each switch.
+const painted = [], bus = {};
+let UI_LANG = 'en';
+try { const l = localStorage.getItem('cf_lang'); UI_LANG = l ? (l === 'fi' ? 'fi' : 'en') : (String(navigator.language || '').toLowerCase().startsWith('fi') ? 'fi' : 'en'); } catch (e) {}
+const Reader = {
+  cfg: window.CF_VIEWER_CONFIG || {}, ready: null, uiLang: UI_LANG,
+  get book() { return (window.CF_VIEWER_CONFIG || {}).book || 'cf1'; },
+  get doc() { return st.doc; }, get numPages() { return st.numPages; }, get labels() { return st.labels; }, get pdf() { return st.pdf; },
+  currentPage: () => st.curPage, printed, physical,
+  pageEl(n) { if (st.mode === 'single') return n === st.curPage ? $('single-page') : null; return pagesEl.querySelector('.page[data-page="' + n + '"]'); },
+  pageOfNode(node) {
+    let el = node && node.nodeType === 3 ? node.parentElement : node;
+    while (el && el !== pagesEl) { if (el.classList && el.classList.contains('page')) return st.mode === 'single' ? st.curPage : (+el.dataset.page || 0); el = el.parentElement; }
+    return 0;
+  },
+  cmtLayer(n) { const el = Reader.pageEl(n); return el ? el.querySelector('.cmt') : null; },
+  isRendered(n) { const el = Reader.pageEl(n); return !!(el && el.dataset.rendered); },
+  onPainted(cb) { painted.push(cb); },
+  on(name, cb) { (bus[name] = bus[name] || []).push(cb); },
+  emit(name, data) { for (const cb of bus[name] || []) { try { cb(data || {}); } catch (e) {} } track(name, data); },
+  goToPage: (n) => goToPage(n, true),
+  async scrollToFraction(n, fy) {
+    n = clampP(n); st.target = { page: printed(n) };
+    await goToPage(n, false); clearTimeout(st._re);
+    const el = Reader.pageEl(n); if (!el) return;
+    const h = el.offsetHeight || Math.round(st.baseH * scaleFor(st.baseW));
+    const y = (st.mode === 'single' ? 0 : el.offsetTop) + h * (fy || 0);
+    stage.scrollTo({ top: Math.max(0, y - stage.clientHeight / 3), behavior: 'smooth' });
+    writeHash();
+  },
+  setDoc: (d) => app.setDoc(d),
+  toast: (m) => toast(m),
+};
+window.Reader = Reader;
 
 // MyPublicAnalytics — the beacon (window.mypa) is inlined into this page only in
 // the published build, so track() is a silent no-op locally. `embedded` marks
@@ -193,6 +239,7 @@ async function loadDoc(doc) {
   await computeOffset();
   $('pagetotal').textContent = '/ ' + printed(st.numPages);
   buildStage();
+  Reader.emit('doc', { doc });
   return true;
 }
 
@@ -215,9 +262,11 @@ async function renderInto(el, phys) {
   if (el._rid !== rid && st.mode === 'single') return;
   el.style.width = Math.floor(vp.width) + 'px'; el.style.height = Math.floor(vp.height) + 'px';
   el.innerHTML = ''; el.appendChild(canvas); el.dataset.rendered = '1';
+  const cmt = document.createElement('div'); cmt.className = 'cmt'; el.appendChild(cmt);   // comment markers (reader/*.js)
   if (st.search.q) await drawHighlights(el, page, vp, phys);
   await addTextLayer(el, page, vp, scale, rid);
   await addLinkLayer(el, page, vp, rid);
+  if (el._rid === rid || st.mode !== 'single') for (const cb of painted) { try { cb(phys, el, cmt); } catch (e) {} }
 }
 // selectable/copyable text layer via PDF.js
 async function addTextLayer(el, page, vp, scale, rid) {
@@ -408,6 +457,15 @@ window.app = {
   zoom(d) { st.zoom = Math.max(-3, Math.min(6, st.zoom + d)); const cur = st.curPage; buildStage(); goToPage(cur, false); if (st.search.q) setTimeout(refreshVisibleHighlights, 300); },
   searchStep(d) { stepMatch(d); },
   trackDownload() { track('viewer_download', { file: st.pdfUrl }); },
+  fullscreen() {
+    const de = document.documentElement;
+    if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); track('viewer_fullscreen', { on: false }); return; }
+    const openTab = () => { track('viewer_fullscreen', { on: true, method: 'tab' }); window.open(location.href.split('#')[0] + location.hash, '_blank', 'noopener'); };
+    const req = de.requestFullscreen || de.webkitRequestFullscreen;
+    if (!req) { openTab(); return; }
+    let p; try { p = req.call(de); } catch (e) { openTab(); return; }
+    if (p && p.then) p.then(() => track('viewer_fullscreen', { on: true, method: 'api' }), openTab);
+  },
   copyLink() { const u = location.href.split('#')[0] + location.hash; const t = st.target || {}; track('viewer_copylink', { target: t.label || t.dest || ('page ' + (t.page || printed(st.curPage))) }); navigator.clipboard?.writeText(u).then(() => toast('Link copied'), () => toast('Copy failed')); },
 };
 $('pageinput').addEventListener('change', (e) => app.goto(e.target.value));
@@ -418,7 +476,9 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' || e.key === 'PageDown') { if (st.mode === 'single') app.rel(1); }
   else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { if (st.mode === 'single') app.rel(-1); }
   else if (e.key === '/') { e.preventDefault(); $('searchinput').focus(); }
+  else if (e.key === 'f' && !e.metaKey && !e.ctrlKey && !e.altKey && e.target.tagName !== 'TEXTAREA') { app.fullscreen(); }
 });
+document.addEventListener('fullscreenchange', () => document.body.classList.toggle('fs', !!document.fullscreenElement));
 let stcr; stage.addEventListener('scroll', () => { clearTimeout(stcr); stcr = setTimeout(updateCurFromScroll, 80); });
 let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { const c = st.curPage; buildStage(); goToPage(c, false); }, 200); });
 window.addEventListener('hashchange', async () => { const { doc, target } = parseHash(); if (doc !== st.doc) { await app.setDoc(doc); await goTarget(target); } else goTarget(target); });
@@ -428,12 +488,27 @@ if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) doc
 // top window so the whole tab navigates rather than the frame.
 if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.target) a.target = '_top'; });
 
+let readyResolve; Reader.ready = new Promise((r) => { readyResolve = r; });
 (async function () {
   const { doc, target } = parseHash();
   if (!(await loadDoc(doc))) return;
   if (target) await goTarget(target); else { await goToPage(1, false); writeHash(); }
   setLoading(false);
-  track('viewer_open', { deeplink: target ? (target.label || target.dest || ('page ' + target.page)) : null });
+  readyResolve(Reader);
+  track('viewer_open', { deeplink: target ? (target.label || target.dest || ('page ' + target.page)) : null, fs: !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen) });
+})();
+
+// ---------- comment layer (Google sign-in, composer, owner view) — reader/*.js ----------
+(function bootComments() {
+  const CFG = window.CF_VIEWER_CONFIG; if (!CFG || !CFG.site) return;
+  const V = CFG.buildVersion && CFG.buildVersion !== 'dev' ? '?v=' + encodeURIComponent(CFG.buildVersion) : '';
+  import('./reader/anchors.js' + V).then(async (m) => {
+    const A = m.initAnchors(Reader, CFG); Reader.anchors = A;
+    const [auth, cm, ow] = await Promise.all([import('./reader/auth.js' + V), import('./reader/comments.js' + V), import('./reader/owner.js' + V)]);
+    auth.initAuth(CFG, UI_LANG);
+    Reader.comments = cm.initComments(Reader, CFG, A, UI_LANG);
+    Reader.owner = ow.initOwner(Reader, CFG, A, UI_LANG);
+  }).catch((e) => console.warn('comment layer not loaded', e));
 })();
 </script>
 <script>window.__MYPA_SITE__="calculus-fennicus";window.__MYPA_ENDPOINT__="https://mypa.longshoreforrest.workers.dev/collect";window.__MYPA_PAGE__="viewer";</script>
@@ -444,6 +519,13 @@ if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.t
  * Lähetys:
  *   - 'pageview' automaattisesti sivun latautuessa
  *   - Custom-eventit: window.mypa.send('section_view', { section: 'experience' })
+ *
+ * Sivukohtainen perus-extra (valinnainen, aseta ennen latausta):
+ *   window.__MYPA_EXTRA__ = { assignment: '0018' };   // liitetään joka eventtiin
+ *
+ * HUOM: lähetettävä `path` on pathname + search — location.hash EI koskaan
+ * kulje mukana. Salatut sivut (MyAssistant) pitävät purkuavaimen juuri
+ * #-osassa, joten avain ei päädy analytiikkaan.
  *
  * Käyttää navigator.sendBeacon() (eloonjäänti sivu-vaihdoksen yli) ja
  * fetch keepalive:n fallbackia.
@@ -461,6 +543,17 @@ if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.t
   var AUTO_EVENT = window.__MYPA_AUTO_EVENT__ || "pageview";
 
   if (!ENDPOINT) return;
+
+  // Perus-extra, joka liitetään JOKAISEEN tämän sivun eventtiin. Julkaisija
+  // asettaa tämän ennen beaconin latausta, esim. MyAssistantin salattu
+  // raportti: window.__MYPA_EXTRA__ = { assignment: '0018', doc: 0 }.
+  // Näin sivukohtainen identiteetti kulkee mukana ilman että polkuun tai
+  // otsikkoon tarvitsee laittaa mitään sisällöstä kertovaa.
+  var BASE_EXTRA = null;
+  try {
+    var be = window.__MYPA_EXTRA__;
+    if (be && typeof be === "object") BASE_EXTRA = be;
+  } catch (e) {}
 
   // Self-marker: URL-parametri tai localStorage-lippu.
   var SELF = false;
@@ -576,7 +669,7 @@ if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.t
     try {
       // Liitä client-konteksti pageview-eventtiin (kerran per session).
       var ev = event || "pageview";
-      var enriched = extra ? Object.assign({}, extra) : {};
+      var enriched = Object.assign({}, BASE_EXTRA || {}, extra || {});
       if (ev === "pageview" || ev === "login_pageview") {
         Object.assign(enriched, clientContext());
       }
@@ -648,7 +741,13 @@ if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.t
  * this file — this is for sites (PhD, future) that just want sensible defaults.
  *
  * Optional config (set before this script runs):
- *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true };
+ *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true,
+ *                            hash: true };
+ *
+ * `hash: false` riisuu #-fragmentin kaikista lähetettävistä osoitteista. Käytä
+ * sivustoilla, joilla fragmentti on salaisuus — esim. MyAssistantin salatut
+ * raportit, joiden purkuavain on linkin #-osassa. Oletus (true) säilyttää
+ * fragmentin, koska muilla sivustoilla se on merkityksellistä navigaatiotietoa.
  */
 (function () {
   if (typeof window === "undefined" || typeof document === "undefined") return;
@@ -660,7 +759,14 @@ if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.t
   var DO_NAV         = CFG.nav         !== false;
   var DO_CLICKS      = CFG.clicks      !== false;
   var DO_ENGAGEMENT  = CFG.engagement  !== false;
+  var KEEP_HASH      = CFG.hash        !== false;
   var PAGE = window.__MYPA_PAGE__ || null;
+
+  // Riisu #-fragmentti kun se on salaisuus (KEEP_HASH === false).
+  function safeUrl(s) {
+    var v = String(s == null ? "" : s);
+    return KEEP_HASH ? v : v.split("#")[0];
+  }
 
   function send(event, extra) {
     try {
@@ -719,16 +825,18 @@ if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.t
       var external = url && url.origin !== window.location.origin;
 
       if (/\.pdf($|[?#])/i.test(href)) {
-        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: href.slice(0, 160) });
+        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: safeUrl(href).slice(0, 160) });
         return;
       }
       if (external) {
-        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: href.slice(0, 160) });
+        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: safeUrl(href).slice(0, 160) });
         return;
       }
       // Same-origin navigation to another page bundle (*.html) → nav_jump.
       if (DO_NAV && /\.html($|[?#])/i.test(href)) {
-        var dest = url ? (url.pathname.split("/").pop() + (url.hash || "")) : href;
+        var dest = url
+          ? (url.pathname.split("/").pop() + (KEEP_HASH ? (url.hash || "") : ""))
+          : safeUrl(href);
         send("nav_jump", { to: String(dest).slice(0, 120), label: label });
       }
     } catch (err) { /* ignore */ }

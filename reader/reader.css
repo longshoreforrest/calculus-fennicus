@@ -1,0 +1,81 @@
+/* Calculus Fennicus reader — comment layer styles (composer, floating button,
+ * markers on the pages, owner panel, sign-in chip). Uses viewer.html's tokens
+ * (--chrome, --chrome-2, --ink, --soft, --muted, --border, --accent, --accent-soft, --sh). */
+
+/* ---- toolbar: sign-in chip + primary buttons ---- */
+#who{display:none;align-items:center;gap:7px;font-size:12.5px;color:var(--soft);max-width:240px}
+#who img{width:22px;height:22px;border-radius:50%;flex:0 0 auto}
+#who span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#gbtn{display:inline-flex;align-items:center;min-height:32px}
+.iconbtn.primary{color:#fff;background:var(--accent);border-color:var(--accent)}
+.iconbtn.primary:hover{color:#fff;filter:brightness(1.08)}
+.iconbtn.on{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:var(--accent-soft)}
+#ownerBtn .n{font-family:"JetBrains Mono",monospace;font-size:11.5px;background:var(--accent);color:#fff;border-radius:20px;padding:1px 7px;margin-left:2px}
+
+/* ---- comment layer on every page (above canvas + text + links) ---- */
+.page .cmt{position:absolute;inset:0;z-index:4;pointer-events:none}
+.page .cmt i{position:absolute;display:block;border-radius:2px;pointer-events:auto;cursor:pointer;mix-blend-mode:multiply}
+.page .cmt i.mine{background:rgba(79,70,229,.18);box-shadow:inset 0 -2px 0 var(--accent)}
+.page .cmt i.other{background:rgba(255,140,0,.28);box-shadow:inset 0 -2px 0 #e8891a}
+.page .cmt i.flash,.page .cmt .xl.flash b{background:rgba(255,140,0,.6);box-shadow:0 0 0 3px rgba(232,137,26,.8)}
+[data-theme=slate] .page .cmt i{mix-blend-mode:normal}
+.page .cmt .badge{position:absolute;right:8px;color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;pointer-events:auto;cursor:pointer;box-shadow:var(--sh);white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.page .cmt .badge.other{background:#e8891a}
+.page .cmt .badge.mine{background:var(--accent)}
+/* cross-edition marker: dashed rule at the anchor-resolved spot + a pill in the margin */
+.page .cmt .xl{position:absolute;left:0;right:0;height:0;border-top:2px dashed rgba(232,137,26,.75)}
+.page .cmt .xl.mine{border-top-color:color-mix(in srgb,var(--accent) 70%,transparent)}
+.page .cmt .xl b{position:absolute;right:6px;top:-11px;font-size:11px;font-weight:600;color:#fff;background:#e8891a;border-radius:999px;padding:3px 8px;pointer-events:auto;cursor:pointer;box-shadow:var(--sh);white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.page .cmt .xl.mine b{background:var(--accent)}
+
+/* ---- floating "comment on selection" button ---- */
+#fab{position:fixed;z-index:60;display:none;align-items:center;gap:6px;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:8px 13px;box-shadow:0 8px 24px rgba(20,25,40,.22);font:600 13px "Inter",-apple-system,sans-serif;cursor:pointer}
+#fab.show{display:inline-flex}
+
+/* ---- composer popover ---- */
+#composer{position:fixed;z-index:80;width:min(440px,94vw);background:var(--chrome);color:var(--ink);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 36px rgba(20,25,40,.22);padding:14px;display:none;flex-direction:column;gap:10px;font-size:13.5px}
+#composer.show{display:flex}
+#composer h3{margin:0;font-size:14px;font-family:"Inter",-apple-system,sans-serif}
+#composer .quote{font-size:13px;color:var(--muted);border-left:3px solid var(--accent);padding:4px 0 4px 10px;max-height:88px;overflow:auto;white-space:pre-wrap}
+#composer select,#composer textarea{border:1px solid var(--border);border-radius:10px;background:var(--chrome-2);color:var(--ink);padding:8px 10px;font:inherit}
+#composer select{max-width:100%}
+#composer textarea{width:100%;min-height:96px;resize:vertical}
+#composer .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#composer .row.end{justify-content:flex-end}
+#composer .iconbtn.active{background:#c0392b;color:#fff;border-color:#c0392b}
+#composer .iconbtn[disabled]{opacity:.45;cursor:not-allowed}
+#composer .hint{font-size:12px;color:var(--muted)}
+#composer .signin-note{font-size:13px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:10px;padding:10px;color:var(--ink)}
+#dictindicator{font-size:12px;color:#c0392b;display:none}
+#dictindicator.show{display:inline}
+
+/* ---- owner panel ---- */
+#owner{position:fixed;top:58px;right:12px;bottom:12px;width:min(460px,94vw);z-index:70;background:var(--chrome);color:var(--ink);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 36px rgba(20,25,40,.22);display:none;flex-direction:column;overflow:hidden;font-size:13.5px}
+#owner.show{display:flex}
+#owner .row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+#owner .row strong{font-size:14px}
+#owner .cnt{font-size:12px;color:var(--muted);margin-right:auto}
+#owner .row input{flex:1 1 140px;min-width:120px;border:1px solid var(--border);border-radius:8px;background:var(--chrome-2);color:var(--ink);padding:6px 9px;font:inherit;font-size:13px}
+#owner .status{padding:6px 12px;font-size:12.5px;color:#c0392b;min-height:0}
+#owner .status:empty{display:none}
+#ownerList{overflow:auto;flex:1 1 auto;padding:4px 0}
+.ownerEmpty{padding:24px;text-align:center;color:var(--muted)}
+.ownerItem{padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;position:relative}
+.ownerItem:hover{background:var(--chrome-2)}
+.ownerItem.other{border-left:3px solid rgba(232,137,26,.6)}
+.ownerItem .oh{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:4px}
+.ownerItem .who{color:var(--ink);font-weight:600}
+.ownerItem .ok{color:#0f9d58}.ownerItem .unv{color:#c0392b}
+.ownerItem .ed,.ownerItem .pg2{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;border-radius:4px;padding:1px 5px}
+.ownerItem .ed.fi,.ownerItem .pg2.fi{color:#0f766e;background:#e6f4f2}
+.ownerItem .ed.en,.ownerItem .pg2.en{color:#b45309;background:#fdf3e3}
+[data-theme=slate] .ownerItem .ed.fi,[data-theme=slate] .ownerItem .pg2.fi{color:#5eead4;background:rgba(94,234,212,.14)}
+[data-theme=slate] .ownerItem .ed.en,[data-theme=slate] .ownerItem .pg2.en{color:#fbbf24;background:rgba(251,191,36,.14)}
+.ownerItem .pg{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--soft)}
+.ownerItem .cat{background:var(--accent-soft);color:var(--accent);border-radius:4px;padding:1px 6px;font-weight:600}
+.ownerItem .ts{margin-left:auto}
+.ownerItem .oa{font-size:12.5px;color:var(--accent);font-weight:600;margin-bottom:3px}
+.ownerItem .oq{font-size:12.5px;color:var(--muted);border-left:2px solid var(--border);padding-left:8px;margin:4px 0;white-space:pre-wrap}
+.ownerItem .om{white-space:pre-wrap;line-height:1.45}
+.ownerItem .sw{margin-top:6px;font-size:12px;padding:4px 9px}
+@media(max-width:600px){#owner{top:auto;left:8px;right:8px;bottom:8px;height:62vh;width:auto}}
