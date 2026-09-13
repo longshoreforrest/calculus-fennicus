@@ -38,5 +38,5 @@ window.CF_VIEWER_CONFIG = {
   dictationLang: { fi: 'fi-FI', en: 'en-US' },
 
   // Stamped by publish.mjs (cache-buster for the modules and the JSON tables).
-  buildVersion: '20260913-0946',
+  buildVersion: '20260913-0948',
 };
