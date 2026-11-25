@@ -1,0 +1,2825 @@
+<!doctype html>
+<html lang="fi"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Calculus Fennicus I: huomiot kirjasta</title><style>
+:root{--bg:#f7f8fa;--surface:#fff;--ink:#1a1d23;--ink2:#5b6472;--ink3:#8a93a3;--border:#e3e7ee;--accent:#3056d3;--accent-soft:#dfe6fb;--good:#1a7f4b;--warn:#9a6700}
+@media (prefers-color-scheme:dark){:root{--bg:#14161a;--surface:#1d2026;--ink:#e8eaee;--ink2:#a3abb8;--ink3:#727c8c;--border:#2c313a;--accent:#7b96f4;--accent-soft:#2a3557;--good:#4cc38a;--warn:#d4a72c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:32px 20px 64px}h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:36px 0 12px}h3{font-size:16px;margin:24px 0 8px}
+.sub{color:var(--ink2);margin:0 0 22px}.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 28px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}.tile .num{font-size:28px;font-weight:700;letter-spacing:-.5px}.tile .num small{font-size:15px;font-weight:600;color:var(--ink2)}.tile .lbl{color:var(--ink2);font-size:13px;margin-top:2px}
+p{margin:0 0 10px}ul{margin:0 0 12px;padding-left:22px}li{margin-bottom:8px}code{font:13px ui-monospace,Menlo,monospace;background:var(--accent-soft);border-radius:4px;padding:1px 5px}
+.tw{overflow-x:auto;margin:10px 0 16px}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;vertical-align:top;padding:7px 10px;border-bottom:1px solid var(--border)}th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2)}
+hr{border:0;border-top:1px solid var(--border);margin:28px 0}.foot{color:var(--ink3);font-size:12.5px;margin-top:36px}
+.wrap{max-width:860px}a{color:var(--accent)}h4{margin:22px 0 6px;font-size:15px}li{margin-bottom:5px}</style><script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],macros:{"subcon": ["\\contentsline {subsection}{\\numberline {} \\hspace{3mm} {\\protect\\hyperlink{page.#2}{#1}}}{{\\protect\\hyperlink{page.#2}{#2}}}{}", 2], "loppu": "{\\quad \\square}", "ratk": "\\underline{Ratkaisu}\\ \\,", "tod": "\\underline{Todistus}\\ \\,", "kehys": "\\rule[-2mm]{0mm}{6mm}", "ykehys": "\\rule{0mm}{6mm}", "akehys": "\\rule[-3mm]{0mm}{3mm}", "Ykehys": "\\rule{0mm}{8mm}", "Akehys": "\\rule[-5mm]{0mm}{5mm}", "ygehys": "\\rule{0mm}{4mm}", "agehys": "\\rule[-3mm]{0mm}{2mm}", "gehys": "\\rule[-2mm]{0mm}{7mm}", "hist": ["\\textbf{#1}", 1], "kor": ["\\emph{#1}", 1], "pain": ["\\underline{#1}", 1], "vahv": ["\\textbf{#1}", 1], "ja": "{\\ \\&\\ }", "tai": "{\\,\\vee\\,}", "impl": "{\\Rightarrow}", "qimpl": "{\\quad \\Rightarrow \\quad}", "limp": "{\\Leftarrow}", "ekv": "{\\Leftrightarrow}", "qekv": "{\\quad \\Leftrightarrow} \\quad", "map": "{\\mapsto}", "Map": "{\\longmapsto}", "vast": "{\\leftrightarrow}", "ext": "{\\hookrightarrow}", "kohti": "{\\rightarrow}", "Kohti": "{\\longrightarrow}", "D": "\\displaystyle", "vastaa": "{\\, \\widehat{=} \\,}", "Vastaa": "{\\, \\widehat{\\approx} \\,}", "aste": "{^{\\circ}}", "N": "{\\mathbb N}", "Z": "{\\mathbb Z}", "Q": "{\\mathbb Q}", "DD": "{\\mathbb D}", "R": "{\\mathbb R}", "C": "{\\mathbb C}", "K": "{\\mathbb K}", "A": "{\\mathbb A}", "G": "{\\mathbb G}", "J": "{\\mathbb J}", "eps": "\\varepsilon", "x": "{\\Breve{x}}", "y": "{\\Breve{y}}", "z": "{\\Breve{z}}", "abs": ["\\vert#1\\vert", 1], "norm": ["\\vert\\!\\vert#1\\vert\\!\\vert", 1], "enorm": ["\\vert\\!\\vert\\!\\vert#1\\vert\\!\\vert\\!\\vert", 1], "seq": ["{\\{#1\\}}", 1], "kos": "\\gamma", "dif": "{\\text{D}}", "dyf": "{\\text{L}}", "Vect": ["\\overrightarrow{#1}", 1], "mv": ["\\mathbf{#1}", 1], "vr": "\\vec r", "dvr": "\\vec r\\,'", "ddvr": "\\vec r\\,''", "tv": "\\vec\\tau", "mo": "{{\\mathbf{0}}}", "mx": "{{\\mathbf{x}}}", "my": "{{\\mathbf{y}}}", "mz": "{{\\mathbf{z}}}", "mA": "{{\\mathbf{A}}}", "mB": "{{\\mathbf{B}}}", "mC": "{{\\mathbf{C}}}", "mF": "{{\\mathbf{F}}}", "mI": "{{\\mathbf{I}}}", "mL": "{{\\mathbf{L}}}", "mU": "{{\\mathbf{U}}}", "mD": "{{\\mathbf{D}}}", "mH": "{{\\mathbf{H}}}", "mJ": "{{\\mathbf{J}}}", "mV": "{{\\mathbf{V}}}", "mW": "{{\\mathbf{W}}}", "mR": "{{\\mathbf{R}}}", "ma": "{{\\mathbf{a}}}", "mb": "{{\\mathbf{b}}}", "mc": "{{\\mathbf{c}}}", "md": "{{\\mathbf{d}}}", "me": "{{\\mathbf{e}}}", "mf": "{{\\mathbf{f}}}", "mg": "{{\\mathbf{g}}}", "mh": "{{\\mathbf{h}}}", "mr": "{{\\mathbf{r}}}", "mpu": "{{\\mathbf{u}}}", "mt": "{{\\mathbf{t}}}", "mpv": "{{\\mathbf{v}}}", "mw": "{{\\mathbf{w}}}", "Nabla": "{{\\boldsymbol{\\nabla}}}", "X": "{X}", "Ekaksi": "{\\mathit{E^{2}}}", "Ekolme": "{\\mathit{E^{3}}}", "kulma": "{\\measuredangle}", "skulma": "{\\angle \\negthickspace \\negthickspace \\negthickspace \\uparrow}", "Rkaksi": "{\\mathbb R^{2}}", "Rkolme": "{\\mathbb R^{3}}", "Pkunta": "{\\mathbb P}", "piste": "{\\scriptstyle{\\bullet}}", "Piste": "{\\bullet}", "pointer": ["{\\overset{-\\!\\triangleright}{#1}}", 1], "ptp": "{\\overset{-\\!\\triangleright}{p}}", "ptq": "{\\overset{-\\!\\triangleright}{q}}", "ptr": "{\\overset{-\\!\\triangleright}{e}}", "pti": "{\\overset{-\\!\\triangleright}{i}}", "ptpinv": "{(\\ptp)^{-1}}", "vkulma": ["{\\angle #1 }", 1], "re": "{\\text{Re}\\;}", "im": "{\\text{Im}\\;}", "DF": "{{\\mathcal{D}}}", "RF": "{{\\mathcal{R}}}", "invf": "{f^{-1}}", "inv": ["{{#1^{-1}}}", 1], "ordoO": ["{\\mathcal{O}(#1)}", 1], "Ord": ["{\\mathcal{O}(#1)}", 1], "ord": ["{\\textit{o}(#1)}", 1], "sijoitus": ["\\operatornamewithlimits{\\Bigl|}_{#1}^{#2}", 2], "pder": ["\\frac{\\partial #1}{\\partial #2}", 2], "av": ["#1$^\\dag$", 1], "nel": "\\,^\\square", "ohje": "\\vahv{Lukuohje}: Hakusana viittaa", "sov": "\\vahv{Sovellusesimerkit}:", "nim": "\\vahv{Nimetyt harjoitusteht\u00c3\u00a4v\u00c3\u00a4t}:"}},options:{}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script></head><body><div class="wrap"><p class="backnav" style="font-size:13px;margin:0 0 18px"><a href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi">← Harjoitustehtävien ratkaisut</a> · tarkastusaineistoa, ei linkitetty sivustolta</p><h1
+id="calculus-fennicus-i-huomiot-kirjan-tekstistä-ja-tehtävänannoista">Calculus
+Fennicus I: huomiot kirjan tekstistä ja tehtävänannoista</h1>
+<p>Koottu 25.11.2026 harjoitustehtävien ratkaisujen laadinnan
+yhteydessä. Jokainen huomio on tarkistettu kirjan lähteestä erikseen;
+kumotut on jätetty loppuun perusteluineen. Alkuteosta ei ole
+muutettu.</p>
+<h1 id="osa-i">Osa I</h1>
+<p><strong>Yhteenveto:</strong> 11 kommenttia, joissa 12 erillistä
+huomiota. Niistä 8 on vahvistettu, 3 kumottu ja 1 on
+tulkintakysymys.</p>
+<p>Viittaukset ovat lähdetiedostoihin
+<code>fi/I-luvut-ja-lukujonot/*.tex</code> (rivinumerot nykyisestä
+versiosta).</p>
+<h3 id="vahvistetut">Vahvistetut</h3>
+<h4 id="luku-i2-kunta--kirja--ratkaisut">Luku I.2 (Kunta) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.1.2">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-2">ratkaisut</a></h4>
+<ul>
+<li><strong>Teoriaosa, Lause <code>kuntatuloksia</code>, väittämän (f)
+todistus</strong>, <code>I-2.tex:205</code>
+<ul>
+<li>Kirjassa: "Jatketaan tästä soveltaen aksioomaa (J3): <span
+class="math inline">\(0&lt;x\ \&amp;\ x&lt;x+y \impl
+0&lt;x+y\)</span>."</li>
+<li>Vika: Päättely <span class="math inline">\(0&lt;x\)</span> ja <span
+class="math inline">\(x&lt;x+y\)</span> ⟹ <span
+class="math inline">\(0&lt;x+y\)</span> on transitiivisuus eli aksiooma
+(J2) (<code>I-1.tex:395</code>), ei (J3).</li>
+<li>Korjaus: "Jatketaan tästä soveltaen aksioomaa (J2):"</li>
+<li>Luokka: painovirhe (väärä viittaus). Vakavuus: vähäinen.</li>
+</ul></li>
+</ul>
+<h4 id="luku-i3-logiikka-ja-joukko-oppi--kirja--ratkaisut">Luku I.3
+(Logiikka ja joukko-oppi) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.1.3">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-3">ratkaisut</a></h4>
+<ul>
+<li><strong>Tehtävä 14 (*)</strong>, <code>I-3.tex:501</code>
+<ul>
+<li>Kirjassa: "Luku <span class="math inline">\(n\)</span> on
+\kor{alkuluku}, jos <span class="math inline">\(n\)</span>:llä ei ole
+muita tekijöitä kuin <span class="math inline">\(k=1\)</span> ja <span
+class="math inline">\(k=n\)</span>."</li>
+<li>Vika: Sanamuodon mukaan myös <span
+class="math inline">\(n=1\)</span> on alkuluku. Tavallisesti vaaditaan
+<span class="math inline">\(n\ge2\)</span>. Tehtävän väite ei
+muutu.</li>
+<li>Korjaus: "Luku <span class="math inline">\(n\ge2\)</span> on
+\kor{alkuluku}, jos <span class="math inline">\(n\)</span>:llä ei ole
+muita tekijöitä kuin <span class="math inline">\(k=1\)</span> ja <span
+class="math inline">\(k=n\)</span>."</li>
+<li>Luokka: puuttuva oletus. Vakavuus: vähäinen.</li>
+</ul></li>
+</ul>
+<h4
+id="luku-i8-monotoniset-ja-rajoitetut-lukujonot--kirja--ratkaisut">Luku
+I.8 (Monotoniset ja rajoitetut lukujonot) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.1.8">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-8">ratkaisut</a></h4>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-8-1">Tehtävä
+1</a></strong>, <code>I-8.tex:459–460</code>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(\lim_n s_n=s\in\DD\)</span>
+katkaistuna kahdeksaan merkitsevään numeroon on a) <span
+class="math inline">\(s=2.71828182..\)</span> b) <span
+class="math inline">\(s=1.64493406..\)</span>"</li>
+<li>Vika: Luvussa I.5 (<code>I-5.tex:325–329</code>) annetun määritelmän
+mukaan kummassakin luvussa on yhdeksän merkitsevää numeroa (kahdeksan
+desimaalia). Kirja käyttää käsitettä muualla määritelmän mukaisesti:
+<code>I-9.tex:462</code> katkaisee <span
+class="math inline">\(e\)</span>:n yhdeksään merkitsevään numeroon, ja
+<code>I-10.tex:84</code> antaa luvun <span
+class="math inline">\(0.8224670334\)</span> kymmenen merkitsevän numeron
+tarkkuudella.</li>
+<li>Korjaus: "katkaistuna yhdeksään merkitsevään numeroon" (tai
+"katkaistuna kahdeksan desimaalin tarkkuudella").</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul></li>
+</ul>
+<h4 id="luku-i9-reaaliluvut--kirja--ratkaisut">Luku I.9 (Reaaliluvut) ·
+<a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.1.9">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-9">ratkaisut</a></h4>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-9-3">Tehtävä
+3</a></strong>, <code>I-9.tex:462</code>
+<ul>
+<li>Kirjassa: "c) <span class="math inline">\(\pi^2-e^2\)</span> \ c)
+<span class="math inline">\(e^5\pi^6\)</span>"</li>
+<li>Vika: Kaksi alakohtaa on merkitty c):llä, ja jälkimmäisen pitäisi
+olla d).</li>
+<li>Korjaus: "c) <span class="math inline">\(\pi^2-e^2\)</span>, \ d)
+<span class="math inline">\(e^5\pi^6\)</span>"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul></li>
+</ul>
+<h4 id="luku-i10-cauchyn-jonot--kirja--ratkaisut">Luku I.10 (Cauchyn
+jonot) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.1.10">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-10">ratkaisut</a></h4>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-10-5">Tehtävä
+5 b</a></strong>, <code>I-10.tex:394</code>
+<ul>
+<li>Kirjassa: "tunnetun jaksottoman desimaaliluvun <span
+class="math inline">\(\pi=3.14159628..\)</span>"</li>
+<li>Vika: <span class="math inline">\(\pi=3.14159265\ldots\)</span>,
+joten 6.–8. desimaali ovat väärin. Ratkaisuun virhe ei vaikuta.</li>
+<li>Korjaus: "<span
+class="math inline">\(\pi=3.14159265..\)</span>"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul></li>
+</ul>
+<h4 id="luku-i11-reaalilukujen-ominaisuuksia--kirja--ratkaisut">Luku
+I.11 (Reaalilukujen ominaisuuksia) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.1.11">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-11">ratkaisut</a></h4>
+<ul>
+<li><p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-11-2">Tehtävä
+2</a></strong>, <code>I-11.tex:289–292</code></p>
+<ul>
+<li>Kirjassa: alakohdat ovat "a) … c) Olkoon <span
+class="math inline">\(A\subset\R\)</span> ylhäältä rajoitettu … c)
+Näytä, että jos <span class="math inline">\(A,B\subset\R\)</span>
+…"</li>
+<li>Vika: Kaksi alakohtaa on merkitty c):llä, ja ensimmäisen pitäisi
+olla b).</li>
+<li>Korjaus: rivin 290 "c) Olkoon" → "b) Olkoon".</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul></li>
+<li><p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-11-3">Tehtävä
+3</a></strong>, <code>I-11.tex:297–298</code></p>
+<ul>
+<li>Kirjassa: "Seuraa Lauseen \ref{supremum-lause} todistuskonstruktiota
+algoritmina … valitsemalla <span class="math inline">\(c_0\)</span>:n ja
+<span class="math inline">\(c_1\)</span>:n alkuarvot"</li>
+<li>Vika: Lauseen todistuksessa (<code>I-11.tex:57–66</code>) alkuarvot
+ovat <span class="math inline">\(c_1\)</span> ja <span
+class="math inline">\(c_2\)</span> (<span
+class="math inline">\(a_0=c_1\)</span>, <span
+class="math inline">\(b_0=c_2\)</span>). Muuttujaa <span
+class="math inline">\(c_0\)</span> siinä ei ole.</li>
+<li>Korjaus: "valitsemalla <span class="math inline">\(c_1\)</span>:n ja
+<span class="math inline">\(c_2\)</span>:n alkuarvot"</li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul></li>
+<li><p><strong>Teoriaosa, algebrallisen luvun määritelmä</strong>
+(koskee Tehtävää 7), <code>I-11.tex:245–250</code></p>
+<ul>
+<li>Kirjassa: "Lukua <span class="math inline">\(x \in \R\)</span>
+sanotaan algebralliseksi, jos se toteuttaa yhtälön muotoa <span
+class="math inline">\(\sum_{k=0}^n a_k x^k = 0\)</span>, missä <span
+class="math inline">\(n \in \N\)</span> ja <span
+class="math inline">\(a_k \in \Z\)</span>"</li>
+<li>Vika: Määritelmästä puuttuu ehto, etteivät kertoimet ole kaikki
+nollia. Valinnalla <span class="math inline">\(a_0=\dots=a_n=0\)</span>
+jokainen reaaliluku toteuttaisi yhtälön, jolloin transkendenttisia
+lukuja ei olisi.</li>
+<li>Korjaus: "missä <span class="math inline">\(n \in \N\)</span>, <span
+class="math inline">\(a_k \in \Z,\ k = 0,1,\ldots,n\)</span>, ja <span
+class="math inline">\(a_n \neq 0\)</span>."</li>
+<li>Luokka: puuttuva oletus. Vakavuus: vähäinen (tarkoitus on
+asiayhteydestä selvä).</li>
+</ul></li>
+</ul>
+<h3 id="tulkinnat">Tulkinnat</h3>
+<ul>
+<li><strong>Luku I.2, Tehtävä 14 c (Big Ben)</strong>,
+<code>I-2.tex:536–539</code>. Tehtävässä sanotaan "näyttää aikaa noin
+klo 3" ja kysytään kellonaikaa sekunnin tarkkuudella. Ehdot täyttäviä
+kellonaikoja on <span class="math inline">\(720/143\approx5.03\)</span>
+minuutin välein, ja kaksi niistä on lähellä kolmea: klo 2.56.13 ja klo
+3.01.16. Ratkaisu valitsee lähimmän eli klo 3.01.16 ja mainitsee
+vaihtoehdon huomautuksessa. Jos yksikäsitteinen vastaus on tarkoitettu,
+sanamuodoksi sopisi esimerkiksi "näyttää aikaa hieman yli klo 3".</li>
+</ul>
+<h3 id="kumotut">Kumotut</h3>
+<ul>
+<li><strong>I.11, Tehtävä 2 (jälkimmäinen c)</strong>, ehto "A ei-tyhjä"
+puuttuu: kumottu. Kirja toteaa heti määritelmän jälkeen
+(<code>I-11.tex:22–25</code>), että supremum voi olla olemassa vain
+ei-tyhjälle joukolle, joten väite <span class="math inline">\(\sup
+A\le\sup B\)</span> edellyttää jo itsessään, että <span
+class="math inline">\(A\)</span> on ei-tyhjä.</li>
+<li><strong>I.12, Tehtävä 8</strong>, jossa Lauseen
+<code>potenssisarjan skaalaus</code> todistus viittaa tehtävään kaikilla
+<span class="math inline">\(m\in\Z\)</span>, vaikka tehtävä rajaa <span
+class="math inline">\(m\in\N\)</span>: kumottu. Todistus tarvitsee vain
+jonon <span class="math inline">\(k^mq^k\)</span> rajoittuneisuuden, ja
+kun <span class="math inline">\(m\le0\)</span>, se on välitön (<span
+class="math inline">\(0&lt;k^mq^k\le1\)</span>). Viittaus koskee
+ei-triviaalia tapausta.</li>
+<li><strong>I.2, Tehtävä 3</strong>, jossa summamerkintä vaatii
+sopimuksen <span class="math inline">\(0^0=1\)</span>, vaikka
+<code>I-1.tex:374</code> jättää <span
+class="math inline">\(0^0\)</span>:n määrittelemättä: kumottu, koska
+kyse on vakiintuneesta merkintäkäytännöstä. Proposition
+<code>kuntakaava</code> (<code>I-2.tex:167</code>) avattu muoto <span
+class="math inline">\(x^{n-1}+x^{n-2}y+\ldots+y^{n-1}\)</span> osoittaa,
+että summa on lyhennysmerkintä, jossa nollannen potenssin tekijä
+yksinkertaisesti puuttuu.</li>
+</ul>
+<h1 id="osa-ii">Osa II</h1>
+<p><strong>Yhteenveto:</strong> huomioita 9 (8 kommenttia, joista yksi
+jaettu kahdeksi), vahvistettu 6, kumottu 1, tulkinta 2.</p>
+<p>Jokainen huomio on tarkistettu kirjan lähdetekstistä ja tarvittaessa
+laskemalla koneella.</p>
+<h3 id="vahvistetut-1">Vahvistetut</h3>
+<h4 id="luku-ii1-euklidinen-taso--kirja--ratkaisut">Luku II.1 Euklidinen
+taso · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.1">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-1">ratkaisut</a></h4>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-1-4">Tehtävä
+4</a></strong> — <code>II-1.tex:381–383</code></p>
+<blockquote>
+<p>Seuraavista luvuista kaksi ei ole geometrisia. Mitkä kolme ovat,?</p>
+</blockquote>
+<ul>
+<li><strong>Mikä on vialla:</strong> Lukuja on viisi, ja niistä neljä on
+geometrisia: a) <span class="math inline">\(\sqrt[1024]{17}\)</span>
+(kymmenen peräkkäistä neliöjuurta), b) <span
+class="math inline">\(\sqrt[3]{512}=8\)</span>, c) <span
+class="math inline">\(\sqrt[6]{343}=\sqrt7\)</span> ja e) <span
+class="math inline">\(\sqrt[3]{5\sqrt2+7}=1+\sqrt2\)</span>. Vain d)
+<span class="math inline">\(\sqrt[3]{7\sqrt2+5}\)</span> ei ole
+geometrinen: sen minimipolynomi on <span
+class="math inline">\(x^6-10x^3-73\)</span> (jaoton yli <span
+class="math inline">\(\mathbb Q\)</span>:n, tarkistettu koneella), eikä
+aste 6 ole kakkosen potenssi. Lukija jää etsimään toista ei-geometrista
+lukua, jota ei ole.</li>
+<li><strong>Ehdotettu korjaus:</strong> "Seuraavista luvuista yksi ei
+ole geometrinen. Mitkä neljä ovat,?" Toinen vaihtoehto on vaihtaa jonkin
+kohdan luku sellaiseksi, joka ei ole geometrinen (esim. b) <span
+class="math inline">\(\sqrt[3]{2}\)</span>), jolloin alkuperäinen
+sanamuoto pitää paikkansa.</li>
+<li><strong>Luokka:</strong> virheellinen väite.
+<strong>Vakavuus:</strong> haittaa ratkaisemista.</li>
+</ul>
+<h4 id="luku-ii3-skalaaritulo--kirja--ratkaisut">Luku II.3 Skalaaritulo
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.3">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-3">ratkaisut</a></h4>
+<p><strong>Tehtävä 10 (*)</strong> — <code>II-3.tex:454</code> ja
+<code>II-3.tex:458</code></p>
+<blockquote>
+<p>Olkoot <span class="math inline">\((\xi,\eta)\)</span> pisteen <span
+class="math inline">\(P\)</span> koordinaatit toisessa ortonormeeratussa
+koordinaatistossa, … Jos pisteen <span
+class="math inline">\(P=(x,y)\)</span> koordinaatit tässä
+koordinaatistossa ovat <span
+class="math inline">\((x&#39;,y&#39;)\)</span>, …</p>
+</blockquote>
+<ul>
+<li><strong>Mikä on vialla:</strong> Samat koordinaatit nimetään
+kahdella eri tavalla, ensin <span
+class="math inline">\((\xi,\eta)\)</span> ja sitten <span
+class="math inline">\((x&#39;,y&#39;)\)</span>. Merkintää <span
+class="math inline">\((\xi,\eta)\)</span> ei käytetä muualla
+tehtävässä.</li>
+<li><strong>Ehdotettu korjaus:</strong> Korvataan alku "Olkoot <span
+class="math inline">\((\xi,\eta)\)</span> pisteen <span
+class="math inline">\(P\)</span> koordinaatit toisessa ortonormeeratussa
+koordinaatistossa, jonka origo …" tekstillä "Tarkastellaan toista
+ortonormeerattua koordinaatistoa, jonka origo …". Loppuosa säilyy
+ennallaan.</li>
+<li><strong>Luokka:</strong> merkintävirhe. <strong>Vakavuus:</strong>
+vähäinen.</li>
+</ul>
+<h4 id="luku-ii4-abstrakti-skalaaritulo--kirja--ratkaisut">Luku II.4
+Abstrakti skalaaritulo · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.4">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-4">ratkaisut</a></h4>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-4-4">Tehtävä
+4</a></strong> — <code>II-4.tex:222–223</code></p>
+<blockquote>
+<p>b) \ <span class="math inline">\(\norm{\mpu}=\abs{x}+\abs{y}\)</span>
+\newline b) \ <span
+class="math inline">\(\norm{\mpu}=2\abs{x}-\abs{y}\)</span></p>
+</blockquote>
+<ul>
+<li><strong>Mikä on vialla:</strong> Kirjain b) on kahdesti, joten
+kohdat ovat a, b, b, c, …, g.</li>
+<li><strong>Ehdotettu korjaus:</strong> Nimetään kohdat uudelleen a)–h):
+toinen b) → c), c) → d), d) → e), e) → f), f) → g), g) → h).</li>
+<li><strong>Luokka:</strong> painovirhe. <strong>Vakavuus:</strong>
+vähäinen.</li>
+</ul>
+<h4 id="luku-ii6-avaruuden-vektorit--kirja--ratkaisut">Luku II.6
+Avaruuden vektorit · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.6">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-6">ratkaisut</a></h4>
+<p><strong>Tehtävä 13 (*)</strong> — <code>II-6.tex:757–760</code></p>
+<blockquote>
+<p>… leikkaavat toisensa samassa pisteessä (= tetraedrin keskiö). Missä
+suhteessa keskijanat jakautuvat leikkauspisteessä? \newline c) Anna
+kaksi esimerkkiä …</p>
+</blockquote>
+<ul>
+<li><strong>Mikä on vialla:</strong> Alakohdat ovat a) ja c); b)
+puuttuu. Ilmeisesti kysymyksen "Missä suhteessa …" piti olla kohta
+b).</li>
+<li><strong>Ehdotettu korjaus:</strong> "… (= tetraedrin keskiö).
+\newline b) Missä suhteessa keskijanat jakautuvat leikkauspisteessä?
+\newline c) …" Vaihtoehtoisesti c) → b).</li>
+<li><strong>Luokka:</strong> painovirhe. <strong>Vakavuus:</strong>
+vähäinen.</li>
+</ul>
+<h4 id="luku-ii7-suorat-tasot-ja-pinnat--kirja--ratkaisut">Luku II.7
+Suorat, tasot ja pinnat · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.7">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-7">ratkaisut</a></h4>
+<p><strong>Tehtävä 31 (*)</strong> — <code>II-7.tex:789–791</code></p>
+<blockquote>
+<p>Montako tällaista tasoa on, jos pallot eivät leikkaa tai sivua
+toisiaan eikä mikään palloista ole toisen sisällä?</p>
+</blockquote>
+<ul>
+<li><p><strong>Mikä on vialla:</strong> Annetut ehdot eivät määrää
+lukumäärää. Kutakin neljää merkkiyhdistelmää (kummalla puolella tasoa
+kukin pallo on) vastaa 0, 1 tai 2 tasoa, joten tasoja on enintään 8.
+Tarkistettu koneella:</p>
+<ul>
+<li>Keskipisteet <span class="math inline">\((0,0,0)\)</span>, <span
+class="math inline">\((10,0,0)\)</span>, <span
+class="math inline">\((0,10,0)\)</span> ja säteet <span
+class="math inline">\(1,1,1\)</span> (tai <span
+class="math inline">\(1,2,3\)</span>): 8 tasoa.</li>
+<li>Keskipisteet <span class="math inline">\((0,0,0)\)</span>, <span
+class="math inline">\((5,\,0.01,\,0)\)</span>, <span
+class="math inline">\((10,0,0)\)</span> ja säteet <span
+class="math inline">\(1,\ 0.1,\ 1\)</span> (pieni pallo kahden suuren
+välissä): ei yhtään tasoa.</li>
+<li>Kolme yhtä suurta palloa, joiden keskipisteet ovat samalla suoralla:
+äärettömän monta tasoa.</li>
+</ul>
+<p>Kaikki kolme asetelmaa täyttävät tehtävän ehdot.</p></li>
+<li><p><strong>Ehdotettu korjaus:</strong> "Montako tällaista tasoa voi
+enintään olla, jos pallot eivät leikkaa tai sivua toisiaan, mikään
+palloista ei ole toisen sisällä eivätkä keskipisteet ole samalla
+suoralla? Anna esimerkki, jossa yläraja saavutetaan."</p></li>
+<li><p><strong>Luokka:</strong> puuttuva oletus.
+<strong>Vakavuus:</strong> haittaa ratkaisemista.</p></li>
+</ul>
+<h4 id="luku-ii8-käyräviivaiset-koordinaatistot--kirja--ratkaisut">Luku
+II.8 Käyräviivaiset koordinaatistot · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.8">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-8">ratkaisut</a></h4>
+<p><strong>Tehtävä 7 (*)</strong> — <code>II-8.tex:533</code></p>
+<blockquote>
+<p>… ja napakulmaa mitataan sunnasta <span class="math inline">\(\vec
+i\)</span>, …</p>
+</blockquote>
+<ul>
+<li><strong>Mikä on vialla:</strong> Kirjoitusvirhe.</li>
+<li><strong>Ehdotettu korjaus:</strong> "sunnasta" → "suunnasta".</li>
+<li><strong>Luokka:</strong> painovirhe. <strong>Vakavuus:</strong>
+vähäinen.</li>
+</ul>
+<h3 id="tulkinnat-1">Tulkinnat</h3>
+<ul>
+<li><strong>II.6 tehtävä 8a</strong> — <code>II-6.tex:719–720</code>:
+"Pisteet … ovat sekä tetraedrin että suuntiassärmiön kärkiä." Neljä
+pistettä eivät yksin määrää särmiötä. Tilavuus on 1, valittiinpa särmien
+yhteiseksi kärjeksi mikä tahansa piste, mutta pinta-ala riippuu
+valinnasta: ensimmäisellä pisteellä ≈101.0, toisella ≈118.2, kolmannella
+≈124.5 ja neljännellä ≈94.68. Ratkaisussa noudatetaan luvun käytäntöä
+(<code>II-6.tex:609</code>: särmät <span
+class="math inline">\(OA\)</span>, <span
+class="math inline">\(OB\)</span>, <span
+class="math inline">\(OC\)</span> lähtevät ensin mainitusta kärjestä) ja
+valitaan ensimmäinen piste. Lukijalle on lisätty huomautus. Jos
+kirjoittaja haluaa yksikäsitteisen vastauksen, riittää lisätä
+esimerkiksi "… suuntaissärmiön, jonka kolme särmää lähtee ensimmäisestä
+pisteestä".</li>
+<li><strong>II.8 tehtävä 7 (*)</strong> — <code>II-8.tex:533–534</code>:
+Tehtävä kiinnittää napakulman nollasuunnan <span
+class="math inline">\(\vec i\)</span>, mutta ei kiertosuuntaa tasossa
+<span class="math inline">\(T\)</span>. Ratkaisussa toinen kantavektori
+on <span class="math inline">\((\vec j-\vec k)/\sqrt2\)</span>
+(oikeakätinen normaalin <span class="math inline">\((\vec j+\vec
+k)/\sqrt2\)</span> suhteen). Ratkaisussa on jo huomautus siitä, että
+toinen valinta peilaa tuloksen.</li>
+</ul>
+<h3 id="kumotut-1">Kumotut</h3>
+<ul>
+<li><strong>II.3 tehtävä 6</strong> (<code>II-3.tex:424–428</code>,
+tiedot <span class="math inline">\(\abs{\vec a}=\abs{\vec b}=1\)</span>,
+<span class="math inline">\(\vec a\cdot\vec b=-\tfrac13\)</span>
+"tarpeettomia"): Ylimääräiset tiedot eivät ole virhe. Ne ovat
+ristiriidattomat (<span class="math inline">\(\abs{\vec a\cdot\vec
+b}&lt;\abs{\vec a}\abs{\vec b}\)</span>), ja niiden avulla tehtävän voi
+ratkaista myös skalaarituloilla kuten edellisen tehtävän. Lisäksi ne
+voivat olla tarkoituksellinen harhautus. Kyse on makuasiasta. Kommentti
+poistettiin, ja ratkaisuun jäi lukijalle huomio, ettei tulos riipu
+näistä tiedoista.</li>
+</ul>
+<h3 id="sivuhavainto-ei-ratkaisujen-kommenteista">Sivuhavainto (ei
+ratkaisujen kommenteista)</h3>
+<p>Tarkistuksen aikana huomattiin samassa luvussa kaksi muuta
+kirjoitusvirhettä:</p>
+<ul>
+<li><code>II-6.tex:622</code> "Sunnikkaan pinta-ala" →
+"Suunnikkaan".</li>
+<li><code>II-6.tex:720</code> "suuntiassärmiön" →
+"suuntaissärmiön".</li>
+</ul>
+<h1 id="osa-iii">Osa III</h1>
+<p><strong>Yhteenveto:</strong> huomioita 0, vahvistettu 0, kumottu 0,
+tulkinta 0.</p>
+<p>Osan III ratkaisutiedostoissa
+(<code>ratkaisut1/III-kompleksiluvut/III-1 … III-4-ratkaisut.md</code>)
+ei ole yhtään <code>&lt;!-- KIRJA: … --&gt;</code>- tai
+<code>&lt;!-- TULKINTA: … --&gt;</code>-kommenttia. Ratkaisutiedostoihin
+ei tehty muutoksia.</p>
+<h3 id="vahvistetut-2">Vahvistetut</h3>
+<p>Ei yhtään.</p>
+<h3 id="tulkinnat-2">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<h3 id="kumotut-2">Kumotut</h3>
+<p>Ei yhtään.</p>
+<h3
+id="liite-lukukohtaisissa-raporteissa-mainitut-sivuhuomiot-eivät-kirja-merkintöjä">Liite:
+lukukohtaisissa raporteissa mainitut sivuhuomiot (eivät
+KIRJA-merkintöjä)</h3>
+<p>Lukukohtaisissa raporteissa on kaksi teoriaosaa tai tehtävätekstin
+kirjoitusasua koskevaa sivuhuomiota, joita ei merkitty
+ratkaisutiedostoihin. Ne on tarkistettu kirjan lähteestä, ja kumpikin
+pitää paikkansa. Ne ovat vähäisiä painovirheitä, eivätkä ne haittaa
+tehtävien ratkaisemista.</p>
+<table>
+<thead>
+<tr>
+<th>Luku</th>
+<th>Kohta</th>
+<th>Kirjan tiedosto:rivi</th>
+<th>Lainaus</th>
+<th>Mikä on vialla</th>
+<th>Ehdotettu korjaus</th>
+<th>Luokka</th>
+<th>Vakavuus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>III.1</td>
+<td>teoriaosa (osoitintulon määritelmälaatikko)</td>
+<td><code>fi/III-kompleksiluvut/III-1.tex:137</code></td>
+<td><code>\ptp_2 = r_2 \vkulma{\varphi}</code></td>
+<td>Kulman indeksi puuttuu; seuraavalla rivillä tulos on <span
+class="math inline">\(r_1r_2\vkulma{(\varphi_1+\varphi_2)}\)</span></td>
+<td><code>\ptp_2 = r_2 \vkulma{\varphi_2}</code></td>
+<td>painovirhe</td>
+<td>vähäinen</td>
+</tr>
+<tr>
+<td>III.2</td>
+<td>tehtävä 10</td>
+<td><code>fi/III-kompleksiluvut/III-2.tex:351</code></td>
+<td><code>Näytä, että Propositon \ref{polynomin kasvu} oletuksin</code></td>
+<td>Kirjoitusvirhe sanassa "Propositon"</td>
+<td><code>Proposition</code></td>
+<td>painovirhe</td>
+<td>vähäinen</td>
+</tr>
+</tbody>
+</table>
+<h1 id="osa-iv">Osa IV</h1>
+<p><strong>Yhteenveto:</strong> huomioita 3, vahvistettu 1, kumottu 2,
+tulkinta 0.</p>
+<h3 id="vahvistetut-3">Vahvistetut</h3>
+<h4 id="luku-iv3-tehtävä-5--kirja--ratkaisut">Luku IV.3, tehtävä 5 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.4.3">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-IV-3-5">ratkaisut</a></h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/IV-reaalimuuttujien-funktiot/IV-3.tex:480–481</code></li>
+<li><strong>Lainaus:</strong>
+<code>&amp;\text{c)}\ \ g(r,\varphi)=r^2(\tan\varphi+\cot\varphi) \qquad \text{c)}\ \ g(r,\varphi)=\frac{\sin\varphi}{2+\cos\varphi}</code></li>
+<li><strong>Vika:</strong> Kahdella alakohdalla on sama tunnus c).
+Neljännen alakohdan pitäisi olla d).</li>
+<li><strong>Ehdotettu korjaus:</strong> Rivillä 481
+<code>\text{c)}\ \ g(r,\varphi)=\frac{\sin\varphi}{2+\cos\varphi}</code>
+muutetaan muotoon
+<code>\text{d)}\ \ g(r,\varphi)=\frac{\sin\varphi}{2+\cos\varphi}</code>.</li>
+<li><strong>Luokka:</strong> painovirhe</li>
+<li><strong>Vakavuus:</strong> vähäinen</li>
+</ul>
+<h3 id="tulkinnat-3">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<h3 id="kumotut-3">Kumotut</h3>
+<ul>
+<li><strong>IV.4 tehtävä 11 b</strong> (<code>IV-4.tex:617–621</code>,
+"Missä pisteissä suora <span class="math inline">\(x=y=z\)</span>
+leikkaa pinnan?"): Tehtävä on ratkeava ja mielekäs, ja vastaus on "ei
+missään". Pinnalla <span class="math inline">\(x^2-y^2-z^2=1\)</span>
+suoran pisteessä on <span class="math inline">\(-s^2&lt;1\)</span>.
+Kohdan a pinta <span class="math inline">\(y^2+z^2-x^2=1\)</span> taas
+leikkaa saman suoran pisteissä <span
+class="math inline">\(\pm(1,1,1)\)</span>, joten kohtien vertailu on
+opettavainen. Kysymyksessä ei ole virhettä.</li>
+<li><strong>IV.4 tehtävä 14, Sotaharjoitus 1</strong>
+(<code>IV-4.tex:653–654</code>, "Maastoesteet asettavat suuntaukselle
+rajoituksen <span class="math inline">\(\tan\theta &gt; 0.2\)</span>"):
+Ehto on yksiselitteinen. Ehdon täyttää vain toinen ratkaisu, <span
+class="math inline">\(\theta\approx83.54^\circ\)</span> (tällöin <span
+class="math inline">\(\tan\theta\approx8.83\)</span>, kun toisella
+ratkaisulla <span
+class="math inline">\(\tan\theta\approx0.113\)</span>). Tehtävä ratkeaa
+siis tarkoitetulla tavalla, ja valitun radan lakikorkeus on noin 0,63
+km. Jyrkän radan lakikorkeus olisi noin 49 km, mikä ei ole realistinen.
+Se, perusteleeko kehyskertomuksen "maastoesteet" juuri tämän suuntaisen
+rajoituksen, on makuasia eikä vaikuta tehtävän ratkaisuun.</li>
+</ul>
+<h1 id="osa-v">Osa V</h1>
+<p><strong>Yhteenveto:</strong> huomioita 7, vahvistettu 6, kumottu 0,
+tulkinta 1.</p>
+<p>Lisäksi yhdestä huomiosta (V-3, teht. 16) poistettiin makuasiaksi
+katsottu sivuhuomio: kirjain <span class="math inline">\(a\)</span> on
+sekä välin <span class="math inline">\((a,b)\)</span> päätepiste että
+kertoimien <span class="math inline">\(a_k\)</span> tunnus. Ratkaisuihin
+ei tarvinnut tehdä sisällöllisiä muutoksia.</p>
+<h3 id="vahvistetut-4">Vahvistetut</h3>
+<h4 id="luku-v-3">Luku V-3</h4>
+<p><strong>Tehtävä 4a</strong> (<code>H-V-4: trig-esim</code>),
+<code>fi/V-jatkuvuus-ja-derivoituvuus/V-3.tex:552</code></p>
+<ul>
+<li>Kirjassa: <code>x(1+\sqrt{\abs{x}}\cos\dfrac{1}{x},</code></li>
+<li>Vika: sulkeva sulku puuttuu.</li>
+<li>Korjaus:
+<code>x\bigl(1+\sqrt{\abs{x}}\cos\dfrac{1}{x}\bigr),</code></li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen. Tarkoitettu lauseke on
+yksiselitteinen.</li>
+</ul>
+<p><strong>Tehtävä 16a</strong>, <code>V-3.tex:653</code></p>
+<ul>
+<li>Kirjassa:
+<code>f(x) = \sum_{k=0}^\infty x^k g(x), \quad x\in(a,b)</code></li>
+<li>Vika: kerroin <span class="math inline">\(a_k\)</span> puuttuu.
+Tämän vuoksi oletusta sarjasta <span class="math inline">\(\sum_k
+a_kx^k\)</span> ei käytetä, ja b-kohta (<span
+class="math inline">\(a_k=1/k!\)</span>, <span
+class="math inline">\(g(x)=\sqrt x\)</span>) ei ole a-kohdan
+erikoistapaus.</li>
+<li>Korjaus:
+<code>f(x) = \sum_{k=0}^\infty a_k x^k g(x), \quad x\in(a,b)</code></li>
+<li>Luokka: painovirhe. Vakavuus: haittaa ratkaisemista.</li>
+</ul>
+<h4 id="luku-v-6">Luku V-6</h4>
+<p><strong>Tehtävä 6b</strong>, <code>V-6.tex:584</code></p>
+<ul>
+<li>Kirjassa:
+<code>y'=\frac{x^5-1}{x-1}\,,\,\ x\in(1,\infty),\,\ y(1)=1</code></li>
+<li>Vika: alkuehdon piste <span class="math inline">\(x_0=1\)</span> ei
+kuulu väliin <span class="math inline">\((1,\infty)\)</span>. Luvun
+määritelmässä (<code>V-6.tex:404–409</code>) vaaditaan <span
+class="math inline">\(x_0\in(a,b)\)</span>. Tarkoitus (raja-arvo <span
+class="math inline">\(x\to1^+\)</span>) on kyllä ilmeinen.</li>
+<li>Korjaus: <code>y(1)=1</code> → <code>\lim_{x\to1^+}y(x)=1</code>.
+Vaihtoehtoisesti alkuehdon voi antaa välin sisäpisteessä.</li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 7</strong>, <code>V-6.tex:598–599</code></p>
+<ul>
+<li>Kirjassa: "jos <span class="math inline">\(y(x)\)</span> on <span
+class="math inline">\(\R\)</span>:ssä <span
+class="math inline">\(n\)</span> kertaa derivoituva (<span
+class="math inline">\(n\in\N\)</span>) ja <span
+class="math inline">\(y^{(n)}=0\)</span>, niin <span
+class="math inline">\(y\)</span> on polynomi astetta <span
+class="math inline">\(\le n\)</span>"</li>
+<li>Vika: väite on tosi mutta epätarkka, sillä tarkka yläraja on <span
+class="math inline">\(n-1\)</span>. Luvun esimerkki (<span
+class="math inline">\(y&#39;&#39;=0\)</span> ⇒ aste <span
+class="math inline">\(\le1\)</span>, <code>V-6.tex:395</code>) ja
+tehtävän jälkimmäinen kysymys (<span class="math inline">\(n\)</span>
+alkuehtoa) johtavat molemmat asteeseen <span class="math inline">\(\le
+n-1\)</span>.</li>
+<li>Korjaus: "astetta <span class="math inline">\(\le n\)</span>" →
+"astetta <span class="math inline">\(\le n-1\)</span>".</li>
+<li>Luokka: virheellinen väite (epätarkka). Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-v-7">Luku V-7</h4>
+<p><strong>Tehtävä</strong>
+<code>H-V-7: moninkertainen nollakohta ja Newton</code>,
+<code>V-7.tex:676</code></p>
+<ul>
+<li>Kirjassa:
+<code>q = \lim_n \frac{x_{n+1}-c}{x_n-c} = \frac{1}{m}\,.</code></li>
+<li>Vika: oikea arvo on <span
+class="math inline">\(q=\dfrac{m-1}{m}=1-\dfrac1m\)</span>. Esimerkiksi
+kun <span class="math inline">\(f(x)=(x-c)^m\)</span>, Newtonin
+iteraatio antaa <span
+class="math inline">\(x_{n+1}-c=(1-\frac1m)(x_n-c)\)</span>. Arvot
+yhtyvät vain, kun <span class="math inline">\(m=2\)</span>, ja siksi
+teoriatekstin (<code>V-7.tex:415</code>) arvo <span
+class="math inline">\(1/2\)</span> on oikein. Tulos tarkistettiin myös
+numeerisesti polynomilla <span
+class="math inline">\((x-1)^m(x+2)\)</span>: kun <span
+class="math inline">\(m=2,3,4\)</span>, osamäärä lähestyy arvoja <span
+class="math inline">\(0.5\)</span>, <span
+class="math inline">\(0.6667\)</span> ja <span
+class="math inline">\(0.75\)</span>.</li>
+<li>Korjaus: <code>= \frac{1}{m}</code> →
+<code>= \frac{m-1}{m}</code></li>
+<li>Luokka: virheellinen kaava. Vakavuus: tehtävä ei ratkea
+tarkoitetulla tavalla (väitettä ei voi todistaa, kun <span
+class="math inline">\(m\ge3\)</span>).</li>
+</ul>
+<h4 id="luku-v-9">Luku V-9</h4>
+<p><strong>Tehtävä 2</strong>, <code>V-9.tex:452–455</code></p>
+<ul>
+<li>Kirjassa: "jos <span class="math inline">\(A\subset\R\)</span>, niin
+pätee <span class="math inline">\(A\)</span> kompakti <span
+class="math inline">\(\Rightarrow \sup A=\max A\)</span> ja <span
+class="math inline">\(\inf A=\min A\)</span>"</li>
+<li>Vika: luvun esimerkin (<code>V-9.tex:62</code>) mukaan <span
+class="math inline">\(\emptyset\)</span> on kompakti, mutta
+Supremum-lause (<code>I-11.tex:54</code>) koskee vain ei-tyhjiä
+joukkoja, eikä tyhjällä joukolla ole maksimia.</li>
+<li>Korjaus: "jos <span class="math inline">\(A\subset\R\)</span>" →
+"jos <span class="math inline">\(A\subset\R\)</span>, <span
+class="math inline">\(A\neq\emptyset\)</span>"</li>
+<li>Luokka: puuttuva oletus. Vakavuus: vähäinen.</li>
+</ul>
+<h3 id="tulkinnat-4">Tulkinnat</h3>
+<p><strong>V-1, tehtävä 7</strong>, <code>V-1.tex:621–626</code>:
+tehtävänannossa kerrotaan, että <span
+class="math inline">\(\sin\)</span> on aidosti vähenevä välillä <span
+class="math inline">\([\frac\pi2,\frac{3\pi}2]\)</span>, mutta kysytty
+väli <span class="math inline">\([-\frac\pi2,\frac\pi6]\)</span> ei
+leikkaa tätä väliä, joten tietoa ei tarvita. Tehtävä ratkeaa
+sellaisenaan (yksi ratkaisu, kun <span
+class="math inline">\(y\in[-1,\frac12]\)</span>, muuten ei yhtään).
+Tarpeeton tieto ja merkintä <span
+class="math inline">\(y\in[-1,1]\)</span> viittaavat kuitenkin siihen,
+että väliksi on ehkä tarkoitettu <span
+class="math inline">\([-\frac\pi2,\frac{7\pi}6]\)</span>. Ratkaisu
+noudattaa kirjan tekstiä, ja vaihtoehtoinen vastaus on annettu lukijalle
+näkyvässä huomautuksessa. Tekijää pyydetään tarkistamaan, kumpi väli on
+tarkoitettu.</p>
+<h3 id="kumotut-4">Kumotut</h3>
+<p>Ei kumottuja huomioita. Tehtävän V-3:16 huomiosta poistettiin
+sivuhuomio kirjaimen <span class="math inline">\(a\)</span>
+kaksoiskäytöstä (välin päätepiste ja kertoimet <span
+class="math inline">\(a_k\)</span>). Asiayhteys tekee merkinnän
+yksiselitteiseksi, joten kyse on makuasiasta.</p>
+<h1 id="osa-vi">Osa VI</h1>
+<p><strong>Yhteenveto:</strong> huomioita 4, vahvistettu 4, kumottu 0,
+tulkinta 0.</p>
+<p>Kaikki neljä huomiota tarkistettiin kirjan lähteestä
+(<code>fi/VI-eksponenttifunktio/*.tex</code>). Kolme on pieniä ladonta-
+tai kirjoitusvirheitä. Neljäs (artanh 1) voi olla tarkoituksellinen,
+mutta se kannattaa tarkistaa.</p>
+<h3 id="vahvistetut-5">Vahvistetut</h3>
+<h4 id="luku-vi2-exp-2--kirja--ratkaisut">Luku VI.2 (exp-2) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.6.2">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-2">ratkaisut</a></h4>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-2-7">Tehtävä
+7</a></strong> — <code>exp-2.tex:432</code></p>
+<ul>
+<li>Kirjassa: "Määritä funktion <span
+class="math inline">\(f(t)=e^{-x}\sin x\)</span> paikalliset
+ääriarvokohdat …"</li>
+<li>Vika: funktion argumentti on <span class="math inline">\(t\)</span>,
+mutta lauseke riippuu muuttujasta <span class="math inline">\(x\)</span>
+(myös väli <span class="math inline">\([0,\infty)\)</span> ja kuvaaja
+viittaavat muuttujaan <span class="math inline">\(x\)</span>).</li>
+<li>Korjausehdotus: <code>$f(x)=e^{-x}\sin x$</code></li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-2-13">Tehtävä
+13 (Pieniä ihmeitä)</a></strong> — <code>exp-2.tex:549–550</code></p>
+<ul>
+<li>Kirjassa: "d) Päättele: a-kohdan ratkaisu on ainoa (P):n ratkaisu."
+ja heti perään "d) Näytä: (P):n ratkaisu on myös …"</li>
+<li>Vika: alakohta d) esiintyy kahdesti, joten alakohdat ovat a, b, c,
+d, d, e. Kun tehtävän viimeisessä kohdassa viitataan aiempiin kohtiin,
+viittaus on epäselvä.</li>
+<li>Korjausehdotus: rivi 550 muotoon "e) Näytä: (P):n ratkaisu on myös"
+ja nykyinen "e) Päättele: Jokaisella <span
+class="math inline">\(x\in\R\)</span> pätee" muotoon "f) Päättele: …".
+Ratkaisuissa on jo käytetty kirjaimia e) ja f).</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-vi3-exp-3--kirja--ratkaisut">Luku VI.3 (exp-3) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.6.3">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-3">ratkaisut</a></h4>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-3-4">Tehtävä
+4 d)</a></strong> — <code>exp-3.tex:413</code></p>
+<ul>
+<li>Kirjassa: "Laske seuraavat kompleksiluvut perusmuodossa <span
+class="math inline">\(x+iy\)</span> (tarkat arvot!): … d) <span
+class="math inline">\(\cosh(\arsinh\frac{4}{3}),\ \tanh(\arsinh\pi),\
+\Arcosh\sqrt{2},\ \artanh 1\)</span>"</li>
+<li>Vika: luvussa <span class="math inline">\(\artanh\)</span>
+määritellään vain, kun <span class="math inline">\(\abs{x}&lt;1\)</span>
+(<code>exp-3.tex:281</code>, <span class="math inline">\(\artanh
+x=\frac12\ln\frac{1+x}{1-x}\)</span>). Kompleksista jatkoa ei
+määritellä. Yhtälöllä <span class="math inline">\(\tanh w=1\)</span> ei
+ole ratkaisua edes kompleksitasossa, koska se johtaisi yhtälöön <span
+class="math inline">\(-1=1\)</span>. Luvulle <span
+class="math inline">\(\artanh 1\)</span> ei siis ole arvoa, vaikka
+tehtävä pyytää kompleksilukua perusmuodossa. Ratkaisussa todetaan, ettei
+arvo ole määritelty.</li>
+<li>Korjausehdotus: jos kohta on tarkoituksellinen, siitä voisi vihjata,
+esimerkiksi "…, <span class="math inline">\(\artanh 1\)</span> (jos
+määritelty)". Muuten arvon voisi vaihtaa määriteltyyn arvoon,
+esimerkiksi <code>\artanh\frac{1}{2}</code> (<span
+class="math inline">\(=\frac12\ln3\)</span>).</li>
+<li>Luokka: ratkeamaton tai ristiriitainen tehtävä (ehkä
+tarkoituksellinen). Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 7 (*)</strong> — <code>exp-3.tex:433</code></p>
+<ul>
+<li>Kirjassa: "Johda suoraan derivaatan määritelmästä
+derivoimssääntö"</li>
+<li>Vika: kirjoitusvirhe. Kirjassa käytetään muuten sanaa
+"derivoimissääntö" (vrt. hakemistomerkintä
+<code>derivoimissäännöt</code>, <code>exp-3.tex:286</code>).</li>
+<li>Korjausehdotus: "derivoimissääntö"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h3 id="tulkinnat-5">Tulkinnat</h3>
+<p>Ei uusia. (Osan ratkaisuissa on kaksi aiempaa TULKINTA-merkintää:
+exp-1 ("jälkimmäinen joukko") ja exp-3 tehtävä 7, vihjeen merkintä. Ne
+eivät ole kirjan virheitä, eikä niitä käsitelty tässä.)</p>
+<h3 id="kumotut-5">Kumotut</h3>
+<p>Ei yhtään.</p>
+<h1 id="osa-vii">Osa VII</h1>
+<p><strong>Yhteenveto:</strong> huomioita 11, joista vahvistettu 8,
+kumottu 3 ja tulkintoja 0.</p>
+<p>Kaikki rivinumerot viittaavat hakemiston
+<code>fi/VII-yhden-muuttujan-differentiaalilaskenta/</code>
+lähdetiedostoihin. Laskettavat väitteet on tarkistettu numeerisesti.</p>
+<h3 id="vahvistetut-6">Vahvistetut</h3>
+<h4 id="vii1-differentiaali-ja-muutosnopeus">VII.1 Differentiaali ja
+muutosnopeus</h4>
+<p><strong>Tehtävä 1 e</strong>: <code>dif-1.tex:311</code></p>
+<ul>
+<li>Kirjassa: "e) \ <span class="math inline">\(f(x)=\tan\tfrac{\pi
+x}{2}\)</span>", kun "<span class="math inline">\(x=1\)</span>, <span
+class="math inline">\(\Delta x=0.02\)</span>" (r. 309).</li>
+<li>Ongelma: <span class="math inline">\(\tan(\pi x/2)\)</span> ei ole
+määritelty pisteessä <span class="math inline">\(x=1\)</span>, koska
+<span class="math inline">\(\cos(\pi/2)=0\)</span>. Siksi kumpaakaan
+kysyttyä lukua, <span class="math inline">\(df\)</span> tai <span
+class="math inline">\(f(x+\Delta x)-f(x)\)</span>, ei ole olemassa.</li>
+<li>Ehdotettu korjaus: <code>e) \ $f(x)=\tan\tfrac{\pi x}{4}$</code>.
+Silloin <span class="math inline">\(df=\pi/100=0.031416\)</span> ja
+<span class="math inline">\(\Delta
+f=\tan(0.255\pi)-1=0.031920\)</span>.</li>
+<li>Luokka: painovirhe. Vakavuus: tehtävä ei ratkea tarkoitetulla
+tavalla.</li>
+</ul>
+<h4 id="vii2-käyrän-tangentti-ja-normaali">VII.2 Käyrän tangentti ja
+normaali</h4>
+<p><strong>Tehtävä 11 (*) Palloaberraatio</strong>:
+<code>dif-2.tex:571</code></p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(c(x)-\frac{R}{2} \,\approx\,
+-\frac{3R}{4}\left(\frac{x}{R}\right)^2\)</span>".</li>
+<li>Ongelma: Heijastuslaki antaa tarkan lausekkeen <span
+class="math inline">\(c(x)=R-\dfrac{R^2}{2\sqrt{R^2-x^2}}\)</span> ja
+sarjan <span class="math inline">\(c(x)=\tfrac R2-\tfrac
+R4(x/R)^2-\tfrac{3R}{16}(x/R)^4-\dots\)</span>. Oikea kerroin on siis
+<span class="math inline">\(-R/4\)</span>. Esimerkiksi kun <span
+class="math inline">\(R=1\)</span> ja <span
+class="math inline">\(x=0.1\)</span>, tarkka arvo on <span
+class="math inline">\(c-\tfrac12=-0.002519\)</span>, kun taas <span
+class="math inline">\(-R/4\)</span> antaa <span
+class="math inline">\(-0.0025\)</span> ja <span
+class="math inline">\(-3R/4\)</span> antaa <span
+class="math inline">\(-0.0075\)</span>. Kerroin <span
+class="math inline">\(-3R/4\)</span> saadaan, jos leikkauspisteen
+korkeus mitataan heijastuspisteen <span class="math inline">\(P\)</span>
+tasolta, eli suureelle <span class="math inline">\(c-y_P-\tfrac
+R2\)</span>. Tehtävässä <span class="math inline">\(c\)</span> on
+kuitenkin määritelty <span
+class="math inline">\(y\)</span>-koordinaatiksi.</li>
+<li>Ehdotettu korjaus:
+<code>c(x)-\frac{R}{2} \,\approx\, -\frac{R}{4}\left(\frac{x}{R}\right)^2.</code></li>
+<li>Luokka: virheellinen väite tai kaava. Vakavuus: tehtävä ei ratkea
+tarkoitetulla tavalla, koska todettavaksi pyydetty väite ei pidä.</li>
+</ul>
+<h4 id="vii3-käyrän-kaarevuus">VII.3 Käyrän kaarevuus</h4>
+<p><strong>Teoriaosa, kaava (kaarevuuskaava b)</strong>:
+<code>dif-3.tex:141–153</code></p>
+<ul>
+<li>Kirjassa: "Tämän mukaan kaarevuuden määritelmän
+\eqref{kaarevuuskaava a} voi esittää myös muodossa <span
+class="math inline">\(\frac{1}{v(t)}\frac{d\vec
+n}{dt}=-\frac{1}{R}\tv\)</span>."</li>
+<li>Ongelma: Johdossa osoitetaan vain, että <span
+class="math inline">\(\vec n\,&#39;\cdot\vec n=0\)</span> ja <span
+class="math inline">\(\vec n\,&#39;\cdot\tv=-v/R\)</span>. Tasokäyrällä
+nämä määräävät vektorin <span class="math inline">\(\vec
+n\,&#39;\)</span>. Luvun alussa (r. 7) käsitellään kuitenkin myös
+avaruuskäyriä, ja niillä <span class="math inline">\(\vec
+n\,&#39;\)</span>:lla on yleensä myös sivunormaalin suuntainen
+komponentti: <span class="math inline">\(\frac1v\frac{d\vec
+n}{dt}=-\frac1R\tv+\omega\vec\nu\)</span>. Ruuviviivalla <span
+class="math inline">\(x=a\cos t,\ y=a\sin t,\ z=bt\)</span> on
+esimerkiksi <span class="math inline">\(\vec n\,&#39;=\sin t\,\vec
+i-\cos t\,\vec j\)</span>, mutta <span
+class="math inline">\(-(v/R)\tv\)</span>:llä on nollasta poikkeava <span
+class="math inline">\(\vec k\)</span>-komponentti. Jos kaavaa käyttää
+sellaisenaan harjoitustehtävässä 10 (*), siitä seuraa <span
+class="math inline">\(d\vec\nu/dt=\tv\times\vec n\,&#39;=\vec 0\)</span>
+eli <span class="math inline">\(\omega=0\)</span> kaikille
+avaruuskäyrille, mikä on ristiriidassa saman tehtävän c-kohdan kanssa.
+Kaavaa käytetään myöhemmin (<code>eig-3.tex:8, 41</code>) vain
+tasokäyrille.</li>
+<li>Ehdotettu korjaus: muotoillaan r. 149 esimerkiksi näin: "Tämän
+mukaan \pain{tasokäyrän} kaarevuuden määritelmän \eqref{kaarevuuskaava
+a} voi esittää myös muodossa" ja lisätään kaavan jälkeen:
+"(Avaruuskäyrällä pätee yleisesti vain <span
+class="math inline">\(\frac{1}{v}\frac{d\vec
+n}{dt}\cdot\tv=-\frac1R\)</span>, ks.\ Harj.teht.,\ref{H-dif-3:
+kierevyys}.)"</li>
+<li>Luokka: virheellinen väite tai kaava (liian yleisenä esitetty).
+Vakavuus: haittaa ratkaisemista (teht. 10).</li>
+</ul>
+<h4 id="vii4-taylorin-polynomit-ja-taylorin-lause">VII.4 Taylorin
+polynomit ja Taylorin lause</h4>
+<p><strong>Tehtävä 6</strong>: <code>dif-4.tex:450–451</code></p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(p_1(x)=T_m^+(a,x)\)</span>,
+<span class="math inline">\(p_2(x)=T_m^-(b,x)\)</span>".</li>
+<li>Ongelma: Luvun kehystetyssä määritelmässä (r. 11) merkitään <span
+class="math inline">\(T_n(x,x_0)\)</span>, eli muuttuja on ensimmäisenä
+ja kehityspiste toisena. Tehtävässä järjestys on päinvastainen. Merkitys
+selviää tekstistä, joten kyse on vain yhtenäisyydestä.</li>
+<li>Ehdotettu korjaus:
+<code>$p_1(x)=T_m^+(x,a)$, $p_2(x)=T_m^-(x,b)$, missä $T_m^+(x,a)$ ja $T_m^-(x,b)$ ovat ...</code></li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 9 a</strong>: <code>dif-4.tex:475–477</code></p>
+<ul>
+<li>Kirjassa: "Seuraavilla käyrillä on kääntymispiste (vrt.\ edellisen
+luvun Esimerkki \ref{evoluutta}) annetussa pisteessä <span
+class="math inline">\(P\)</span>." sekä "a)\ <span
+class="math inline">\(x(t)=4t+1/t,\ y(t)=t^2+16/t,\ \
+P=(17/2,12)\)</span>".</li>
+<li>Ongelma: Pistettä <span class="math inline">\(P\)</span> vastaa vain
+parametrin arvo <span class="math inline">\(t=2\)</span> (yhtälön <span
+class="math inline">\(4t+1/t=17/2\)</span> toinen juuri <span
+class="math inline">\(t=1/8\)</span> antaa <span
+class="math inline">\(y\neq12\)</span>). Siinä <span
+class="math inline">\(y&#39;(2)=0\)</span>, mutta <span
+class="math inline">\(x&#39;(2)=4-\tfrac14=\tfrac{15}{4}\neq0\)</span>.
+Piste ei siis ole kirjan tarkoittama kääntymispiste, jossa <span
+class="math inline">\(x&#39;=y&#39;=0\)</span>
+(<code>dif-3.tex:228</code>), vaan säännöllinen piste, jossa tangentti
+on vaakasuora. Koko käyrällä ei ole kääntymispistettä, koska <span
+class="math inline">\(x&#39;=0\)</span> vain arvoilla <span
+class="math inline">\(t=\pm\tfrac12\)</span>. b-kohta on kunnossa.</li>
+<li>Ehdotettu korjaus: muutetaan a-kohdan dataa. Esimerkiksi käyrällä
+<code>a)\ $x(t)=4t+16/t,\ y(t)=t^2+16/t,\ \ P=(16,12)$</code> on <span
+class="math inline">\(x&#39;(2)=y&#39;(2)=0\)</span> ja <span
+class="math inline">\(x&#39;&#39;(2)=4\)</span>, <span
+class="math inline">\(y&#39;&#39;(2)=6\)</span>, joten käyrä lähtee
+suuntaan <span class="math inline">\(2\vec i+3\vec j\)</span>.
+Vaihtoehtoisesti a-kohta voidaan rajata johdantolauseen
+ulkopuolelle.</li>
+<li>Luokka: ristiriitainen tehtävä. Vakavuus: haittaa ratkaisemista
+(kysymykseen lähtösuunnasta voi vastata, mutta tehtävän lähtöoletus on
+väärä).</li>
+</ul>
+<p><strong>Tehtävä 14</strong>: <code>dif-4.tex:522–523</code></p>
+<ul>
+<li>Kirjassa: "Seuraavat funktiot <span class="math inline">\(f\)</span>
+määritellään kukin jatkuvaksi pisteessä <span
+class="math inline">\(x=0\)</span>, jolloin funktiot ovat tässä
+pisteessä (ja siis koko <span class="math inline">\(\R\)</span>:ssä)
+mielivaltaisen monta kertaa derivoituvia."</li>
+<li>Ongelma: d-kohdan funktio <span
+class="math inline">\(\dfrac{\ln(1+x)-\sin x}{x^2}\)</span> on
+määritelty vain, kun <span class="math inline">\(x&gt;-1\)</span>.</li>
+<li>Ehdotettu korjaus: "(ja siis koko määrittelyjoukossaan)".</li>
+<li>Luokka: virheellinen väite. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="vii5-taylorin-polynomien-sovelluksia">VII.5 Taylorin polynomien
+sovelluksia</h4>
+<p><strong>Tehtävä 14 (<code>H-dif-5: virhearvio (a)</code>)</strong>:
+<code>dif-5.tex:543–544</code></p>
+<ul>
+<li>Kirjassa: "Näytä, että jos <span class="math inline">\(f\)</span> on
+jatkuva välillä <span class="math inline">\([a,a+h]\)</span> ja kahdesti
+derivoituva välillä <span class="math inline">\((a,a+h)\)</span>, niin
+jollakin <span class="math inline">\(\xi\in(a,a+h)\)</span> pätee <span
+class="math inline">\(f&#39;(a)-\frac{f(a+h)-f(a)}{h}=-\frac12
+f&#39;&#39;(\xi)h\)</span>."</li>
+<li>Ongelma: Oletukset on muotoiltu Taylorin lauseen tapaan
+(<code>dif-4.tex:96</code>), mutta Taylorin lauseessa kehityspiste <span
+class="math inline">\(x_0\)</span> on välin sisäpiste. Tässä
+kehityspiste on päätepiste <span class="math inline">\(a\)</span>,
+eivätkä oletukset takaa, että väitteessä esiintyvä <span
+class="math inline">\(f&#39;(a)\)</span> on olemassa. Esimerkiksi
+funktiolla <span class="math inline">\(f(x)=\sqrt{x-a}\)</span>
+derivaattaa <span class="math inline">\(f&#39;(a)\)</span> ei ole. Väite
+pätee, kun lisäksi oletetaan, että <span
+class="math inline">\(f\)</span> on oikealta derivoituva pisteessä <span
+class="math inline">\(a\)</span>.</li>
+<li>Ehdotettu korjaus: "Näytä, että jos <span
+class="math inline">\(f\)</span> on jatkuva välillä <span
+class="math inline">\([a,a+h]\)</span>, derivoituva pisteessä <span
+class="math inline">\(a\)</span> (oikealta) ja kahdesti derivoituva
+välillä <span class="math inline">\((a,a+h)\)</span>, ..."
+Yksinkertaisempi vaihtoehto on "jatkuvasti derivoituva välillä <span
+class="math inline">\([a,a+h]\)</span> ja kahdesti derivoituva välillä
+<span class="math inline">\((a,a+h)\)</span>".</li>
+<li>Luokka: puuttuva oletus. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="vii6-interpolaatiopolynomit">VII.6 Interpolaatiopolynomit</h4>
+<p><strong>Teoriaosa, Lause (usean pisteen Taylor)</strong> (koskee
+tehtävää 7): <code>dif-6.tex:343</code></p>
+<ul>
+<li>Kirjassa: "missä <span class="math inline">\([a,b]\)</span> on
+pisteen <span class="math inline">\(x\)</span> ja erillisten pisteiden
+<span class="math inline">\(x_0,\ldots,x_m\)</span> virittämä
+väli."</li>
+<li>Ongelma: Ehdoissa (yleiset interpolaatioehdot, r. 309) ja
+virhekaavan tulossa (r. 347) indeksit ovat <span
+class="math inline">\(i=1\ldots m\)</span>. Merkintä <span
+class="math inline">\(x_0,\ldots,x_m\)</span> lienee jäänyt Lagrangen
+virhelauseesta (r. 59).</li>
+<li>Ehdotettu korjaus: "erillisten pisteiden <span
+class="math inline">\(x_1,\ldots,x_m\)</span>".</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h3 id="tulkinnat-6">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<p>(Huom. Tiedoston <code>dif-4-ratkaisut.md</code> tehtävän 9 a
+kohdalla on jo aiemmalta kierrokselta <code>TULKINTA</code>-kommentti ja
+lukijalle näkyvä huomautus. Ne koskevat samaa asiaa kuin yllä
+vahvistettu huomio, eikä niitä lasketa erikseen.)</p>
+<h3 id="kumotut-6">Kumotut</h3>
+<ul>
+<li><strong>VII.1 teht. 10 (*) Puimakone</strong>
+(<code>dif-1.tex:387–401</code>): Huomion mukaan luistamisen raja (<span
+class="math inline">\(\text{kitka}=\mu N\)</span>) ja voimien <span
+class="math inline">\(F_1\)</span>, <span
+class="math inline">\(F_2\)</span> puolet eivät käy ilmi tekstistä.
+Tehtävässä kuitenkin annetaan johdettava yhtälö <span
+class="math inline">\(F&#39;=-\mu F\)</span>, ja voimien paikat on
+merkitty kuvaan. Tehtävänanto on siis riittävä. Kommentti
+poistettu.</li>
+<li><strong>VII.3 teht. 4 Oskuloivat käyrät</strong>
+(<code>dif-3.tex:507–511</code>): Huomion mukaan tehtävä olettaa
+hiljaisesti, että <span
+class="math inline">\(f&#39;&#39;(x_0)\neq0\)</span>. Määritelmä
+"yhteinen kaarevuusympyrä" edellyttää jo itsessään, että kaarevuusympyrä
+on olemassa, eli <span class="math inline">\(\kappa&gt;0\)</span>.
+Rajatapausta <span class="math inline">\(\kappa=0\)</span> ei tarvitse
+käsitellä erikseen, joten huomio on makuasia. Kommentti poistettu, eikä
+ratkaisua tarvinnut muuttaa.</li>
+<li><strong>VII.3 teht. 10 (*) Frenet'n kanta</strong>
+(<code>dif-3.tex:552–560</code>): Huomion mukaan tehtävästä puuttuu
+oletus, että käyrä on kolmesti derivoituva ja <span
+class="math inline">\(\kappa&gt;0\)</span>. Kierevyyden määrittelevä
+kaava edellyttää jo sinänsä, että <span
+class="math inline">\(d\vec\nu/dt\)</span> on olemassa ja että <span
+class="math inline">\(\vec n\)</span> on määritelty. Tähdellisessä
+tehtävässä tällainen riittävä säännöllisyys on tavanomainen hiljainen
+oletus. Kommentti poistettu. Ratkaisussa oletus on edelleen sanottu
+näkyvästi.</li>
+</ul>
+<h1 id="osa-viii">Osa VIII</h1>
+<p><strong>Yhteenveto:</strong> huomioita 13, vahvistettu 13, kumottu 0,
+tulkinta 0. (Yhdestä huomiosta (VIII.9, tehtävä 6) on kumottu sivuväite
+puuttuvasta säännöllisyysoletuksesta. Itse painovirhe jää voimaan.)</p>
+<p>Kaikki kohdat on tarkistettu lähdetiedostoista
+<code>fi/VIII-integraali/*.tex</code>. Laskettavissa olevat väitteet
+(VIII.6 teht. 10 ja 11, VIII.7 teht. 6b) on lisäksi varmennettu koneella
+(sympy/mpmath).</p>
+<h3 id="vahvistetut-7">Vahvistetut</h3>
+<h4 id="viii2">VIII.2</h4>
+<ul>
+<li><strong>Tehtävä 7(*)</strong> (reduktiokaavat),
+<code>int-2.tex:342</code> Lainaus:
+<code>I_n(x)=\int x^n e^{ax}\cos bx, \quad J_n(x)=\int x^n e^{ax}\sin bx.</code>
+Vika: integraaleista puuttuu differentiaali <span
+class="math inline">\(dx\)</span> (saman sivun muissa tehtävissä se on
+mukana). Korjaus: <code>\int x^n e^{ax}\cos bx\,dx</code>,
+<code>\int x^n e^{ax}\sin bx\,dx</code>. Luokka: painovirhe. Vakavuus:
+vähäinen.</li>
+</ul>
+<h4 id="viii3">VIII.3</h4>
+<ul>
+<li><strong>Tehtävä 8(*) b ja c</strong> (osamurtohajotelma),
+<code>int-3.tex:426</code> ja <code>int-3.tex:432</code> Lainaus:
+<code>\frac{Bz+C}{(z-a)^2+b^2}+\frac{r(z)}{p_1(z)}</code> ja
+<code>\sum_{k=1}^m \frac{A_k}{(z-c)^k}+\frac{r(z)}{p_1(z)}</code> Vika:
+viimeisen termin nimittäjä on <span
+class="math inline">\(p_1(z)\)</span>. Merkintää <span
+class="math inline">\(p_1\)</span> ei ole määritelty. Oikea on <span
+class="math inline">\(q_1(z)\)</span>, kuten b-kohdan ensimmäisessä
+yhtäsuuruudessa sekä kohdissa a ja d. Korjaus:
+<code>\frac{r(z)}{q_1(z)}</code> molemmilla riveillä. Luokka:
+merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="viii4">VIII.4</h4>
+<ul>
+<li><strong>Tehtävä (Todista) a</strong>, <code>int-4.tex:521</code>
+Lainaus:
+<code>1 \le \int_0^1 \frac{1+x^{20}}{1+x^{21}} \le \frac{22}{21}</code>
+Vika: differentiaali <span class="math inline">\(dx\)</span> puuttuu
+(kohdissa b–e se on mukana). Korjaus:
+<code>\int_0^1 \frac{1+x^{20}}{1+x^{21}}\,dx</code>. Luokka: painovirhe.
+Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="viii5">VIII.5</h4>
+<ul>
+<li><p><strong>Tehtävä (parillinen/pariton, jaksollinen) b</strong>,
+<code>int-5.tex:473</code> Lainaus: „Jos <span
+class="math inline">\(f\)</span> on <span
+class="math inline">\(L\)</span>-jaksoinen ja interoituva välillä <span
+class="math inline">\([0,L]\)</span>“ Vika: kirjoitusvirhe. Korjaus:
+„integroituva“. Luokka: painovirhe. Vakavuus: vähäinen.</p></li>
+<li><p><strong>Tehtävä (alasumma ≤ yläsumma)</strong>,
+<code>int-5.tex:494</code> Lainaus: „Näytä Proposition \ref{jaon
+tihennys} avulla“ Vika: nimiö <code>jaon tihennys</code> on Lause
+(<code>int-5.tex:319</code>, <code>\begin{Lause}</code>), ei Propositio.
+Viitenumero tulostuu oikein, mutta tulos on nimetty väärin. Korjaus:
+„Näytä Lauseen \ref{jaon tihennys} avulla“. Luokka: merkintävirhe.
+Vakavuus: vähäinen.</p></li>
+</ul>
+<h4 id="viii6">VIII.6</h4>
+<ul>
+<li><p><strong>Teoriaosa: Lauseen \ref{Taylor-integraali}
+todistus</strong>, <code>int-6.tex:394</code> Lainaus:
+<code>&amp;= f(x_0)+f'(x_0)(x-x_0)+\int_0^x (x-t)f''(t)\,dt.</code>
+Vika: integraalin alaraja on <span class="math inline">\(0\)</span>.
+Edellisellä rivillä ja lauseen väitteessä se on <span
+class="math inline">\(x_0\)</span>. Korjaus:
+<code>\int_{x_0}^x (x-t)f''(t)\,dt</code>. Luokka: painovirhe. Vakavuus:
+vähäinen.</p></li>
+<li><p><strong>Tehtävä 6 a</strong>, <code>int-6.tex:457</code> Lainaus:
+<code>f(x)=\int_0^x \sqrt{t}\,\sqrt{x^2-t^2}\,dx</code> Vika:
+integroimismuuttuja on <span class="math inline">\(t\)</span> ja <span
+class="math inline">\(x\)</span> on yläraja, joten differentiaalin pitää
+olla <span class="math inline">\(dt\)</span> (kuten b-kohdassa).
+Korjaus: <code>\int_0^x \sqrt{t}\,\sqrt{x^2-t^2}\,dt</code>. Luokka:
+painovirhe. Vakavuus: vähäinen.</p></li>
+<li><p><strong>Tehtävä 10(*)</strong> (osittaissummaus),
+<code>int-6.tex:479</code> Lainaus:
+<code>\sum_{k=1}^n f_k g_k = \sijoitus{k=1}{k=n} F_k g_k - \sum_{k=1}^{n-1} F_k\,(g_{k+1}-g_k)</code>,
+<span class="math inline">\(F_k=\sum_{i=1}^k f_i\)</span> Vika:
+sijoitustermi rajoin <span class="math inline">\(k=1\ldots n\)</span> on
+<span class="math inline">\(F_ng_n-F_1g_1\)</span>, joten oikealta
+puolelta puuttuu <span class="math inline">\(f_1g_1\)</span>.
+Esimerkiksi kun <span class="math inline">\(n=1\)</span>, vasen puoli on
+<span class="math inline">\(f_1g_1\)</span> mutta oikea puoli <span
+class="math inline">\(0\)</span>. Oikea kaava (Abelin summauskaava) on
+<span class="math inline">\(\sum_{k=1}^n
+f_kg_k=F_ng_n-\sum_{k=1}^{n-1}F_k(g_{k+1}-g_k)\)</span>. Korjaus:
+<code>\sum_{k=1}^n f_k g_k = F_n g_n - \sum_{k=1}^{n-1} F_k\,(g_{k+1}-g_k)</code>
+tai sijoitusmuodon säilyttämiseksi
+<code>\sijoitus{k=0}{k=n} F_k g_k</code> ja lisäys „<span
+class="math inline">\(F_0=0\)</span>“. Luokka: virheellinen kaava.
+Vakavuus: haittaa ratkaisemista (näytettäväksi annettu kaava ei
+päde).</p></li>
+<li><p><strong>Tehtävä 11(*)</strong> (keskeisdifferenssin virhekaava),
+<code>int-6.tex:488</code> Lainaus:
+<code>f'(a)-\frac{f(a+h)-f(a-h)}{2h} \,=\, -\frac{1}{h}\int_{a-h}^{a+h} k(t)f'''(t)\,dt</code>,
+missä <span class="math inline">\(k(t)=\frac12(a\mp h-t)^2\)</span>
+Vika: Taylorin integraalimuodosta saadaan <span
+class="math inline">\(f(a+h)-f(a-h)=2hf&#39;(a)+\int_{a-h}^{a+h}k(t)f&#39;&#39;&#39;(t)\,dt\)</span>,
+joten kerroin on <span class="math inline">\(-\frac{1}{2h}\)</span>.
+Kertoimella <span class="math inline">\(-\frac1h\)</span>
+väliarvomuodoksi tulisi <span
+class="math inline">\(-\frac13h^2f&#39;&#39;&#39;(\xi)\)</span> (koska
+<span class="math inline">\(\int k=h^3/3\)</span>), mikä on
+ristiriidassa tehtävän toisen kaavan <span
+class="math inline">\(-\frac16h^2f&#39;&#39;&#39;(\xi)\)</span> kanssa.
+Toinen kaava on oikein. Varmennettu symbolisesti. Korjaus:
+<code>-\frac{1}{2h}\int_{a-h}^{a+h} k(t)f'''(t)\,dt</code>. Luokka:
+virheellinen kaava. Vakavuus: haittaa ratkaisemista (tehtävän kaksi
+kaavaa ovat keskenään ristiriidassa).</p></li>
+</ul>
+<h4 id="viii7">VIII.7</h4>
+<ul>
+<li><p><strong>Tehtävä 4</strong>, <code>int-7.tex:506</code> Lainaus:
+<code>f(x)=\int_0^\pi \frac{x\sin t}{\sqrt{1+2x\cos t+x^2}}\,dx.</code>
+Vika: integroimismuuttuja on <span class="math inline">\(t\)</span>,
+joten differentiaalin pitää olla <span
+class="math inline">\(dt\)</span>. Korjaus: <code>\,dt.</code> Luokka:
+painovirhe. Vakavuus: vähäinen.</p></li>
+<li><p><strong>Tehtävä 6 b</strong>, <code>int-7.tex:532–533</code>
+Lainaus:
+<code>\frac{1}{\alpha+1}\,n^{\alpha+1}+\mathcal{O}(n^\alpha), kun α&gt;-1</code>
+ja <code>\ln n+\mathcal{O}(n^{-1}), kun α=-1</code> Vika: Määritelmän
+(dif-5, „iso oo“) mukainen arvio <span class="math inline">\(\mathcal
+O(n^\alpha)\)</span> pätee vain, kun <span
+class="math inline">\(\alpha\ge0\)</span>. Kun <span
+class="math inline">\(-1&lt;\alpha&lt;0\)</span>, erotus <span
+class="math inline">\(\sum_{k=1}^nk^\alpha-\frac{n^{\alpha+1}}{\alpha+1}\)</span>
+lähestyy nollasta poikkeavaa vakiota (<span
+class="math inline">\(\zeta(-\alpha)&lt;0\)</span>, esimerkiksi <span
+class="math inline">\(\alpha=-\frac12\)</span>: <span
+class="math inline">\(\approx-1.460\)</span>), kun taas <span
+class="math inline">\(n^\alpha\to0\)</span>. Kun <span
+class="math inline">\(\alpha=-1\)</span>, on <span
+class="math inline">\(\sum_{k=1}^n\frac1k-\ln n\to\gamma\neq0\)</span>
+(Eulerin vakio, saman luvun tehtävä 8), joten jäännös ei ole <span
+class="math inline">\(\mathcal O(n^{-1})\)</span>. Varmennettu
+numeerisesti. Korjaus (esim.): „<span
+class="math inline">\(\frac{1}{\alpha+1}n^{\alpha+1}+\mathcal{O}(n^\alpha)\)</span>,
+kun <span class="math inline">\(\alpha\ge0\)</span>; <span
+class="math inline">\(\frac{1}{\alpha+1}n^{\alpha+1}+\mathcal{O}(1)\)</span>,
+kun <span class="math inline">\(-1&lt;\alpha&lt;0\)</span>; <span
+class="math inline">\(\ln n+\mathcal{O}(1)\)</span>, kun <span
+class="math inline">\(\alpha=-1\)</span>“. Viimeisen voi
+vaihtoehtoisesti kirjoittaa muotoon <span class="math inline">\(\ln
+n+\gamma+\mathcal O(n^{-1})\)</span> viitaten tehtävään 8. Jatkokysymys
+tapauksista <span class="math inline">\(\alpha=0,1\)</span> säilyy
+ennallaan. Luokka: virheellinen väite. Vakavuus: haittaa ratkaisemista
+(tapauksissa <span class="math inline">\(-1\le\alpha&lt;0\)</span>
+väitettä ei voi todistaa).</p></li>
+</ul>
+<h4 id="viii8">VIII.8</h4>
+<ul>
+<li><strong>Tehtävä 1 b</strong>, <code>int-8.tex:388</code> Lainaus:
+<code>0 \le \min\{x,\cos x\},\,\ x\in[0,\pi/2]</code> Vika: muuttuja
+<span class="math inline">\(y\)</span> puuttuu, joten ehto ei rajaa
+tasoaluetta (vrt. kohdat a, c, d). Korjaus:
+<code>0 \le y \le \min\{x,\cos x\},\,\ x\in[0,\pi/2]</code>. Luokka:
+painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="viii9">VIII.9</h4>
+<ul>
+<li><strong>Tehtävä 6</strong> (<code>H-int-9: Riemannin summa</code>),
+<code>int-9.tex:432</code> Lainaus: „välipisteiksi osaväleillä <span
+class="math inline">\([x_{k-1},x]\)</span> valitaan <span
+class="math inline">\(\xi_k=x_{k-1}\)</span>“ Vika: osavälin oikea
+päätepiste on kirjoitettu <span class="math inline">\(x\)</span>.
+Korjaus: <code>[x_{k-1},x_k]</code>. Luokka: painovirhe. Vakavuus:
+vähäinen.</li>
+</ul>
+<h3 id="tulkinnat-7">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<h3 id="kumotut-7">Kumotut</h3>
+<ul>
+<li>(Osittain) VIII.9 tehtävä 6, väite puuttuvasta
+säännöllisyysoletuksesta: kumottu, koska luku asettaa yleissopimuksen
+„Jatkossa ajatellaan … <span class="math inline">\(f\)</span> ko.
+välillä (riittävän) säännölliseksi“ (<code>int-9.tex:43–44</code>).
+Ratkaisun oletus „<span class="math inline">\(f\)</span> jatkuvasti
+derivoituva“ on tämän sopimuksen mukainen. Ratkaisun KIRJA-kommentista
+on poistettu tämä osa.</li>
+</ul>
+<h1 id="osa-ix">Osa IX</h1>
+<p><strong>Yhteenveto:</strong> huomioita 8, vahvistettu 4, kumottu 3,
+tulkinta 1.</p>
+<p>Kaikki kahdeksan huomiota tarkistettiin kirjan lähteestä
+(<code>fi/IX-differentiaaliyhtalot/*.tex</code>), ja laskettavissa
+olevat väitteet tarkistettiin koneella (SymPy). Vahvistetuista yksi
+haittaa tehtävän ratkaisemista tarkoitetulla tavalla (IX.6, tehtävä 2
+c). Muut kolme ovat vähäisiä.</p>
+<h3 id="vahvistetut-8">Vahvistetut</h3>
+<h4 id="luku-ix1-dy-1--kirja--ratkaisut">Luku IX.1 (dy-1) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.9.1">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-1">ratkaisut</a></h4>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-1-13">Tehtävä
+13 a) (verhokäyrä)</a></strong>: <code>dy-1.tex:532–537</code></p>
+<ul>
+<li>Kirjassa: "Käyrää <span class="math inline">\(S:\,y=y_0(x)\)</span>
+sanotaan … \kor{verhokäyräksi}, jos <span
+class="math inline">\(S\)</span> sivuaa jokaista parven käyrää … a)
+Näytä, että … myös <span class="math inline">\(y=y_0(x)\)</span> on
+tämän differentiaaliyhtälön (erikois)ratkaisu."</li>
+<li>Vika: määritelmä vaatii vain, että jokainen parven käyrä sivuaa
+<span class="math inline">\(S\)</span>:ää jossakin pisteessä. Se ei
+vaadi, että <span class="math inline">\(S\)</span>:n jokaisessa
+pisteessä jokin parven käyrä sivuaa <span
+class="math inline">\(S\)</span>:ää. Jos sivuamispisteet peittävät vain
+osan <span class="math inline">\(S\)</span>:stä, a-kohdan väite ei päde.
+Esimerkki: olkoon parvena paraabelin <span
+class="math inline">\(y=-x^2/8\)</span> tangentit kohdissa <span
+class="math inline">\(x=-4\arctan C\)</span>, <span
+class="math inline">\(C\in\R\)</span>. Silloin sivuamispisteet ovat
+välillä <span class="math inline">\((-2\pi,2\pi)\)</span>, ja tämän
+välin ulkopuolella <span class="math inline">\(S\)</span>:ää voi jatkaa
+sileästi mielivaltaisella kaarella, joka ei ratkaise parven yhtälöä
+<span class="math inline">\(y=xy&#39;+2(y&#39;)^2\)</span>. Todistus
+tarvitsee juuri puuttuvan ehdon. Ratkaisussa ehto on lisätty
+tulkintana.</li>
+<li>Korjausehdotus: "…\kor{verhokäyräksi}, jos <span
+class="math inline">\(S\)</span> sivuaa jokaista parven käyrää ja <span
+class="math inline">\(S\)</span>:n jokaisessa pisteessä <span
+class="math inline">\(S\)</span>:ää sivuaa jokin parven käyrä (eli
+…)".</li>
+<li>Luokka: puuttuva oletus. Vakavuus: vähäinen. b-kohdassa ehto
+täyttyy, koska jokaista <span class="math inline">\(x\)</span>:ää vastaa
+sivuava suora <span class="math inline">\(C=-x/4\)</span>.</li>
+</ul>
+<h4 id="luku-ix5-dy-5--kirja--ratkaisut">Luku IX.5 (dy-5) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.9.5">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-5">ratkaisut</a></h4>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-5-1">Tehtävä
+1, alakohdat u)–ö)</a></strong>: <code>dy-5.tex:448</code> ja
+<code>dy-5.tex:450</code></p>
+<ul>
+<li>Kirjassa: "x) \ <span
+class="math inline">\(y&#39;&#39;-4y&#39;-5y=0,\,\ y(0)=1,\
+\lim_{x\kohti\infty}y(x)=0\)</span>" ja kaksi riviä alempana "x) \ <span
+class="math inline">\(y&#39;&#39;-4y&#39;+5y=\sin x,\,\ y(0)=0,\
+y&#39;(0)=-1\)</span>"</li>
+<li>Vika: alakohta x) esiintyy kahdesti, joten järjestys on u, v, x, y,
+x, å, ä, ö. Koska tehtävän alussa puhutaan kohdista "u)--ö)" ja w
+ohitetaan, jälkimmäisen x:n paikalla on ilmeisesti tarkoitettu z.</li>
+<li>Korjausehdotus: rivi 450 muotoon "z) \ <span
+class="math inline">\(y&#39;&#39;-4y&#39;+5y=\sin x,\,\ y(0)=0,\
+y&#39;(0)=-1\)</span>". Ratkaisuissa on käytetty merkintöjä x) ja
+z).</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 9 (*)</strong>: <code>dy-5.tex:524–527</code></p>
+<ul>
+<li>Kirjassa: "Kirjoittamalla differentiaaliyhtälö systeemiksi
+funktioille <span class="math inline">\(y\)</span> ja <span
+class="math inline">\(u=y&#39;-r_2y\)</span> näytä, että … <span
+class="math inline">\(y_0(x)=\int_{x_0}^x e^{r_1(x-t)}\left[\int_{x_0}^t
+e^{r_2(t-s)}f(s)\,ds\right]dt\)</span>."</li>
+<li>Vika: kun <span class="math inline">\(u=y&#39;-r_2y\)</span>,
+saadaan <span class="math inline">\(u&#39;-r_1u=f\)</span> ja <span
+class="math inline">\(y&#39;-r_2y=u\)</span>. Suora päättely antaa siis
+kaavan, jonka uloimmassa eksponentissa on <span
+class="math inline">\(r_2\)</span> ja sisemmässä <span
+class="math inline">\(r_1\)</span>. Esitetty kaava on silti oikein,
+koska ydin <span class="math inline">\(\int_s^x
+e^{r_1(x-t)+r_2(t-s)}\,dt\)</span> on juurten suhteen symmetrinen
+(tarkistettu). Lukija joutuu kuitenkin perustelemaan tämän
+erikseen.</li>
+<li>Korjausehdotus: "…funktioille <span class="math inline">\(y\)</span>
+ja <span class="math inline">\(u=y&#39;-r_1y\)</span> …" (kaava
+ennallaan), tai vaihtoehtoisesti kaavaan <span
+class="math inline">\(r_1\leftrightarrow r_2\)</span>.</li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-ix6-dy-6--kirja--ratkaisut">Luku IX.6 (dy-6) · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.9.6">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-6">ratkaisut</a></h4>
+<p><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-6-2">Tehtävä
+2 c)</a></strong>: <code>dy-6.tex:542</code></p>
+<ul>
+<li>Kirjassa: "c) \ <span
+class="math inline">\((x^2-2x-1)y&#39;&#39;-(2x-1)y&#39;+2y=0;
+\quad\)</span> polynomi"</li>
+<li>Vika: yhtälöllä on polynomiratkaisu <span
+class="math inline">\(2x-1\)</span>, mutta toisen asteen
+polynomiratkaisua ei ole. Kertaluvun alentaminen antaa tekijän <span
+class="math inline">\(e^{-\int
+P}=\abs{x-1-\sqrt2}^{1+\sqrt2/4}\abs{x-1+\sqrt2}^{1-\sqrt2/4}\)</span>,
+ja toinen ratkaisu jää integraaliksi, jossa on irrationaaliset
+eksponentit. Rinnakkaiskohdat a), b), d)–f) ratkeavat siististi. Tämä
+viittaa siihen, että kertoimissa on painovirhe. Kumpikin seuraavista
+yhden merkin korjauksista antaa kaksi polynomiratkaisua (tarkistettu
+sijoittamalla):
+<ul>
+<li><span
+class="math inline">\((x^2-x-1)y&#39;&#39;-(2x-1)y&#39;+2y=0\)</span>:
+ratkaisut <span class="math inline">\(2x-1\)</span> ja <span
+class="math inline">\(x^2+1\)</span> (nyt <span
+class="math inline">\((x^2-x-1)&#39;=2x-1\)</span>),</li>
+<li><span
+class="math inline">\((x^2-2x-1)y&#39;&#39;-(2x-2)y&#39;+2y=0\)</span>:
+ratkaisut <span class="math inline">\(x-1\)</span> ja <span
+class="math inline">\(x^2+1\)</span>.</li>
+</ul></li>
+<li>Korjausehdotus: "c) \ <span
+class="math inline">\((x^2-x-1)y&#39;&#39;-(2x-1)y&#39;+2y=0;
+\quad\)</span> polynomi" (tai vaihtoehtoisesti kerroin <span
+class="math inline">\((2x-2)\)</span>). Ratkaisu on kirjoitettu kirjan
+nykyiselle yhtälölle.</li>
+<li>Luokka: virheellinen väite tai kaava (todennäköinen painovirhe).
+Vakavuus: tehtävä ei ratkea tarkoitetulla tavalla.</li>
+</ul>
+<h3 id="tulkinnat-8">Tulkinnat</h3>
+<p><strong>IX.1, tehtävä 4 d)</strong>: <code>dy-1.tex:459</code>,
+"<span class="math inline">\(y=(1+C_1)\ln\abs{x+C_2}-C_1
+x+C_2\)</span>". Vakio <span class="math inline">\(C_2\)</span> esiintyy
+sekä siirtona että lisättävänä, joten parven toisen kertaluvun yhtälöä
+ei saa polynomimuotoon: siihen jää logaritmi ja toisen asteen yhtälön
+juuri. Vastauksen tarkoitettua muotoa ei voi päätellä lähteestä.
+Ratkaisussa vastaukseksi on valittu toisen kertaluvun yhtälö apusuureen
+<span class="math inline">\(w=x+C_2\)</span> avulla, ja lisätietona on
+annettu polynominen kolmannen kertaluvun yhtälö <span
+class="math inline">\((y&#39;-1)(y&#39;&#39;&#39;)^2=2(y&#39;&#39;)^2y&#39;&#39;&#39;+4(y&#39;&#39;)^3\)</span>
+(molemmat tarkistettu). Ratkaisussa on lukijalle näkyvä huomautus. Jos
+kohtaan oli tarkoitettu siistimpi parvi, asia jää tekijän harkintaan.
+Painovirhettä ei voitu osoittaa.</p>
+<h3 id="kumotut-8">Kumotut</h3>
+<ul>
+<li><strong>IX.1, tehtävä 8 b)</strong> (<code>dy-1.tex:485–491</code>):
+huomautti, että yksikäsitteisyysoletuksella väite on triviaali. Tehtävä
+on oikein ja ratkeaa tarkoitetusti päättelyllä <span
+class="math inline">\(y(x_0)=0\Rightarrow y&#39;(x_0)=0\)</span>, joten
+huomio on makuasia.</li>
+<li><strong>IX.6, tehtävä 5 c)</strong> (<code>dy-6.tex:570</code>,
+"<span class="math inline">\(y&#39;&#39;+2y&#39;+y=1/(x^2+1)\)</span>"):
+integraalit ovat epäalkeellisia, mutta kirja toteaa, että ratkeaminen
+kvadratuureilla ei edellytä alkeisfunktioita
+(<code>dy-1.tex:394–395</code>). Samassa tehtävässä kohdat e)–j)
+odottavat vastausta integraalimuodossa, joten tehtävä on oikein.</li>
+<li><strong>IX.6, tehtävä 8 b)</strong> (<code>dy-6.tex:601</code>,
+"<span class="math inline">\(y&#39;&#39;+2xy+6y=0\)</span>"): huomio
+arveli, että termi <span class="math inline">\(2xy\)</span> olisi
+painovirhe termistä <span class="math inline">\(2xy&#39;\)</span>.
+Kirjoitettu yhtälö on kuitenkin yksiselitteinen ja ratkeaa vaaditussa
+sarjamuodossa, eikä painovirhettä voi osoittaa. Ratkaisu on laskettu
+kirjoitetulle yhtälölle (tarkistettu). Jos tarkoitus oli <span
+class="math inline">\(2xy&#39;\)</span>, korjaus on tekijän
+harkinnassa.</li>
+</ul>
+<h1 id="osa-x">Osa X</h1>
+<p><strong>Yhteenveto:</strong> 7 huomiota, 6 vahvistettu, 1 kumottu, 0
+tulkintaa. (Ratkaisuissa oli 6 KIRJA-kommenttia. Luvun X.7 tehtävän 10
+kommentissa oli kaksi erillistä huomiota, joten ne arvioitiin
+erikseen.)</p>
+<p>Lähdetiedostot ovat hakemistossa <code>fi/X-matriisit/</code>.
+Rivinumerot viittaavat nykyiseen lähdekoodiin.</p>
+<h3 id="vahvistetut-9">Vahvistetut</h3>
+<h4 id="x2-neliömatriisit-käänteismatriisi">X.2 Neliömatriisit.
+Käänteismatriisi</h4>
+<p><strong>Tehtävä 3 d</strong> (<code>m-2.tex:511</code>)</p>
+<ul>
+<li>Kirjassa:
+<code>\begin{bmatrix} 1&amp;1&amp;1&amp;1\\1&amp;1&amp;-1&amp;-1&amp;\\1&amp;-1&amp;1&amp;-1\\...</code></li>
+<li>Vika: Toisen rivin lopussa on ylimääräinen <code>&amp;</code>.
+Tehtävän sisältö ei muutu, mutta <code>rmatrix</code>-ympäristöön
+(array) syntyy tyhjä viides sarake. Sen sarakeväli näkyy ylimääräisenä
+tyhjänä tilana ennen oikeaa hakasulkua.</li>
+<li>Korjaus: <code>1&amp;1&amp;-1&amp;-1\\</code></li>
+<li>Luokka: painovirhe (ladonta). Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="x4-tuettu-gaussin-algoritmi-singulaariset-yhtälöryhmät">X.4
+Tuettu Gaussin algoritmi. Singulaariset yhtälöryhmät</h4>
+<p><strong>Teoriaosa, kohta b)</strong>
+(<code>m-4.tex:226–232</code>)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\([\mL]_{ij} =
+\delta_{ij}\)</span>, kun <span class="math inline">\(i \in \{k+1,
+\ldots, n\},\ j \in \{1, \ldots, n\}\)</span>".</li>
+<li>Vika: Indeksit ovat vaihtaneet paikkaa. Kun eliminaatio pysähtyy
+riville <span class="math inline">\(k\)</span>, sarakkeiden <span
+class="math inline">\(j\le k\)</span> eliminaatioaskeleet on tehty, ja
+niiden kertoimet ovat <span class="math inline">\(\mL\)</span>:n
+riveillä <span class="math inline">\(i&gt;k\)</span>. Askeleita <span
+class="math inline">\(j&gt;k\)</span> ei tehdä, joten yksikkömatriisin
+muotoisia ovat <span class="math inline">\(\mL\)</span>:n
+<em>sarakkeet</em> <span class="math inline">\(j&gt;k\)</span>. Kirjan
+muodolla hajotelma <span class="math inline">\(\mB=\mL\mU\)</span> ei
+päde. Luvun omassa esimerkissä on <span
+class="math inline">\(\mB=\begin{bmatrix}4&amp;0&amp;2\\0&amp;3&amp;0\\2&amp;0&amp;1\end{bmatrix}\)</span>
+ja <span class="math inline">\(k=2\)</span>, ja oikea kerroin on <span
+class="math inline">\(l_{31}=\tfrac12\)</span>. Kirjan säännöllä <span
+class="math inline">\(\mL=\mI\)</span>, jolloin <span
+class="math inline">\(\mL\mU=\mU\neq\mB\)</span>.</li>
+<li>Samassa kohdassa (rivi 226) lukee "<span
+class="math inline">\([\mU]_{ii}\neq0,\ i=1\ldots k&lt;n\)</span>, <span
+class="math inline">\([\mU]_{i,i,}=0,\ i=k\ldots n\)</span>". Indeksi
+<span class="math inline">\(i=k\)</span> kuuluu molempiin ehtoihin, ja
+alaindeksissä on ylimääräinen pilkku. Rivillä 229 on lisäksi
+kirjoitusvirhe "astetetaan".</li>
+<li>Korjaus:
+<ul>
+<li>rivi 226:
+<code>$[\mU]_{ii} \neq 0,\ i=1\,\ldots\,k&lt;n$, $[\mU]_{ii}=0,\ i=k+1 \ldots n$</code></li>
+<li>rivi 229: "asetetaan"</li>
+<li>rivit 231–232:
+<code>[\mL]_{ij} = \delta_{ij}, \quad \text{kun} \quad i \in \{1, \ldots, n\}, \ j \in \{k+1, \ldots, n\}.</code></li>
+</ul></li>
+<li>Luokka: virheellinen väite tai kaava (lisäksi painovirheitä).
+Vakavuus: haittaa ratkaisemista. Harj.teht. X.4.3 pyytää singulaarisen
+matriisin tulohajotelman, ja kirjan sääntöä noudattamalla saadaan väärä
+<span class="math inline">\(\mL\)</span>.</li>
+</ul>
+<h4 id="x6-lineaarikuvaukset">X.6 Lineaarikuvaukset</h4>
+<p><strong>Tehtävä 4 c</strong> (<code>m-6.tex:544</code>)</p>
+<ul>
+<li>Kirjassa:
+<code>[1,1,1,1,1,1,1,1,1],\ [0,1,1,1,1,1,1,1,1,1],\ \ldots,\ [0,0,0,0,0,0,0,0,1]</code></li>
+<li>Vika: Toisessa vektorissa on 10 komponenttia, muissa 9.</li>
+<li>Korjaus: <code>[0,1,1,1,1,1,1,1,1]</code></li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="x7-affiinikuvaukset-geometriset-kuvaukset">X.7 Affiinikuvaukset.
+Geometriset kuvaukset</h4>
+<p><strong>Tehtävä 3 a</strong> (<code>m-7.tex:414</code>)</p>
+<ul>
+<li>Kirjassa: "vektorin <span class="math inline">\(x_i\vec i+x_2\vec
+j+x_3\vec k\)</span> koordinaatit".</li>
+<li>Korjaus: <code>$x_1\vec i+x_2\vec j+x_3\vec k$</code></li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 10</strong> (<code>m-7.tex:478</code>)</p>
+<ul>
+<li>Kirjassa: "suunnasta <span class="math inline">\(\vec v=6\vec
+i-3\vec j-2\vec j\)</span> katsoen".</li>
+<li>Vika: Kirjaimellisesti luettuna <span class="math inline">\(\vec
+v=6\vec i-5\vec j\)</span>, joka ei ole suoran <span
+class="math inline">\(S:\ x=1+6t,\ y=1-3t,\ z=-2t\)</span> suuntainen.
+Tarkoitettu vektori näkyy suoran yhtälöstä.</li>
+<li>Korjaus: <code>$\vec v=6\vec i-3\vec j-2\vec k$</code></li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 11</strong> (<code>m-7.tex:484</code>)</p>
+<ul>
+<li>Kirjassa: "<span
+class="math inline">\(f(x,y,z)=x+2y+3x=\)</span>max!"</li>
+<li>Vika: Kirjaimellisesti <span class="math inline">\(f=4x+2y\)</span>.
+Tämäkin tehtävä ratkeaa, mutta tulos on eri: maksimi 16 pisteessä <span
+class="math inline">\((4,0,1)\)</span>. Tarkoitetulla kohdefunktiolla
+<span class="math inline">\(x+2y+3z\)</span> maksimi on 11 pisteessä
+<span class="math inline">\((0,1,3)\)</span> (tarkistettu
+koneella).</li>
+<li>Korjaus: <code>$f(x,y,z)=x+2y+3z=$max!</code></li>
+<li>Luokka: painovirhe. Vakavuus: haittaa ratkaisemista, koska
+kirjaimellinen luenta johtaa eri vastaukseen.</li>
+</ul>
+<h3 id="tulkinnat-9">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<h3 id="kumotut-9">Kumotut</h3>
+<ul>
+<li><strong>X.7 tehtävä 10, vihje</strong>
+(<code>m-7.tex:479–481</code>). Huomion mukaan vihjeessä mainitun
+Harj.teht. X.6.6a matriisin <span class="math inline">\(\mB\)</span>
+rivit eivät anna kantaa, jonka kolmas vektori olisi <span
+class="math inline">\(S\)</span>:n suuntainen. Huomio kumotaan, koska
+vihje viittaa tehtävään, joka pyytää myös käänteisen muunnoskaavan. Tämä
+muunnos <span class="math inline">\(\mx&#39;=\mB^T\mx\)</span> vie <span
+class="math inline">\(S\)</span>:n suunnan <span
+class="math inline">\(z&#39;\)</span>-akselille: <span
+class="math inline">\(\mB^T[6,-3,-2]^T=[0,0,7]^T\)</span>. Data on siis
+tarkoituksella yhteensopiva, eikä vihjeessä ole vikaa. Ratkaisu käyttää
+jo tätä muunnosta, joten sitä ei tarvinnut muuttaa. Kommentista
+poistettiin vain tämä osa.</li>
+</ul>
+<h1 id="osa-xi">Osa XI</h1>
+<p><strong>Yhteenveto:</strong> huomioita 20, vahvistettu 17, kumottu 3,
+tulkinta 0.</p>
+<p>Kaikki rivinumerot viittaavat hakemiston
+<code>fi/XI-usean-muuttujan-differentiaalilaskenta/</code> tiedostoihin.
+Laskettavissa olevat väitteet on tarkistettu koneella (sympy).</p>
+<h3 id="vahvistetut-10">Vahvistetut</h3>
+<h4 id="luku-111-udif-1">Luku 11.1 (udif-1)</h4>
+<p><strong>Tehtävä 5 a)</strong> (udif-1.tex:378)</p>
+<ul>
+<li>Kirjassa: "Näytä suoraan Lauseen \ref{kahden muuttujan
+vaihtoehtoinen jatkuvuus} avulla"</li>
+<li>Vika: Viitattu kohta on määritelmä (<code>\begin{Def}</code>,
+udif-1.tex:183), ja rivillä 182 se esitelläänkin määritelmänä. Ladottuna
+tekstissä lukee siis "Lauseen" kohdassa, jossa pitäisi lukea
+"Määritelmän".</li>
+<li>Korjaus: "Näytä suoraan Määritelmän \ref{kahden muuttujan
+vaihtoehtoinen jatkuvuus} avulla"</li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-112-udif-2">Luku 11.2 (udif-2)</h4>
+<p><strong>Tehtävä 17 (*)</strong> (udif-2.tex:698–699)</p>
+<ul>
+<li>Kirjassa: "suorakulmiossa <span
+class="math inline">\(A=(a,b)\times(c,d)\)</span> … niin <span
+class="math inline">\(f(x,y)=a+bx+cy\)</span> … jollakin <span
+class="math inline">\((a,b,c)\in\R^3\)</span>"</li>
+<li>Vika: Samassa virkkeessä kirjaimet <span
+class="math inline">\(a,b,c\)</span> tarkoittavat ensin suorakulmion
+päätepisteitä ja sitten polynomin kertoimia. Kertoimet ovat eri lukuja
+kuin päätepisteet.</li>
+<li>Korjaus: "<span class="math inline">\(f(x,y)=\alpha+\beta x+\gamma
+y,\ (x,y)\in A\)</span> jollakin <span
+class="math inline">\((\alpha,\beta,\gamma)\in\R^3\)</span>"</li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-113-udif-3">Luku 11.3 (udif-3)</h4>
+<p><strong>Tehtävä 8 d)</strong> (udif-3.tex:565)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(\vec 2i+\vec 2j-3\vec
+k\)</span>"</li>
+<li>Vika: Vektorinuoli on ladottu numeroiden 2 päälle.</li>
+<li>Korjaus: "<span class="math inline">\(2\vec i+2\vec j-3\vec
+k\)</span>"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 13 (*)</strong> (udif-3.tex:610–613)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(A=(1,1,-2)\)</span> … <span
+class="math inline">\(S_1:\ x^3+y^2+z=0,\ x+y^2+z^3=-5\)</span>"</li>
+<li>Vika: Piste <span class="math inline">\(A\)</span> ei ole käyrällä
+<span class="math inline">\(S_1\)</span>: <span
+class="math inline">\(1+1+(-2)^3=-6\neq-5\)</span>. Ensimmäinen yhtälö
+toteutuu, ja <span class="math inline">\(B=(-1,-2,4)\)</span> toteuttaa
+molemmat käyrän <span class="math inline">\(S_2\)</span> yhtälöt.
+Tangentin suunta pisteessä <span class="math inline">\(A\)</span>
+riippuu vain gradienteista, joten tulos ei muutu, kun oikea puoli
+korjataan.</li>
+<li>Korjaus: "<span class="math inline">\(x+y^2+z^3=-6\)</span>"</li>
+<li>Luokka: virheellinen tieto (todennäköisesti painovirhe). Vakavuus:
+haittaa ratkaisemista (lukija huomaa ristiriidan, mutta tarkoitettu
+ratkaisu on silti saatavissa).</li>
+</ul>
+<h4 id="luku-114-udif-4">Luku 11.4 (udif-4)</h4>
+<p><strong>Tehtävä 5 c)</strong> (udif-4.tex:459)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(u(x,t)=e^{-\omega^2
+t}(A\sin\omega x+B\sin\omega x)\)</span>"</li>
+<li>Vika: Molemmat termit ovat sinejä. Väite pätee silti, mutta on
+ilmeistä, että toisen termin piti olla kosini.</li>
+<li>Korjaus: "<span class="math inline">\(u(x,t)=e^{-\omega^2
+t}(A\sin\omega x+B\cos\omega x)\)</span>"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-115-udif-5">Luku 11.5 (udif-5)</h4>
+<p><strong>Tehtävä 6 c)</strong> (udif-5.tex:346)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(R_1=0,\ R_2=R,\
+q(r)=Q(1-r^2/R^2),\ u&#39;(R)=0\)</span>"</li>
+<li>Vika: Integroimalla yhtälö <span
+class="math inline">\(-(ru&#39;)&#39;=rq\)</span> välillä <span
+class="math inline">\([0,R]\)</span> saadaan <span
+class="math inline">\(Ru&#39;(R)=-\int_0^R q\,r\,dr=-QR^2/4\)</span>.
+Reunaehto <span class="math inline">\(u&#39;(R)=0\)</span> on siis
+mahdollinen vain, kun <span class="math inline">\(Q=0\)</span>.
+Neumannin reunaehdolla lähteen kokonaistehon pitäisi olla nolla.</li>
+<li>Korjaus (kaksi vaihtoehtoa): (i) reunaehdoksi <span
+class="math inline">\(u(R)=0\)</span> (tai <span
+class="math inline">\(u(R)=u_0\)</span>). Tämä korjaa samalla myös
+tehtävän 7. (ii) Reunaehto säilytetään ja lähteeksi vaihdetaan <span
+class="math inline">\(q(r)=Q(1-2r^2/R^2)\)</span>, jolloin <span
+class="math inline">\(u=C-Q\bigl(\tfrac{r^2}{4}-\tfrac{r^4}{8R^2}\bigr)\)</span>
+ja vakio <span class="math inline">\(C\)</span> jää määräämättä.</li>
+<li>Luokka: ratkeamaton tehtävä. Vakavuus: tehtävä ei ratkea
+tarkoitetulla tavalla.</li>
+</ul>
+<p><strong>Tehtävä 7, tapaus c)</strong> (udif-5.tex:355–357, viittaa
+riviin 346)</p>
+<ul>
+<li>Kirjassa: "Määrää <span class="math inline">\(u\)</span> edellisen
+tehtävän tapauksissa."</li>
+<li>Vika: Pallossa on sama ristiriita: <span
+class="math inline">\(\int_0^R q\,r^2\,dr=2QR^3/15\neq0\)</span>.
+Vaihtoehto (ii) ei auta tässä, koska pallossa yhteensopiva lähde olisi
+esimerkiksi <span
+class="math inline">\(Q(1-\tfrac{5r^2}{3R^2})\)</span>.</li>
+<li>Korjaus: tehtävän 6 c) vaihtoehto (i), siis Dirichlet'n reunaehto,
+korjaa molemmat tehtävät kerralla.</li>
+<li>Luokka: ratkeamaton tehtävä. Vakavuus: tehtävä ei ratkea
+tarkoitetulla tavalla.</li>
+</ul>
+<h4 id="luku-116-udif-6">Luku 11.6 (udif-6)</h4>
+<p><strong>Tehtävä 1 c)</strong> (udif-6.tex:437; myös rivi 432)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\((1,3,3)\,\
+(0.99,,3.02,2.97)\)</span>" ja "<span
+class="math inline">\(\mf\)</span>:n Jakobin matriisi"</li>
+<li>Vika: Toisessa pisteessä on kaksoispilkku, ja pisteiden välistä
+puuttuu pilkku, joka muissa kohdissa on. Rivillä 432 lukee "Jakobin",
+kun kirja kirjoittaa muualla "Jacobin" (esim. udif-6.tex:1,
+udif-7.tex:110).</li>
+<li>Korjaus: "<span class="math inline">\((1,3,3),\,\
+(0.99,3.02,2.97)\)</span>" ja "Jacobin matriisi"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-117-udif-7">Luku 11.7 (udif-7)</h4>
+<p><strong>Tehtävä 10</strong> (udif-7.tex:591)</p>
+<ul>
+<li>Kirjassa: "määrittelee pisteen <span
+class="math inline">\(P=(a,b,c)\)</span> ympäristössä parametrisen
+käyrän"</li>
+<li>Vika: <span class="math inline">\(P\)</span> ei toteuta kumpaakaan
+yhtälöä: vasemmat puolet ovat <span class="math inline">\(3\)</span> ja
+<span class="math inline">\(5\)</span>, ei <span
+class="math inline">\(1\)</span>. Esimerkiksi piste <span
+class="math inline">\((a/2,\,b/2,\,c/\sqrt2)\)</span> on käyrällä, ja
+siinä ratkeavuusehto pätee: <span
+class="math inline">\(\partial(F_1,F_2)/\partial(x,y)\)</span>:n
+determinantti on <span class="math inline">\(4/(ab)\neq0\)</span>.</li>
+<li>Korjaus: "<span
+class="math inline">\(P=(a/2,\,b/2,\,c/\sqrt2)\)</span>"</li>
+<li>Luokka: ristiriitainen tehtävä. Vakavuus: tehtävä ei ratkea
+tarkoitetulla tavalla.</li>
+</ul>
+<p><strong>Tehtävä 11 h)</strong> (udif-7.tex:610–611)</p>
+<ul>
+<li>Kirjassa: "h) <span
+class="math inline">\(2x^2+3y^2+z^2=47\,\ja\,x^2+2y^2-z=0,\
+P=(-2,1,6)\)</span> …"</li>
+<li>Vika: Kohta on sanatarkka toisto kohdasta f) (rivit 606–607).</li>
+<li>Korjaus: poistetaan h) tai korvataan se uudella alakohdalla.</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<h4 id="luku-118-udif-8">Luku 11.8 (udif-8)</h4>
+<p><strong>Tehtävä 1 å)</strong> (udif-8.tex:537)</p>
+<ul>
+<li>Kirjassa: "<span
+class="math inline">\((x+2y+3z+4u)e^{-x^2y^2z^2u^2}\)</span>"</li>
+<li>Vika: Todennäköisesti plusmerkit ovat pudonneet pois, vrt. kohdat y)
+ja z). Kirjaimellisesti luettuna tehtävä on triviaali: <span
+class="math inline">\(f(t,0,0,0)=t\)</span>, joten suurinta tai pienintä
+arvoa ei ole. Muodolla <span
+class="math inline">\(e^{-(x^2+y^2+z^2+u^2)}\)</span> ääriarvot ovat
+<span class="math inline">\(\pm\sqrt{15/e}\approx\pm2.349\)</span>
+pisteissä <span
+class="math inline">\(\pm\tfrac{1}{\sqrt{60}}(1,2,3,4)\)</span>.</li>
+<li>Korjaus: "<span
+class="math inline">\((x+2y+3z+4u)e^{-x^2-y^2-z^2-u^2}\)</span>"</li>
+<li>Luokka: painovirhe (todennäköinen). Vakavuus: haittaa
+ratkaisemista.</li>
+</ul>
+<p><strong>Tehtävä 4 d)</strong> (udif-8.tex:558)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(x+2y-3x=\)</span> min!/max!
+pallopinnalla <span class="math inline">\(x^2+y^2+z^2=1\)</span>"</li>
+<li>Vika: Ilmeinen painovirhe, sillä <span
+class="math inline">\(z\)</span> puuttuu kohdefunktiosta.</li>
+<li>Korjaus: "<span class="math inline">\(x+2y-3z=\)</span>
+min!/max!"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 5 b)</strong> (udif-8.tex:571–572)</p>
+<ul>
+<li>Kirjassa: "Mikä pinnan <span
+class="math inline">\(S:\,xy+2yz+3xz=0\)</span> piste <span
+class="math inline">\(Q\)</span> on lähinnä pistettä <span
+class="math inline">\(P=(-2,2,-2)\)</span>?"</li>
+<li>Vika: <span class="math inline">\(P\)</span> on itse pinnalla: <span
+class="math inline">\(-4-8+12=0\)</span>. Siksi <span
+class="math inline">\(Q=P\)</span>, eikä Lagrangen menetelmää tarvita
+(<span class="math inline">\(\lambda=0\)</span>).</li>
+<li>Korjaus: pisteen <span class="math inline">\(P\)</span> koordinaatit
+tai pinnan kertoimet on tarkistettava. Alkuperäisiä lukuja ei voi
+päätellä. Kokeilin etumerkkimuunnelmia <span
+class="math inline">\((\pm2,\pm2,\pm2)\)</span>, eikä mikään niistä anna
+siistiä vastausta.</li>
+<li>Luokka: ristiriitainen tehtävä. Vakavuus: tehtävä ei ratkea
+tarkoitetulla tavalla.</li>
+</ul>
+<p><strong>Tehtävä 12 (*)</strong> (udif-8.tex:624, vrt. 618)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(|\Nabla
+f(\mx_0)-\sum_{i=1}^m\lambda_i\Nabla g_i(\mx_0)|^2 =
+\text{min!}\)</span>", kun <span class="math inline">\(F=f+\sum\lambda_i
+g_i\)</span></li>
+<li>Vika: <span class="math inline">\(F\)</span>:n kriittisessä
+pisteessä on <span class="math inline">\(\nabla f=-\sum\mu_i\nabla
+g_i\)</span>. Kirjoitetulla miinusmerkillä minimointi antaa siis <span
+class="math inline">\(\boldsymbol\lambda_0=-\boldsymbol\mu\)</span>, ei
+väitettyä <span
+class="math inline">\(\boldsymbol\lambda_0=\boldsymbol\mu\)</span>.
+Luvun esimerkissä (udif-8.tex:502) käytetään plusmerkkiä: <span
+class="math inline">\(\vec a+\lambda\vec b\approx\vec 0\)</span>.</li>
+<li>Korjaus: "<span class="math inline">\(|\Nabla
+f(\mx_0)+\sum_{i=1}^m\lambda_i\Nabla g_i(\mx_0)|^2 =
+\text{min!}\)</span>"</li>
+<li>Luokka: virheellinen kaava (etumerkki). Vakavuus: haittaa
+ratkaisemista.</li>
+</ul>
+<h4 id="luku-119-udif-9">Luku 11.9 (udif-9)</h4>
+<p><strong>Tehtävä 1 m), n)</strong> (udif-9.tex:273, 289–290)</p>
+<ul>
+<li>Kirjassa: "Taylorin polynomit annettua astetta <span
+class="math inline">\(n\)</span>" ja "<span
+class="math inline">\(f(\mx)=\cos(x_1+\ldots+x_n),\ \mo,\
+n=2\)</span>"</li>
+<li>Vika: <span class="math inline">\(n\)</span> tarkoittaa samassa
+kohdassa sekä muuttujien määrää että polynomin astetta. Kirjaimellisesti
+<span class="math inline">\(n=2\)</span> kiinnittäisi myös
+ulottuvuuden.</li>
+<li>Korjaus: kohdissa m) ja n) "<span
+class="math inline">\(n=2\)</span>" korvataan tekstillä "aste <span
+class="math inline">\(2\)</span>" (ulottuvuus <span
+class="math inline">\(n\)</span> jää vapaaksi).</li>
+<li>Luokka: merkintävirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 3, kolmas alakohta</strong> (udif-9.tex:302)</p>
+<ul>
+<li>Kirjassa: "b)\ \ \cos(xy)\approx 1-\frac{1}{2},x^2y^2"</li>
+<li>Vika: Alakohtatunnus "b)" toistuu. Kolmannen alakohdan pitäisi olla
+c).</li>
+<li>Korjaus: "c)"</li>
+<li>Luokka: painovirhe. Vakavuus: vähäinen.</li>
+</ul>
+<p><strong>Tehtävä 3 d)</strong> (udif-9.tex:303)</p>
+<ul>
+<li>Kirjassa: "<span class="math inline">\(2xy+2\cos(x-y) \approx
+2+x^2+y^2\)</span>"</li>
+<li>Vika: Oikea puoli ei ole funktion toisen asteen Taylorin polynomi.
+Polynomi olisi <span class="math inline">\(2+4xy-x^2-y^2\)</span>.
+Kirjoitetun approksimaation virhe on <span class="math inline">\(2\cos
+t-2-t^2\)</span>, missä <span class="math inline">\(t=x-y\)</span>,
+joten virhe on samaa kertalukua <span
+class="math inline">\(O(t^2)\)</span> kuin pelkällä vakiolla <span
+class="math inline">\(2\)</span>. Kiekossa virheen maksimi on <span
+class="math inline">\(2-2\cos(\sqrt2a)+2a^2\)</span>.
+Kosinihyperbolisella muodolla <span
+class="math inline">\(2xy+2\cosh(x-y)\)</span> oikea puoli on täsmälleen
+Taylorin polynomi, ja virheen maksimi on <span
+class="math inline">\(2\cosh(\sqrt2a)-2-2a^2=O(a^4)\)</span>. Tehtävä
+ratkeaa kirjaimellisestikin, joten kyse on todennäköisestä
+painovirheestä eikä ristiriidasta.</li>
+<li>Korjaus: "<span class="math inline">\(2xy+2\cosh(x-y)\approx
+2+x^2+y^2\)</span>"</li>
+<li>Luokka: virheellinen kaava (todennäköinen painovirhe). Vakavuus:
+vähäinen.</li>
+</ul>
+<h3 id="tulkinnat-10">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<h3 id="kumotut-10">Kumotut</h3>
+<ul>
+<li><strong>udif-1, tehtävä 2 m)</strong> (udif-1.tex:355–358): Lauseke
+<span class="math inline">\(\sin(xyz)/\sin(xy)\)</span> ei ole
+määritelty tasoilla <span class="math inline">\(xy=k\pi\)</span>, <span
+class="math inline">\(k\neq0\)</span>. Tämä ei ole virhe, koska kirjan
+vakiintuneen käytännön mukaan funktio määritellään lausekkeen
+määrittelyjoukossa ja jatkuvuutta tutkitaan vain <span
+class="math inline">\(\DF_f\)</span>:n pisteissä (vrt. udif-1.tex:138,
+153–167). Ratkaisu toimii jo näin.</li>
+<li><strong>udif-1, tehtävä 3</strong> (udif-1.tex:369): "<span
+class="math inline">\(S:\ ax+by=0\ (a,b\in\R)\)</span>" sallii muka
+tapauksen <span class="math inline">\(a=b=0\)</span>. Teksti puhuu
+kuitenkin suorasta, mikä jo edellyttää <span
+class="math inline">\((a,b)\neq(0,0)\)</span>. Huomio on makuasia.</li>
+<li><strong>udif-6, tehtävä 12</strong> (udif-6.tex:521): Kaavassa <span
+class="math inline">\(\vec G=-k\nabla u\)</span> ei ole
+etumerkkivirhettä, koska vakion <span class="math inline">\(k\)</span>
+etumerkkiä ei ole kiinnitetty. Muoto noudattaa kirjan konventiota <span
+class="math inline">\(\vec G=-\nabla u\)</span> (udif-4.tex:88), ja
+pisteet, joissa <span class="math inline">\(\vec G=\vec 0\)</span>,
+eivät riipu <span class="math inline">\(k\)</span>:sta.</li>
+</ul>
+<h3
+id="ohimennen-havaittua-ei-laskettu-mukaan-yllä-oleviin-lukuihin">Ohimennen
+havaittua (ei laskettu mukaan yllä oleviin lukuihin)</h3>
+<ul>
+<li>udif-5.tex:351: "kapplaeessa" → "kappaleessa"</li>
+<li>udif-6.tex:520: "avaruden" → "avaruuden"</li>
+</ul>
+<h1 id="osa-xii">Osa XII</h1>
+<p><strong>Yhteenveto:</strong> huomioita 3, vahvistettu 3, kumottu 0,
+tulkinta 0.</p>
+<p>Kaikki kolme huomiota tarkistettiin kirjan lähteestä ja laskemalla
+koneella (sympy).</p>
+<h3 id="vahvistetut-11">Vahvistetut</h3>
+<h4 id="121-matriisin-ominaisarvot-harjoitustehtävä-8-b">12.1 Matriisin
+ominaisarvot, Harjoitustehtävä 8 b</h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/XII-matriisin-ominaisarvot-ja-neliomuodot/eig-1.tex:554</code></li>
+<li><strong>Kirjassa:</strong> "muodosta ominaisvektoreista <span
+class="math inline">\(\R^2\)</span>:n, … ortonormeerattu, positiivisesti
+suunnistettu kanta", kohta b) <span
+class="math inline">\(\begin{bmatrix} 1&amp;1\\2&amp;2
+\end{bmatrix}\)</span></li>
+<li><strong>Mikä on vialla:</strong> Matriisi ei ole symmetrinen. Sen
+ominaisarvot ovat 0 ja 3, ja ominaisvektorit <span
+class="math inline">\([1,-1]^T\)</span> ja <span
+class="math inline">\([1,2]^T\)</span> eivät ole kohtisuorassa toisiaan
+vastaan, joten ominaisvektoreista ei saa ortonormeerattua kantaa. Kaikki
+muut kohdat (a, c–j) ovat symmetrisiä. Jos kohta on tarkoitettu
+esimerkiksi siitä, että kanta puuttuu, tehtävänanto ei kerro sitä.</li>
+<li><strong>Ehdotettu korjaus:</strong> joko korvataan b)-kohdan
+matriisi symmetrisellä, esim. <span
+class="math inline">\(\begin{bmatrix} 1&amp;2\\2&amp;4
+\end{bmatrix}\)</span> (ominaisarvot 0 ja 5) tai <span
+class="math inline">\(\begin{bmatrix} 1&amp;1\\1&amp;1
+\end{bmatrix}\)</span> (ominaisarvot 0 ja 2), tai säilytetään matriisi
+ja lisätään tehtävänantoon "(jos mahdollista)".</li>
+<li><strong>Luokka:</strong> ratkeamaton tai ristiriitainen tehtävä
+(todennäköisesti painovirhe)</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista</li>
+<li>Ratkaisussa on ratkaistu kirjaimellinen tehtävä: ominaisarvot ja
+-vektorit määritetään ja osoitetaan, ettei ortonormeerattua kantaa
+ole.</li>
+</ul>
+<h4 id="122-neliömuotojen-luokittelu-harjoitustehtävä-8-d">12.2
+Neliömuotojen luokittelu, Harjoitustehtävä 8 d</h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/XII-matriisin-ominaisarvot-ja-neliomuodot/eig-2.tex:599</code></li>
+<li><strong>Kirjassa:</strong> "d) \ <span
+class="math inline">\(xy+yx-xz+2x-3y+z+1=0\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Termiä <span
+class="math inline">\(yx\)</span> tuskin on tarkoitettu, koska <span
+class="math inline">\(xy+yx=2xy\)</span>. Kirjaimellisesti luettuna
+tehtävä kyllä ratkeaa: ominaisarvot ovat <span
+class="math inline">\(\pm\sqrt5/2\)</span> ja <span
+class="math inline">\(0\)</span>, keskipistettä ei ole ja pinta on
+hyperbolinen paraboloidi. Kohtien a)–c) rakenteen perusteella
+tarkoitettu yhtälö on kuitenkin luultavasti <span
+class="math inline">\(xy+yz-xz+2x-3y+z+1=0\)</span>. Sen ominaisarvot
+ovat <span class="math inline">\(-1,\tfrac12,\tfrac12\)</span>,
+keskipiste on kokonaislukupiste <span
+class="math inline">\((1,0,2)\)</span> ja pinta on kaksivaippainen
+pyörähdyshyperboloidi. Laskut on tarkistettu koneella.</li>
+<li><strong>Ehdotettu korjaus:</strong> "d) \ <span
+class="math inline">\(xy+yz-xz+2x-3y+z+1=0\)</span>"</li>
+<li><strong>Luokka:</strong> painovirhe</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista (lukija ei voi
+tietää, kumpi yhtälö on tarkoitettu)</li>
+<li>Ratkaisu käsittelee yhtälöä <span
+class="math inline">\(xy+yz-xz+\ldots\)</span>. Siihen lisättiin
+lukijalle näkyvä huomautus, jossa kerrotaan valittu luenta ja
+kirjaimellisen yhtälön tulos (hyperbolinen paraboloidi, <span
+class="math inline">\(\zeta=\tfrac52(\xi^2-\eta^2)\)</span>).</li>
+</ul>
+<h4
+id="123-pinnan-kaarevuus-harjoitustehtävä-3-h-eig-3-kaarevuusmatriisi">12.3
+Pinnan kaarevuus, Harjoitustehtävä 3
+(<code>H-eig-3: kaarevuusmatriisi</code>)</h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/XII-matriisin-ominaisarvot-ja-neliomuodot/eig-3.tex:332</code></li>
+<li><strong>Kirjassa:</strong> "<span
+class="math inline">\(\mA=-\frac{1}{F_z(P)} \begin{bmatrix}
+F_{xx}(P)&amp;F_{xy}(P)\\F_{xy}(P)&amp;F_{zz}(P)
+\end{bmatrix}\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Oikean alakulman alkion pitää olla
+<span class="math inline">\(F_{yy}(P)\)</span>. Implisiittisen funktion
+<span class="math inline">\(z=f(x,y)\)</span> derivaatat ovat <span
+class="math inline">\(f_{yy}=-F_{yy}/F_z\)</span>, kun <span
+class="math inline">\(F_x=F_y=0\)</span> pisteessä <span
+class="math inline">\(P\)</span>. Esimerkiksi pinnalla <span
+class="math inline">\(F=z-x^2-3y^2\)</span> on <span
+class="math inline">\(\mA=\mathrm{diag}(2,6)\)</span>, mutta kaava
+antaisi alakulmaan 0, koska <span
+class="math inline">\(F_{zz}=0\)</span>. Väite ei siis kirjaimellisesti
+pidä paikkaansa.</li>
+<li><strong>Ehdotettu korjaus:</strong>
+<code>\begin{bmatrix} F_{xx}(P)&amp;F_{xy}(P)\\F_{xy}(P)&amp;F_{yy}(P) \end{bmatrix}</code></li>
+<li><strong>Luokka:</strong> virheellinen väite tai kaava
+(painovirhe)</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista (väitettä ei voi
+todistaa sellaisenaan, korjaus on kuitenkin ilmeinen). Tekstin rivillä
+277 viitataan tähän tehtävään. Siellä esitetyt laskut ovat oikein.</li>
+<li>Ratkaisussa todistetaan korjattu väite.</li>
+</ul>
+<h3 id="tulkinnat-11">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<h3 id="kumotut-11">Kumotut</h3>
+<p>Ei yhtään.</p>
+<h1 id="osa-xiii">Osa XIII</h1>
+<p><strong>Yhteenveto:</strong> huomioita 17, vahvistettu 16, kumottu 1,
+tulkinta 0.</p>
+<p>Jokainen huomio tarkistettiin kirjan lähteestä ympäristöineen, myös
+luvun teoriaosasta. Laskettavissa olevat väitteet tarkistettiin koneella
+(Fraction/sympy, scipy). Tämä koskee XIII.1:n tehtävää 14, XIII.3:n
+tehtävää 1 f, XIII.5:n tehtäviä 5 t ja 9 b sekä XIII.6:n tehtävää 8.</p>
+<h3 id="vahvistetut-12">Vahvistetut</h3>
+<h4
+id="131-pinta-alamitta-ja-tasointegraalit-harjoitustehtävä-3-c-h-uint-1-väittämiä">13.1
+Pinta-alamitta ja tasointegraalit, Harjoitustehtävä 3 c
+(<code>H-uint-1: väittämiä</code>)</h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/XIII-usean-muuttujan-integraalilaskenta/uint-1.tex:472–480</code></li>
+<li><strong>Kirjassa:</strong> "Todista seuraavat rajoitettuja joukkoja
+<span class="math inline">\(A,B\subset\R^2\)</span> koskevat väittämät:
+… c) Jos <span class="math inline">\(\mu(A \cap B)=0\)</span>, niin
+<span class="math inline">\(\underline{\mu}(A \cup
+B)=\underline{\mu}(A)+\underline{\mu}(B)\)</span> ja <span
+class="math inline">\(\overline{\mu}(A \cup
+B)=\overline{\mu}(A)+\overline{\mu}(B)\)</span>."</li>
+<li><strong>Mikä on vialla:</strong> Yleisillä rajoitetuilla joukoilla
+väite ei päde. Vastaesimerkki: <span
+class="math inline">\(A=(\Q\times\Q)\cap[0,1]^2\)</span> ja <span
+class="math inline">\(B=[0,1]^2\setminus A\)</span>. Tällöin <span
+class="math inline">\(A\cap B=\emptyset\)</span>, mutta <span
+class="math inline">\(\overline\mu(A)=\overline\mu(B)=\overline\mu(A\cup
+B)=1\)</span> ja <span
+class="math inline">\(\underline\mu(A)=\underline\mu(B)=0\)</span>, kun
+taas <span class="math inline">\(\underline\mu(A\cup B)=1\)</span>.
+Yleisesti pätevät vain epäyhtälöt <span
+class="math inline">\(\overline\mu(A\cup
+B)\le\overline\mu(A)+\overline\mu(B)\)</span> ja <span
+class="math inline">\(\underline\mu(A)+\underline\mu(B)\le\underline\mu(A\cup
+B)\)</span> (kun <span class="math inline">\(\mu(A\cap B)=0\)</span>).
+Luvun tekstissä (rivit 71–73) tähän kohtaan viitataan A2:n lievennyksenä
+mitallisille joukoille, ja siinä muodossa väite on oikein.</li>
+<li><strong>Ehdotettu korjaus:</strong> "c) Jos <span
+class="math inline">\(A\)</span> ja <span
+class="math inline">\(B\)</span> ovat mitallisia ja <span
+class="math inline">\(\mu(A \cap B)=0\)</span>, niin <span
+class="math inline">\(A\cup B\)</span> on mitallinen ja <span
+class="math inline">\(\mu(A \cup B)=\mu(A)+\mu(B)\)</span>."
+Vaihtoehtoisesti yleisille joukoille voi kysyä vain edellä mainitut
+epäyhtälöt.</li>
+<li><strong>Luokka:</strong> puuttuva oletus</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista (väärää väitettä ei
+voi todistaa)</li>
+<li>Ratkaisu todistaa väitteen mitallisille joukoille sekä yleisesti
+pätevät epäyhtälöt, ja esittää vastaesimerkin.</li>
+</ul>
+<h4 id="131-harjoitustehtävä-5">13.1, Harjoitustehtävä 5</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-1.tex:487–490</code></li>
+<li><strong>Kirjassa:</strong> "Näytä, että jos <span
+class="math inline">\(f(x,y) \le g(x,y)\ \forall (x,y) \in A\)</span>,
+niin <span
+class="math inline">\(\overline{I}(f,\mu,A)\,\le\,\underline{I}(g,\mu,A)\)</span>."</li>
+<li><strong>Mikä on vialla:</strong> Ilman integroituvuusoletusta väite
+ei päde. Vastaesimerkki: <span class="math inline">\(A=[0,1]^2\)</span>
+ja <span
+class="math inline">\(f=g=\chi_{([0,1]\cap\Q)\times[0,1]}\)</span>.
+Tällöin <span class="math inline">\(\overline I(f)=1&gt;0=\underline
+I(g)\)</span>. Väite pätee, kun <span class="math inline">\(f\)</span>
+tai <span class="math inline">\(g\)</span> on integroituva. Yleisesti
+pätevät <span class="math inline">\(\overline I(f)\le\overline
+I(g)\)</span> ja <span class="math inline">\(\underline
+I(f)\le\underline I(g)\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> "…niin <span
+class="math inline">\(\overline{I}(f,\mu,A)\le\overline{I}(g,\mu,A)\)</span>
+ja <span
+class="math inline">\(\underline{I}(f,\mu,A)\le\underline{I}(g,\mu,A)\)</span>."
+Toinen vaihtoehto on säilyttää nykyinen väite ja lisätä oletus "ja <span
+class="math inline">\(f\)</span> tai <span
+class="math inline">\(g\)</span> on integroituva yli <span
+class="math inline">\(A\)</span>:n".</li>
+<li><strong>Luokka:</strong> virheellinen väite (tai puuttuva
+oletus)</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista</li>
+<li>Ratkaisu todistaa yleisesti pätevät epäyhtälöt ja tehtävän väitteen
+integroituvuusoletuksella sekä esittää vastaesimerkin.</li>
+</ul>
+<h4 id="131-harjoitustehtävä-14--a">13.1, Harjoitustehtävä 14 (*) a</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-1.tex:567</code></li>
+<li><strong>Kirjassa:</strong> "a) Näytä, että tuloksena on ylälikiarvo,
+jonka virhe <span
+class="math inline">\(=\tfrac{3}{2}h+\Ord{h^2}\)</span>."</li>
+<li><strong>Mikä on vialla:</strong> Keskipistesumma on tarkasti <span
+class="math inline">\(S_h=\tfrac12+\tfrac34h+\tfrac14h^2\)</span>, joten
+virhe on <span class="math inline">\(\tfrac34h+\tfrac14h^2\)</span>.
+Tarkistettu tarkalla rationaaliaritmetiikalla, kun <span
+class="math inline">\(n=4,10,40\)</span>. Arvo <span
+class="math inline">\(\tfrac32h\)</span> on lävistäjäneliöiden
+(keskipiste reunalla <span class="math inline">\(x+y=1\)</span>) termien
+summa, josta kolmion sisään kuuluu vain likimain puolet. Ylälikiarvoa
+koskeva väite pitää paikkansa.</li>
+<li><strong>Ehdotettu korjaus:</strong> "…ylälikiarvo, jonka virhe <span
+class="math inline">\(=\tfrac{3}{4}h+\Ord{h^2}\)</span>."</li>
+<li><strong>Luokka:</strong> virheellinen väite tai kaava</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista</li>
+</ul>
+<h4 id="132-tasointegraalien-laskutekniikka-harjoitustehtävä-3-c">13.2
+Tasointegraalien laskutekniikka, Harjoitustehtävä 3 c</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-2.tex:443</code></li>
+<li><strong>Kirjassa:</strong> "c) \ <span class="math inline">\(a^2y
+\le x^3,\,\ y \ge 3x-2a\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Koska <span
+class="math inline">\(x^3/a^2-(3x-2a)=(x-a)^2(x+2a)/a^2\)</span>, ehdot
+toteutuvat kaikilla <span class="math inline">\(x\ge-2a\)</span>. Joukko
+on siis rajoittamaton ja sen ala ääretön. Suora sivuaa käyrää pisteessä
+<span class="math inline">\((a,a)\)</span>, ja tarkoitettu on ilmeisesti
+rajoitettu osa <span class="math inline">\(-2a\le x\le a\)</span>, jonka
+ala on <span class="math inline">\(\tfrac{27}{4}a^2\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> "c) \ <span
+class="math inline">\(a^2y \le x^3,\,\ y \ge 3x-2a,\,\ x\le
+a\)</span>"</li>
+<li><strong>Luokka:</strong> puuttuva oletus</li>
+<li><strong>Vakavuus:</strong> tehtävä ei ratkea tarkoitetulla
+tavalla</li>
+<li>Ratkaisu toteaa joukon rajoittamattomaksi ja laskee rajoitetun osan
+alan.</li>
+</ul>
+<h4 id="132-harjoitustehtävä-5">13.2, Harjoitustehtävä 5</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-2.tex:455</code></li>
+<li><strong>Kirjassa:</strong> "Suppeneeko vai hajaantuuko integraali
+<span class="math inline">\(\int_A(x-y)^{-1}\,dx\)</span>, kun"</li>
+<li><strong>Mikä on vialla:</strong> Joukko <span
+class="math inline">\(A\)</span> on tason osajoukko, joten
+differentiaalin pitää olla <span
+class="math inline">\(dxdy\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> "<span
+class="math inline">\(\int_A(x-y)^{-1}\,dxdy\)</span>"</li>
+<li><strong>Luokka:</strong> painovirhe</li>
+<li><strong>Vakavuus:</strong> vähäinen</li>
+</ul>
+<h4 id="133-avaruusintegraalit-harjoitustehtävä-1-f">13.3
+Avaruusintegraalit, Harjoitustehtävä 1 f</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-3.tex:321</code></li>
+<li><strong>Kirjassa:</strong> "f) \ <span class="math inline">\(0 \le x
+\le \sqrt[4]{\pi}\ \ja\ 0 \le y \le x\ \ja\ 0 \le z \le
+x^2\sin(y^4)\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Kirjoitetussa muodossa tilavuus on
+<span
+class="math inline">\(\tfrac{\pi^{3/4}}{3}\int_0^{\sqrt[4]\pi}\sin(t^4)\,dt-\tfrac16\approx0.1827\)</span>.
+Se sisältää integraalin <span
+class="math inline">\(\int\sin(t^4)\,dt\)</span>, jota ei voi lausua
+alkeisfunktioina. Yläraja <span
+class="math inline">\(\sqrt[4]\pi\)</span> on selvästi valittu siksi,
+että <span class="math inline">\(\int y^3\sin(y^4)\,dy\)</span> antaa
+siistin tuloksen. Jos muuttujien roolit vaihdetaan, tulos on suljetussa
+muodossa <span class="math inline">\(\tfrac16\)</span> (tarkistettu
+numeerisesti). Muut a–h-kohdat ratkeavat suljetussa muodossa.
+Kirjaimellinen tehtävä ratkeaa siis vain numeerisesti.</li>
+<li><strong>Ehdotettu korjaus:</strong> "f) \ <span
+class="math inline">\(0 \le x \le \sqrt[4]{\pi}\ \ja\ 0 \le y \le x\
+\ja\ 0 \le z \le y^2\sin(x^4)\)</span>" (vastaus <span
+class="math inline">\(\tfrac16\)</span>). Sama tulos saadaan, jos
+säilytetään <span class="math inline">\(z\le x^2\sin(y^4)\)</span> ja
+vaihdetaan ehdot muotoon <span class="math inline">\(0\le
+y\le\sqrt[4]\pi\)</span>, <span class="math inline">\(0\le x\le
+y\)</span>, kuten kohdissa a–b.</li>
+<li><strong>Luokka:</strong> painovirhe (todennäköinen; muuttujien
+järjestys)</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista (ilman numeerista
+integrointia ei ratkea)</li>
+<li>Ratkaisu ratkaisee kirjoitetun tehtävän ja antaa lukuarvon.</li>
+</ul>
+<h4 id="133-harjoitustehtävä-11">13.3, Harjoitustehtävä 11</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-3.tex:389</code></li>
+<li><strong>Kirjassa:</strong> "Olkoon <span
+class="math inline">\(K\subset\R^n\)</span> <span
+class="math inline">\(n\)</span>-simpleksi, jonka kärjet ovat origo ja
+pisteet <span class="math inline">\((a,0,\ldots,0)\)</span>, …"</li>
+<li><strong>Mikä on vialla:</strong> Joukolla on <span
+class="math inline">\(n+1\)</span> kärkeä. Kirjan oman määritelmän
+mukaan (<code>X-matriisit/m-7.tex:252–274</code>: "<span
+class="math inline">\(m\)</span>-simpleksi" on <span
+class="math inline">\(m\)</span> pisteen virittämä, "<span
+class="math inline">\(\R^3\)</span>:n <span
+class="math inline">\(4\)</span>-simpleksi = tetraedri") se on <span
+class="math inline">\((n+1)\)</span>-simpleksi. Tehtävä noudattaa
+yleistä käytäntöä, joka on ristiriidassa kirjan oman määritelmän kanssa.
+Tulos <span class="math inline">\(a^n/n!\)</span> ei riipu
+nimityksestä.</li>
+<li><strong>Ehdotettu korjaus:</strong> "Olkoon <span
+class="math inline">\(K\subset\R^n\)</span> <span
+class="math inline">\((n+1)\)</span>-simpleksi, jonka kärjet ovat…" tai
+pelkkä "simpleksi".</li>
+<li><strong>Luokka:</strong> merkintävirhe (ristiriita kirjan oman
+määritelmän kanssa)</li>
+<li><strong>Vakavuus:</strong> vähäinen</li>
+</ul>
+<h4
+id="134-taso--ja-avaruusintegraalien-muuntaminen-harjoitustehtävä-5-d">13.4
+Taso- ja avaruusintegraalien muuntaminen, Harjoitustehtävä 5 d</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-4.tex:472</code></li>
+<li><strong>Kirjassa:</strong> "d)\ \ <span class="math inline">\(A:\
+x^2 + y^2 + z^2 \le R^2,\ x,y,z\ge 0, \quad f(x,y,z=xyz\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Sulkeva sulku puuttuu.</li>
+<li><strong>Ehdotettu korjaus:</strong> "<span
+class="math inline">\(f(x,y,z)=xyz\)</span>"</li>
+<li><strong>Luokka:</strong> painovirhe</li>
+<li><strong>Vakavuus:</strong> vähäinen</li>
+</ul>
+<h4 id="134-harjoitustehtävä-5-g">13.4, Harjoitustehtävä 5 g</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-4.tex:475</code></li>
+<li><strong>Kirjassa:</strong> "g)\ \ <span class="math inline">\(A:\
+x^2+y^2 \ge R^2,\ x^2+y^2+z^2 \le R^2, \quad
+f(x,y,z)=x^2+y^2\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Ehdoista seuraa <span
+class="math inline">\(R^2+z^2\le R^2\)</span>, joten <span
+class="math inline">\(z=0\)</span> ja <span
+class="math inline">\(x^2+y^2=R^2\)</span>. Joukko on pelkkä
+ympyräviiva, ja integraali on triviaalisti <span
+class="math inline">\(0\)</span>. Säteet ovat ilmeisesti
+sekoittuneet.</li>
+<li><strong>Ehdotettu korjaus:</strong> esimerkiksi "g)\ \ <span
+class="math inline">\(A:\ x^2+y^2 \ge R^2,\ x^2+y^2+z^2 \le
+4R^2\)</span>" (pallo, josta on porattu lieriö). Tarkoitettu muoto jää
+tekijän päätettäväksi.</li>
+<li><strong>Luokka:</strong> ratkeamaton tai ristiriitainen tehtävä
+(todennäköisesti painovirhe)</li>
+<li><strong>Vakavuus:</strong> tehtävä ei ratkea tarkoitetulla
+tavalla</li>
+<li>Ratkaisu ratkaisee kirjaimellisen tehtävän (vastaus <span
+class="math inline">\(0\)</span>).</li>
+</ul>
+<h4 id="135-integraalien-sovellukset-harjoitustehtävä-5-f">13.5
+Integraalien sovellukset, Harjoitustehtävä 5 f</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-5.tex:603</code></li>
+<li><strong>Kirjassa:</strong> "f) \ <span class="math inline">\(\,\
+A\subset\R^3:\,\ x,y,z \ge 0\ \ja\ x+2x+3y \le 6\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Ehdossa <span
+class="math inline">\(x+2x+3y\le6\)</span> ei esiinny <span
+class="math inline">\(z\)</span>:aa, joten joukko on rajoittamaton <span
+class="math inline">\(z\)</span>-suunnassa eikä keskiötä ole.
+Tarkoitettu on ilmeisesti tetraedri <span
+class="math inline">\(x+2y+3z\le6\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> "<span
+class="math inline">\(x,y,z \ge 0\ \ja\ x+2y+3z \le 6\)</span>" (keskiö
+<span class="math inline">\((\tfrac32,\tfrac34,\tfrac12)\)</span>)</li>
+<li><strong>Luokka:</strong> painovirhe</li>
+<li><strong>Vakavuus:</strong> tehtävä ei ratkea tarkoitetulla tavalla
+(ratkeaa, kun tarkoitettu ehto on arvattavissa)</li>
+<li>Ratkaisussa on lukijalle näkyvä maininta luennasta <span
+class="math inline">\(x+2y+3z\le6\)</span>.</li>
+</ul>
+<h4 id="135-harjoitustehtävä-5-t">13.5, Harjoitustehtävä 5 t</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-5.tex:619</code></li>
+<li><strong>Kirjassa:</strong> "t) \ <span class="math inline">\(\ A:\,\
+x,y \ge 0\ \ja\ 0 \le z \le e^{-(x+y)/a},\,\
+\rho=\rho_0(x^2+y^2)/a^2\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Ehto on dimensioltaan
+epäyhtenäinen: <span class="math inline">\(z\)</span> on pituus, mutta
+oikea puoli on dimensioton. Kohdissa l–s rajat on kirjoitettu
+johdonmukaisesti, esim. s) <span class="math inline">\(y^2+z^2\le
+a^6/(a^2+x^2)^2\)</span>. Kirjaimellisesti laskien painopiste on <span
+class="math inline">\((2a,2a,\tfrac1{32})\)</span>, eli <span
+class="math inline">\(z_0\)</span> ei skaalaudu <span
+class="math inline">\(a\)</span>:n mukana.</li>
+<li><strong>Ehdotettu korjaus:</strong> "<span class="math inline">\(0
+\le z \le a\,e^{-(x+y)/a}\)</span>" (painopiste <span
+class="math inline">\((2a,2a,\tfrac{a}{32})\)</span>)</li>
+<li><strong>Luokka:</strong> merkintävirhe</li>
+<li><strong>Vakavuus:</strong> vähäinen</li>
+<li>Ratkaisu laskee kirjaimellisen tehtävän.</li>
+</ul>
+<h4 id="135-harjoitustehtävä-9-b">13.5, Harjoitustehtävä 9 b</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-5.tex:652–654</code></li>
+<li><strong>Kirjassa:</strong> "b) Millä <span
+class="math inline">\(\alpha\)</span>:n arvolla (<span
+class="math inline">\(\alpha\in\R\)</span>) homogeenisen kappaleen <span
+class="math inline">\(A:\ 0 \le z/a \le (r/a)^\alpha\)</span>
+(lieriökoordinaatit, <span class="math inline">\(a&gt;0\)</span>)
+hitausmomentit … ovat samat?"</li>
+<li><strong>Mikä on vialla:</strong> Joukko on rajoittamaton kaikilla
+<span class="math inline">\(\alpha\)</span>, koska <span
+class="math inline">\(r\)</span>:lle ei ole ylärajaa. Kun <span
+class="math inline">\(\alpha\ge0\)</span>, korkeus ei pienene, kun <span
+class="math inline">\(r\to\infty\)</span>. Kun <span
+class="math inline">\(\alpha&lt;0\)</span>, tilavuusintegraali <span
+class="math inline">\(\int^\infty r^{1+\alpha}dr\)</span> hajaantuu, kun
+<span class="math inline">\(\alpha\ge-2\)</span>, ja origon lähellä
+hajaantuu, kun <span class="math inline">\(\alpha\le-2\)</span>.
+Hitausmomentit ovat siis äärettömiä kaikilla <span
+class="math inline">\(\alpha\)</span>. Lieriöllä <span
+class="math inline">\(r\le a\)</span> rajattuna tehtävä ratkeaa
+siististi: <span class="math inline">\(\alpha=\tfrac27\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> "<span class="math inline">\(A:\
+0\le r\le a,\ 0 \le z/a \le (r/a)^\alpha\)</span>"</li>
+<li><strong>Luokka:</strong> puuttuva oletus</li>
+<li><strong>Vakavuus:</strong> tehtävä ei ratkea tarkoitetulla
+tavalla</li>
+<li>Ratkaisussa on lukijalle näkyvä maininta rajauksesta <span
+class="math inline">\(r\le a\)</span>.</li>
+</ul>
+<h4 id="135-harjoitustehtävä-13--b">13.5, Harjoitustehtävä 13 (*) b</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-5.tex:679–681</code></li>
+<li><strong>Kirjassa:</strong> "…niin hitaustulomatriisi pisteen <span
+class="math inline">\(P=(x_0,y_0,z_0)\)</span> suhteen on <span
+class="math inline">\(\mJ+\ma\ma^T\)</span>, missä <span
+class="math inline">\(\ma^T=[x_0,y_0,z_0]\)</span>."</li>
+<li><strong>Mikä on vialla:</strong> Luvun määritelmässä (rivit 480–488)
+<span class="math inline">\(\mJ=\int_A\ldots\,dm\)</span> sisältää
+massan, joten siirtokaava on <span
+class="math inline">\(\mJ+m\,\ma\ma^T\)</span>. Kirjan kaava on
+dimensioltaan virheellinen ja pätee vain, kun <span
+class="math inline">\(m=1\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> "…on <span
+class="math inline">\(\mJ+m\,\ma\ma^T\)</span>, missä <span
+class="math inline">\(\ma^T=[x_0,y_0,z_0]\)</span>."</li>
+<li><strong>Luokka:</strong> virheellinen väite tai kaava</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista (myös c-kohta nojaa
+tähän)</li>
+</ul>
+<h4 id="136-viivaintegraalit-harjoitustehtävä-8-">13.6 Viivaintegraalit,
+Harjoitustehtävä 8 (*)</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-6.tex:383–389</code></li>
+<li><strong>Kirjassa:</strong> "Näytä, että näiden leikkauskäyrien
+pituudet ovat a) <span class="math inline">\(\mu(L_1 \cap L_2) =
+\int_0^{\pi/2} \sqrt{f(\sin t)}\,dt\)</span> … b) <span
+class="math inline">\(\mu(L_1 \cap K) = \mu(L_2 \cap K) =
+\int_{\pi/6}^{\pi/2} \sqrt{g(\sin t)}\,dt\)</span>"</li>
+<li><strong>Mikä on vialla:</strong> Kaikki kolme leikkauskäyrää ovat
+suljettuja, ja annetut integraalit ovat niiden neljännesten pituuksia
+tapauksessa <span class="math inline">\(R=1\)</span>. Koko käyrien
+pituudet ovat <span class="math inline">\(4R\int_0^{\pi/2}\sqrt{f(\sin
+t)}\,dt\)</span> ja <span
+class="math inline">\(4R\int_{\pi/6}^{\pi/2}\sqrt{g(\sin
+t)}\,dt\)</span>. Tämä on tarkistettu numeerisesti
+murtoviiva-approksimaatiolla, kun <span
+class="math inline">\(R=1\)</span>: <span class="math inline">\(L_1\cap
+L_2\)</span>:n neljännes on <span class="math inline">\(2.1314\)</span>
+ja integraali <span class="math inline">\(2.1314\)</span>; <span
+class="math inline">\(L_2\cap K\)</span>:n koko pituus on <span
+class="math inline">\(6.3945=4\cdot1.5986\)</span>. Kaavoista puuttuu
+myös <span class="math inline">\(R\)</span>, vaikka tehtävässä on
+yleinen <span class="math inline">\(R\)</span>. Tehtävää ei voi lukea
+ensimmäisen oktantin osia koskevaksi, koska <span
+class="math inline">\(L_2\cap K\)</span>:n ensimmäisen oktantin osa on
+puolet käyrästä, jolloin b-kohdan yhtäsuuruus ei pätisi.</li>
+<li><strong>Ehdotettu korjaus:</strong> "a) <span
+class="math inline">\(\mu(L_1 \cap L_2) = 4R\int_0^{\pi/2} \sqrt{f(\sin
+t)}\,dt\)</span> … b) <span class="math inline">\(\mu(L_1 \cap K) =
+\mu(L_2 \cap K) = 4R\int_{\pi/6}^{\pi/2} \sqrt{g(\sin
+t)}\,dt\)</span>"</li>
+<li><strong>Luokka:</strong> virheellinen väite tai kaava</li>
+<li><strong>Vakavuus:</strong> haittaa ratkaisemista</li>
+</ul>
+<h4
+id="137-pintaintegraalit-harjoitustehtävä-1-b-h-uint-9-pyörähdyspintojen-muuntosuhteet-ja-teoriaosa">13.7
+Pintaintegraalit, Harjoitustehtävä 1 b
+(<code>H-Uint-9: pyörähdyspintojen muuntosuhteet</code>) ja
+teoriaosa</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-7.tex:284–288</code>, sama myös
+teoriaosassa <code>uint-7.tex:105–106</code></li>
+<li><strong>Kirjassa:</strong> "b) <span
+class="math inline">\(yz\)</span>-tason käyrä <span
+class="math inline">\(K: y=f(z)\)</span> pyörähtää <span
+class="math inline">\(z\)</span>-akselin ympäri. … b) \ <span
+class="math inline">\(x=r\cos\varphi,\,\ y=r\sin\varphi,\,\
+z=f(r)\)</span>."</li>
+<li><strong>Mikä on vialla:</strong> Annettu parametrisointi ja luvun
+taulukko (rivit 121–123: "pyörähdyspinta: <span
+class="math inline">\(z=f(r)\)</span>", muuntosuhde <span
+class="math inline">\(r\sqrt{1+[f&#39;(r)]^2}\)</span>) vastaavat käyrää
+<span class="math inline">\(z=f(y)\)</span>, <span
+class="math inline">\(y\ge0\)</span>. Käyrän <span
+class="math inline">\(y=f(z)\)</span> pyörähdyspinta olisi <span
+class="math inline">\(x=f(z)\cos\varphi\)</span>, <span
+class="math inline">\(y=f(z)\sin\varphi\)</span>, ja sen muuntosuhde
+<span class="math inline">\(|f(z)|\sqrt{1+[f&#39;(z)]^2}\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> sekä tehtävässä että teoriaosan
+rivillä 106: "<span class="math inline">\(yz\)</span>-tason käyrä <span
+class="math inline">\(K: z=f(y)\)</span>, <span
+class="math inline">\(y\in[a,b]\)</span> (<span
+class="math inline">\(a\ge0\)</span>), pyörähtää <span
+class="math inline">\(z\)</span>-akselin ympäri".</li>
+<li><strong>Luokka:</strong> merkintävirhe</li>
+<li><strong>Vakavuus:</strong> vähäinen</li>
+<li>Ratkaisu laskee annetun parametrisoinnin ja toteaa erikseen
+tapauksen <span class="math inline">\(y=f(z)\)</span>.</li>
+</ul>
+<h4 id="137-harjoitustehtävä-6-d">13.7, Harjoitustehtävä 6 d</h4>
+<ul>
+<li><strong>Kohta:</strong> <code>uint-7.tex:317</code></li>
+<li><strong>Kirjassa:</strong> "d) \ Pararaboloidi <span
+class="math inline">\(\,z=x^2+y^2+a, \ a\in\R\)</span>."</li>
+<li><strong>Mikä on vialla:</strong> Sanassa on kirjoitusvirhe.</li>
+<li><strong>Ehdotettu korjaus:</strong> "d) \ Paraboloidi <span
+class="math inline">\(\,z=x^2+y^2+a, \ a\in\R\)</span>."</li>
+<li><strong>Luokka:</strong> painovirhe</li>
+<li><strong>Vakavuus:</strong> vähäinen</li>
+</ul>
+<h3 id="tulkinnat-12">Tulkinnat</h3>
+<p>Ei yhtään. Monitulkintaisilta näyttävät kohdat (XIII.5:n 5 f ja 9 b
+sekä XIII.2:n 3 c) osoittautuivat tarkemmin katsottuna virheiksi:
+kirjaimellinen joukko on rajoittamaton tai tyhjä. Siksi ne on luettu
+vahvistettuihin. Niiden ratkaisuissa on lukijalle näkyvä maininta
+käytetystä luennasta.</p>
+<h3 id="kumotut-12">Kumotut</h3>
+<ul>
+<li><strong>13.5, Harjoitustehtävä 14 (*) (Monumentti), ohje 2</strong>
+(<code>uint-5.tex:691–692</code>, "vinoneliö, jonka kärjet ovat
+pisteissä <span class="math inline">\(A\)</span>, <span
+class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span>
+ja <span class="math inline">\(D\)</span>"): huomio koski kärkien
+luettelojärjestystä, joka ei kulje kehää pitkin (kiertojärjestys olisi
+<span class="math inline">\(A,B,D,C\)</span>). Kärjet on kuitenkin
+annettu koordinaatteineen, ja kuvio on niiden perusteella
+yksikäsitteinen vinoneliö (kaikki sivut <span
+class="math inline">\(2.5\)</span>). Asia on makukysymys eikä virhe,
+joten kommentti poistettiin ratkaisutiedostosta. Ratkaisua ei tarvinnut
+muuttaa.</li>
+</ul>
+<h1 id="osa-xiv">Osa XIV</h1>
+<p><strong>Yhteenveto:</strong> 5 huomiota, joista 3 vahvistettu, 2
+kumottu ja 0 tulkintaa.</p>
+<h3 id="vahvistetut-13">Vahvistetut</h3>
+<h4 id="xiv3-gauss-3-tehtävä-7-greenin-kaava-udelta-v-vdelta-u">XIV.3
+(Gauss-3), tehtävä 7: Greenin kaava <span class="math inline">\(u\Delta
+v-v\Delta u\)</span></h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/XIV-gaussin-ja-stokesin-lauseet/Gauss-3.tex:455</code></li>
+<li><strong>Kirjassa:</strong>
+<code>\int_A \left(u\Delta v-v\Delta u\right)\,dxdy = \int_{\partial V} \left(u\pder{v}{n}-v\pder{u}{n}\right)ds</code></li>
+<li><strong>Vika:</strong> Tasokaavan oikealla puolella integroidaan yli
+joukon <span class="math inline">\(\partial V\)</span>, vaikka alue on
+<span class="math inline">\(A\subset\R^2\)</span> (kaaren pituusalkio
+<span class="math inline">\(ds\)</span> ja tehtävän viimeinen virke
+viittaavat <span class="math inline">\(\partial A\)</span>:han).</li>
+<li><strong>Ehdotettu korjaus:</strong> rivillä 455
+<code>\int_{\partial V}</code> → <code>\int_{\partial A}</code>.</li>
+<li><strong>Luokka:</strong> painovirhe. <strong>Vakavuus:</strong>
+vähäinen.</li>
+</ul>
+<h4 id="xiv4-gauss-4-tehtävä-12-kierretty-nauha">XIV.4 (Gauss-4),
+tehtävä 12: kierretty nauha</h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/XIV-gaussin-ja-stokesin-lauseet/Gauss-4.tex:325</code>
+(parametrialue rivillä 321–322)</li>
+<li><strong>Kirjassa:</strong> „<span
+class="math inline">\((u,v)\in[-\tfrac{\pi}{2},\tfrac{\pi}{2})\times[-\tfrac{\pi}{2},\tfrac{\pi}{2}]\)</span>,
+missä <span class="math inline">\(0&lt;b&lt;a\)</span> ja <span
+class="math inline">\(n\in\N\)</span>“</li>
+<li><strong>Vika:</strong> Kun <span
+class="math inline">\(|v|\le\pi/2\)</span>, säde <span
+class="math inline">\(a+bv\sin nu\)</span> on positiivinen kaikkialla
+vain, jos <span class="math inline">\(a&gt;b\pi/2\)</span>. Ehto <span
+class="math inline">\(0&lt;b&lt;a\)</span> ei riitä tähän: jos <span
+class="math inline">\(b&lt;a&lt;b\pi/2\)</span>, nauha kulkee <span
+class="math inline">\(z\)</span>-akselin kautta, ja parillisilla <span
+class="math inline">\(n\)</span> se leikkaa itseään. Esimerkiksi kun
+<span class="math inline">\(n=2\)</span>, pisteet <span
+class="math inline">\((u,v)=(-\pi/4,\,a/b)\)</span> ja <span
+class="math inline">\((\pi/4,\,-a/b)\)</span> kuvautuvat kumpikin
+origoon (tarkistettu laskemalla). Kysymykset reunasta ja
+suunnistuvuudesta ovat siistejä vain, kun pinta ei leikkaa itseään.
+Vastaukset eivät muutu: reuna on parillisilla <span
+class="math inline">\(n\)</span> kaksi käyrää ja parittomilla yksi, ja
+pinta on suunnistuva täsmälleen parillisilla <span
+class="math inline">\(n\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> „missä <span
+class="math inline">\(0&lt;b&lt;2a/\pi\)</span> ja <span
+class="math inline">\(n\in\N\)</span>“, tai vaihtoehtoisesti ehto <span
+class="math inline">\(0&lt;b&lt;a\)</span> säilytetään ja <span
+class="math inline">\(v\)</span>:n väli muutetaan muotoon <span
+class="math inline">\([-1,1]\)</span>.</li>
+<li><strong>Luokka:</strong> puuttuva oletus. <strong>Vakavuus:</strong>
+vähäinen.</li>
+</ul>
+<h4 id="xiv5-gauss-5-tehtävä-3-b-pyörteettömän-kentän-potentiaali">XIV.5
+(Gauss-5), tehtävä 3 b: pyörteettömän kentän potentiaali</h4>
+<ul>
+<li><strong>Kohta:</strong>
+<code>fi/XIV-gaussin-ja-stokesin-lauseet/Gauss-5.tex:280</code></li>
+<li><strong>Kirjassa:</strong>
+<code>b) \ $e^x\sin y\vec j+e^x\cos y\vec j+z\vec k$</code></li>
+<li><strong>Vika:</strong> Kentässä on kaksi <span
+class="math inline">\(\vec j\)</span>-termiä. Näin kirjoitettuna <span
+class="math inline">\((\nabla\times\vec F)\cdot\vec k=e^x(\sin y+\cos
+y)\not\equiv 0\)</span>, joten kenttä ei ole pyörteetön, ja tehtävän
+väite („Osoita … pyörteettömiksi“) on väärä. Kun ensimmäinen termi on
+<span class="math inline">\(e^x\sin y\,\vec i\)</span>, kenttä on
+pyörteetön, ja potentiaali on kirjan merkkisopimuksella <span
+class="math inline">\(-e^x\sin y-\tfrac12 z^2+C\)</span>.</li>
+<li><strong>Ehdotettu korjaus:</strong> <code>e^x\sin y\vec j</code> →
+<code>e^x\sin y\vec i</code>.</li>
+<li><strong>Luokka:</strong> painovirhe. <strong>Vakavuus:</strong>
+haittaa ratkaisemista.</li>
+</ul>
+<h3 id="tulkinnat-13">Tulkinnat</h3>
+<p>Ei yhtään.</p>
+<h3 id="kumotut-13">Kumotut</h3>
+<ul>
+<li><strong>XIV.2, tehtävä 8 (*) Zeppeliini</strong>
+(<code>Gauss-2.tex:390</code>): Huomion mukaan tehtävänannosta puuttuu
+vaakasuuntainen tasapaino <span class="math inline">\(\partial
+p/\partial x=\partial p/\partial y=0\)</span>. Tehtävä on kuitenkin
+tähdellinen ja tarkoituksella avoin mallinnuskysymys. Ilmaus „tyynellä
+säällä“ riittää ilman lepotilan oletukseksi, ja vaakasuuntaisen
+tasapainon johtaminen kuuluu ratkaisuun. Ratkaisu tekee tämän jo, joten
+kommentti on poistettu.</li>
+<li><strong>XIV.4, tehtävä 7</strong> (<code>Gauss-4.tex:289</code>,
+<span class="math inline">\(z=9-x^2+y^2\)</span>): Huomion mukaan
+kyseessä on todennäköisesti painovirhe. Satulapinta kiekon <span
+class="math inline">\(x^2+y^2\le9\)</span> yllä on kuitenkin täysin
+kelvollinen pinta, ja tehtävä ratkeaa sellaisenaan: tulos <span
+class="math inline">\(9\pi\)</span> ei riipu pinnan muodosta, mikä
+lienee tehtävän ydinkin. Arvelu paraboloidista jää spekulaatioksi, joten
+kommentti on poistettu.</li>
+</ul>
+</div><script>window.__MYPA_SITE__="calculus-fennicus";window.__MYPA_ENDPOINT__="https://mypa.longshoreforrest.workers.dev/collect";window.__MYPA_PAGE__="ratkaisut-kirja-huomiot";</script>
+<script>
+/*!
+ * MyPublicAnalytics beacon — selainpuolen snippet.
+ *
+ * Lähetys:
+ *   - 'pageview' automaattisesti sivun latautuessa
+ *   - Custom-eventit: window.mypa.send('section_view', { section: 'experience' })
+ *
+ * Sivukohtainen perus-extra (valinnainen, aseta ennen latausta):
+ *   window.__MYPA_EXTRA__ = { assignment: '0018' };   // liitetään joka eventtiin
+ *
+ * HUOM: lähetettävä `path` on pathname + search — location.hash EI koskaan
+ * kulje mukana. Salatut sivut (MyAssistant) pitävät purkuavaimen juuri
+ * #-osassa, joten avain ei päädy analytiikkaan.
+ *
+ * Käyttää navigator.sendBeacon() (eloonjäänti sivu-vaihdoksen yli) ja
+ * fetch keepalive:n fallbackia.
+ *
+ * Self-tagging (oman vierailusi erottelu):
+ *   Käy kerran sivulla URL:lla ?_mypa_self=1 → localStorageen tallentuu lippu,
+ *   ja kaikki tulevat eventit lähetetään {self:true}. Pois: ?_mypa_self=0.
+ */
+(function () {
+  if (typeof window === "undefined") return;
+  if (window.mypa && window.mypa.__initialized) return;
+
+  var SITE = window.__MYPA_SITE__ || "unknown";
+  var ENDPOINT = window.__MYPA_ENDPOINT__ || "";
+  var AUTO_EVENT = window.__MYPA_AUTO_EVENT__ || "pageview";
+
+  if (!ENDPOINT) return;
+
+  // Perus-extra, joka liitetään JOKAISEEN tämän sivun eventtiin. Julkaisija
+  // asettaa tämän ennen beaconin latausta, esim. MyAssistantin salattu
+  // raportti: window.__MYPA_EXTRA__ = { assignment: '0018', doc: 0 }.
+  // Näin sivukohtainen identiteetti kulkee mukana ilman että polkuun tai
+  // otsikkoon tarvitsee laittaa mitään sisällöstä kertovaa.
+  var BASE_EXTRA = null;
+  try {
+    var be = window.__MYPA_EXTRA__;
+    if (be && typeof be === "object") BASE_EXTRA = be;
+  } catch (e) {}
+
+  // Self-marker: URL-parametri tai localStorage-lippu.
+  var SELF = false;
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    if (sp.get("_mypa_self") === "1") {
+      try { localStorage.setItem("mypa_self", "1"); } catch (e) {}
+    } else if (sp.get("_mypa_self") === "0") {
+      try { localStorage.removeItem("mypa_self"); } catch (e) {}
+    }
+    try { SELF = localStorage.getItem("mypa_self") === "1"; } catch (e) {}
+  } catch (e) {}
+
+  function utm() {
+    try {
+      var p = new URLSearchParams(window.location.search);
+      return {
+        source: p.get("utm_source") || null,
+        medium: p.get("utm_medium") || null,
+        campaign: p.get("utm_campaign") || null,
+      };
+    } catch (e) {
+      return { source: null, medium: null, campaign: null };
+    }
+  }
+
+  // Käyttäjäidentiteetti (esim. Google Sign-In) jaetusta localStoragesta.
+  // Kirjoitettu muotoon { email, name, sub, idToken, t }. Worker varmentaa
+  // idTokenin RS256/JWKS:llä; user-kenttä on varauloskäynti (varmentamaton).
+  var IDENTITY_KEY = window.__MYPA_IDENTITY_KEY__ || "unitas:identity";
+  function identity() {
+    try {
+      var raw = localStorage.getItem(IDENTITY_KEY);
+      if (!raw) return null;
+      var o = JSON.parse(raw);
+      if (!o || !o.email) return null;
+      return o;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Korkean entropian UA Client Hints (tarkka laitemalli). Vain Chromium.
+  // navigator.userAgentData.getHighEntropyValues on asynkroninen, joten
+  // populoimme tämän kertaalleen ja liitämme sen kaikkiin lähetettäviin
+  // eventteihin. resolveHighEntropy() kutsuu callbackin joka tapauksessa —
+  // myös silloin kun rajapintaa ei ole tai se hylkää — jottei pageview jää
+  // lähettämättä.
+  var UACH = null;
+  function resolveHighEntropy(cb) {
+    try {
+      var uad = navigator.userAgentData;
+      if (uad && typeof uad.getHighEntropyValues === "function") {
+        uad
+          .getHighEntropyValues([
+            "model",
+            "platformVersion",
+            "architecture",
+            "bitness",
+            "uaFullVersion",
+          ])
+          .then(function (he) {
+            UACH = {
+              model: he.model || null,
+              platform_version: he.platformVersion || null,
+              arch: he.architecture || null,
+              bitness: he.bitness || null,
+              full_version: he.uaFullVersion || null,
+            };
+          })
+          .catch(function () {})
+          .then(function () { cb(); });
+        return;
+      }
+    } catch (e) {}
+    cb();
+  }
+
+  function clientContext() {
+    var ctx = {};
+    try {
+      ctx.screen_w = window.screen && screen.width || null;
+      ctx.screen_h = window.screen && screen.height || null;
+      ctx.viewport_w = window.innerWidth || null;
+      ctx.viewport_h = window.innerHeight || null;
+      ctx.dpr = window.devicePixelRatio || null;
+      ctx.language = (navigator.language || "").slice(0, 16);
+      ctx.languages = Array.isArray(navigator.languages)
+        ? navigator.languages.slice(0, 4).join(",")
+        : null;
+      ctx.color_scheme =
+        (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches)
+          ? "dark" : "light";
+      ctx.tz =
+        (Intl && Intl.DateTimeFormat &&
+         new Intl.DateTimeFormat().resolvedOptions().timeZone) || null;
+      ctx.tz_offset = -new Date().getTimezoneOffset();
+      var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (c) {
+        ctx.net_type = c.effectiveType || null;
+        ctx.net_downlink = c.downlink || null;
+        ctx.net_rtt = c.rtt || null;
+        ctx.net_save_data = !!c.saveData;
+      }
+      ctx.touch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+      ctx.hardware_concurrency = navigator.hardwareConcurrency || null;
+      ctx.device_memory = navigator.deviceMemory || null;
+    } catch (e) {}
+    return ctx;
+  }
+
+  function send(event, extra) {
+    try {
+      // Liitä client-konteksti pageview-eventtiin (kerran per session).
+      var ev = event || "pageview";
+      var enriched = Object.assign({}, BASE_EXTRA || {}, extra || {});
+      if (ev === "pageview" || ev === "login_pageview") {
+        Object.assign(enriched, clientContext());
+      }
+      var id = identity();
+      var body = JSON.stringify({
+        site: SITE,
+        path: window.location.pathname + window.location.search,
+        event: ev,
+        referrer: document.referrer || "",
+        utm: utm(),
+        extra: Object.keys(enriched).length ? enriched : null,
+        ch: UACH || undefined,
+        self: SELF || undefined,
+        user: id ? { email: id.email, name: id.name, sub: id.sub } : undefined,
+        idToken: id && id.idToken ? id.idToken : undefined,
+      });
+      if (
+        navigator.sendBeacon &&
+        navigator.sendBeacon(
+          ENDPOINT,
+          new Blob([body], { type: "text/plain;charset=UTF-8" }),
+        )
+      ) {
+        return;
+      }
+      fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "text/plain;charset=UTF-8" },
+        body: body,
+        keepalive: true,
+        mode: "cors",
+        credentials: "omit",
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  function autoSend() {
+    // Odota korkean entropian client hintit ennen ensimmäistä lähetystä, jotta
+    // laitemalli ehtii mukaan. UACH jää talteen myös custom-eventtejä varten.
+    resolveHighEntropy(function () { send(AUTO_EVENT); });
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    autoSend();
+  } else {
+    document.addEventListener("DOMContentLoaded", autoSend);
+  }
+
+  window.mypa = { send: send, __initialized: true, __self: SELF };
+})();
+
+</script>
+<script>
+/*!
+ * MyPublicAnalytics auto-instrument — generic behavioral tracking companion.
+ *
+ * Load this AFTER beacon/analytics.js. The beacon sends the automatic
+ * 'pageview'; this adds the richer behavioral events the dashboard already
+ * understands, WITHOUT any site-specific code:
+ *
+ *   - section_view   once per `section[id]` (or [data-section]) scrolled into view
+ *   - nav_jump       clicks on same-origin page navigation (*.html links)
+ *   - click          outbound links, mailto/tel, and PDF opens
+ *   - engagement_end visible time + total time + max scroll % + sections seen,
+ *                    sent on tab-hide / page-exit (checkpoint-safe)
+ *
+ * It is a no-op if the beacon (window.mypa) is not present, and never throws.
+ * CV does its own bespoke instrumentation in script.js, so it does NOT load
+ * this file — this is for sites (PhD, future) that just want sensible defaults.
+ *
+ * Optional config (set before this script runs):
+ *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true,
+ *                            hash: true };
+ *
+ * `hash: false` riisuu #-fragmentin kaikista lähetettävistä osoitteista. Käytä
+ * sivustoilla, joilla fragmentti on salaisuus — esim. MyAssistantin salatut
+ * raportit, joiden purkuavain on linkin #-osassa. Oletus (true) säilyttää
+ * fragmentin, koska muilla sivustoilla se on merkityksellistä navigaatiotietoa.
+ */
+(function () {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+  if (window.__mypaAutoInit) return;
+  window.__mypaAutoInit = true;
+
+  var CFG = window.__MYPA_AUTO__ || {};
+  var DO_SECTIONS    = CFG.sections    !== false;
+  var DO_NAV         = CFG.nav         !== false;
+  var DO_CLICKS      = CFG.clicks      !== false;
+  var DO_ENGAGEMENT  = CFG.engagement  !== false;
+  var KEEP_HASH      = CFG.hash        !== false;
+  var PAGE = window.__MYPA_PAGE__ || null;
+
+  // Riisu #-fragmentti kun se on salaisuus (KEEP_HASH === false).
+  function safeUrl(s) {
+    var v = String(s == null ? "" : s);
+    return KEEP_HASH ? v : v.split("#")[0];
+  }
+
+  function send(event, extra) {
+    try {
+      if (window.mypa && window.mypa.send) {
+        var e = extra || {};
+        if (PAGE && e.page == null) e.page = PAGE;
+        window.mypa.send(event, e);
+      }
+    } catch (err) { /* never break the page */ }
+  }
+
+  // ── section_view ───────────────────────────────────────────────────────────
+  var sentSections = {};
+  var seenCount = 0;
+  function observeSections() {
+    if (!DO_SECTIONS || typeof IntersectionObserver === "undefined") return;
+    var nodes = document.querySelectorAll(
+      "section[id], [data-section], article[id], h2[id], h3[id]"
+    );
+    if (!nodes.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var t = entry.target;
+        var id = t.getAttribute("data-section") || t.id;
+        if (!id || sentSections[id]) return;
+        sentSections[id] = true;
+        seenCount++;
+        send("section_view", { section: String(id).slice(0, 80) });
+      });
+    }, { threshold: 0.25 });
+    nodes.forEach(function (n) { io.observe(n); });
+  }
+
+  // ── nav_jump + click (outbound / pdf / contact) ─────────────────────────────
+  function onClick(e) {
+    try {
+      var a = e.target && e.target.closest && e.target.closest("a[href]");
+      if (!a) return;
+      var href = a.getAttribute("href") || "";
+      if (!href || href.charAt(0) === "#") return;            // in-page anchor
+      var label = (a.textContent || "").trim().slice(0, 80);
+
+      if (href.indexOf("mailto:") === 0) {
+        if (DO_CLICKS) send("click", { target: "email", href: href.slice(0, 160) });
+        return;
+      }
+      if (href.indexOf("tel:") === 0) {
+        if (DO_CLICKS) send("click", { target: "phone", href: href.slice(0, 160) });
+        return;
+      }
+
+      // Resolve to compare origins reliably.
+      var url = null;
+      try { url = new URL(href, window.location.href); } catch (e2) {}
+      var external = url && url.origin !== window.location.origin;
+
+      if (/\.pdf($|[?#])/i.test(href)) {
+        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: safeUrl(href).slice(0, 160) });
+        return;
+      }
+      if (external) {
+        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: safeUrl(href).slice(0, 160) });
+        return;
+      }
+      // Same-origin navigation to another page bundle (*.html) → nav_jump.
+      if (DO_NAV && /\.html($|[?#])/i.test(href)) {
+        var dest = url
+          ? (url.pathname.split("/").pop() + (KEEP_HASH ? (url.hash || "") : ""))
+          : safeUrl(href);
+        send("nav_jump", { to: String(dest).slice(0, 120), label: label });
+      }
+    } catch (err) { /* ignore */ }
+  }
+  if (DO_NAV || DO_CLICKS) {
+    document.addEventListener("click", onClick, true);
+  }
+
+  // ── engagement_end (visible time, total time, max scroll %, sections) ────────
+  var startMs = nowMs();
+  var visibleAccum = 0;
+  var lastVisibleStart = document.visibilityState === "visible" ? nowMs() : 0;
+  var maxScrollPct = 0;
+  var sent = false;
+
+  function nowMs() {
+    try { return (performance && performance.now) ? performance.timeOrigin + performance.now() : +new Date(); }
+    catch (e) { return +new Date(); }
+  }
+  function updateScrollDepth() {
+    try {
+      var sh = document.documentElement.scrollHeight - window.innerHeight;
+      // Many pages scroll an inner container, not the window — pick the larger.
+      var main = document.querySelector(".content, main, .page");
+      if (main && main.scrollHeight - main.clientHeight > sh) {
+        var sh2 = main.scrollHeight - main.clientHeight;
+        if (sh2 > 0) {
+          var p2 = Math.round((main.scrollTop / sh2) * 100);
+          if (p2 > maxScrollPct) maxScrollPct = Math.min(100, p2);
+        }
+        return;
+      }
+      if (sh <= 0) return;
+      var pct = Math.round((window.scrollY / sh) * 100);
+      if (pct > maxScrollPct) maxScrollPct = Math.min(100, pct);
+    } catch (e) {}
+  }
+
+  function sendEngagement(reason) {
+    if (!DO_ENGAGEMENT || sent) return;
+    sent = true;
+    if (lastVisibleStart) {
+      visibleAccum += nowMs() - lastVisibleStart;
+      lastVisibleStart = 0;
+    }
+    send("engagement_end", {
+      reason: reason,
+      time_visible_ms: Math.round(visibleAccum),
+      time_total_ms: Math.round(nowMs() - startMs),
+      max_scroll_pct: maxScrollPct,
+      sections_seen: seenCount
+    });
+  }
+
+  function initEngagement() {
+    if (!DO_ENGAGEMENT) return;
+    window.addEventListener("scroll", updateScrollDepth, { passive: true, capture: true });
+    updateScrollDepth();
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        sendEngagement("hidden");           // checkpoint — may not be a real exit
+      } else if (document.visibilityState === "visible" && sent) {
+        sent = false;                        // user returned — new engagement window
+        startMs = nowMs();
+        visibleAccum = 0;
+        lastVisibleStart = nowMs();
+      } else if (document.visibilityState === "visible") {
+        lastVisibleStart = nowMs();
+      }
+    });
+    window.addEventListener("pagehide", function () { sendEngagement("pagehide"); });
+  }
+
+  function boot() {
+    observeSections();
+    initEngagement();
+  }
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    boot();
+  } else {
+    document.addEventListener("DOMContentLoaded", boot);
+  }
+})();
+
+</script>
+</body></html>

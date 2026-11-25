@@ -16,7 +16,7 @@
  * solutions (ratkaisut-fi). The list, the counter and the markers show only the
  * family being read, so solutions comments never land on book pages (or back).
  */
-import { parseExtra, paintRects, paintBadge, paintXlang, sameFamily } from './comments.js?v=20261125-1639';
+import { parseExtra, paintRects, paintBadge, paintXlang, sameFamily } from './comments.js?v=20261125-1649';
 
 const STR = {
   en: { title: 'All comments', filter: 'Filter: name, text, p. 19, FI, EN…', reload: 'Reload', close: 'Close', loading: 'Loading…',

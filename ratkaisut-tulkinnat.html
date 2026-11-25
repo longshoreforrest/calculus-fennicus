@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="fi"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Calculus Fennicus I, ratkaisut: tulkintakohdat</title><style>
+:root{--bg:#f7f8fa;--surface:#fff;--ink:#1a1d23;--ink2:#5b6472;--ink3:#8a93a3;--border:#e3e7ee;--accent:#3056d3;--accent-soft:#dfe6fb;--good:#1a7f4b;--warn:#9a6700}
+@media (prefers-color-scheme:dark){:root{--bg:#14161a;--surface:#1d2026;--ink:#e8eaee;--ink2:#a3abb8;--ink3:#727c8c;--border:#2c313a;--accent:#7b96f4;--accent-soft:#2a3557;--good:#4cc38a;--warn:#d4a72c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:32px 20px 64px}h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:36px 0 12px}h3{font-size:16px;margin:24px 0 8px}
+.sub{color:var(--ink2);margin:0 0 22px}.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 28px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}.tile .num{font-size:28px;font-weight:700;letter-spacing:-.5px}.tile .num small{font-size:15px;font-weight:600;color:var(--ink2)}.tile .lbl{color:var(--ink2);font-size:13px;margin-top:2px}
+p{margin:0 0 10px}ul{margin:0 0 12px;padding-left:22px}li{margin-bottom:8px}code{font:13px ui-monospace,Menlo,monospace;background:var(--accent-soft);border-radius:4px;padding:1px 5px}
+.tw{overflow-x:auto;margin:10px 0 16px}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;vertical-align:top;padding:7px 10px;border-bottom:1px solid var(--border)}th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2)}
+hr{border:0;border-top:1px solid var(--border);margin:28px 0}.foot{color:var(--ink3);font-size:12.5px;margin-top:36px}
+.wrap{max-width:860px}a{color:var(--accent)}h4{margin:22px 0 6px;font-size:15px}li{margin-bottom:5px}</style><script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],macros:{"subcon": ["\\contentsline {subsection}{\\numberline {} \\hspace{3mm} {\\protect\\hyperlink{page.#2}{#1}}}{{\\protect\\hyperlink{page.#2}{#2}}}{}", 2], "loppu": "{\\quad \\square}", "ratk": "\\underline{Ratkaisu}\\ \\,", "tod": "\\underline{Todistus}\\ \\,", "kehys": "\\rule[-2mm]{0mm}{6mm}", "ykehys": "\\rule{0mm}{6mm}", "akehys": "\\rule[-3mm]{0mm}{3mm}", "Ykehys": "\\rule{0mm}{8mm}", "Akehys": "\\rule[-5mm]{0mm}{5mm}", "ygehys": "\\rule{0mm}{4mm}", "agehys": "\\rule[-3mm]{0mm}{2mm}", "gehys": "\\rule[-2mm]{0mm}{7mm}", "hist": ["\\textbf{#1}", 1], "kor": ["\\emph{#1}", 1], "pain": ["\\underline{#1}", 1], "vahv": ["\\textbf{#1}", 1], "ja": "{\\ \\&\\ }", "tai": "{\\,\\vee\\,}", "impl": "{\\Rightarrow}", "qimpl": "{\\quad \\Rightarrow \\quad}", "limp": "{\\Leftarrow}", "ekv": "{\\Leftrightarrow}", "qekv": "{\\quad \\Leftrightarrow} \\quad", "map": "{\\mapsto}", "Map": "{\\longmapsto}", "vast": "{\\leftrightarrow}", "ext": "{\\hookrightarrow}", "kohti": "{\\rightarrow}", "Kohti": "{\\longrightarrow}", "D": "\\displaystyle", "vastaa": "{\\, \\widehat{=} \\,}", "Vastaa": "{\\, \\widehat{\\approx} \\,}", "aste": "{^{\\circ}}", "N": "{\\mathbb N}", "Z": "{\\mathbb Z}", "Q": "{\\mathbb Q}", "DD": "{\\mathbb D}", "R": "{\\mathbb R}", "C": "{\\mathbb C}", "K": "{\\mathbb K}", "A": "{\\mathbb A}", "G": "{\\mathbb G}", "J": "{\\mathbb J}", "eps": "\\varepsilon", "x": "{\\Breve{x}}", "y": "{\\Breve{y}}", "z": "{\\Breve{z}}", "abs": ["\\vert#1\\vert", 1], "norm": ["\\vert\\!\\vert#1\\vert\\!\\vert", 1], "enorm": ["\\vert\\!\\vert\\!\\vert#1\\vert\\!\\vert\\!\\vert", 1], "seq": ["{\\{#1\\}}", 1], "kos": "\\gamma", "dif": "{\\text{D}}", "dyf": "{\\text{L}}", "Vect": ["\\overrightarrow{#1}", 1], "mv": ["\\mathbf{#1}", 1], "vr": "\\vec r", "dvr": "\\vec r\\,'", "ddvr": "\\vec r\\,''", "tv": "\\vec\\tau", "mo": "{{\\mathbf{0}}}", "mx": "{{\\mathbf{x}}}", "my": "{{\\mathbf{y}}}", "mz": "{{\\mathbf{z}}}", "mA": "{{\\mathbf{A}}}", "mB": "{{\\mathbf{B}}}", "mC": "{{\\mathbf{C}}}", "mF": "{{\\mathbf{F}}}", "mI": "{{\\mathbf{I}}}", "mL": "{{\\mathbf{L}}}", "mU": "{{\\mathbf{U}}}", "mD": "{{\\mathbf{D}}}", "mH": "{{\\mathbf{H}}}", "mJ": "{{\\mathbf{J}}}", "mV": "{{\\mathbf{V}}}", "mW": "{{\\mathbf{W}}}", "mR": "{{\\mathbf{R}}}", "ma": "{{\\mathbf{a}}}", "mb": "{{\\mathbf{b}}}", "mc": "{{\\mathbf{c}}}", "md": "{{\\mathbf{d}}}", "me": "{{\\mathbf{e}}}", "mf": "{{\\mathbf{f}}}", "mg": "{{\\mathbf{g}}}", "mh": "{{\\mathbf{h}}}", "mr": "{{\\mathbf{r}}}", "mpu": "{{\\mathbf{u}}}", "mt": "{{\\mathbf{t}}}", "mpv": "{{\\mathbf{v}}}", "mw": "{{\\mathbf{w}}}", "Nabla": "{{\\boldsymbol{\\nabla}}}", "X": "{X}", "Ekaksi": "{\\mathit{E^{2}}}", "Ekolme": "{\\mathit{E^{3}}}", "kulma": "{\\measuredangle}", "skulma": "{\\angle \\negthickspace \\negthickspace \\negthickspace \\uparrow}", "Rkaksi": "{\\mathbb R^{2}}", "Rkolme": "{\\mathbb R^{3}}", "Pkunta": "{\\mathbb P}", "piste": "{\\scriptstyle{\\bullet}}", "Piste": "{\\bullet}", "pointer": ["{\\overset{-\\!\\triangleright}{#1}}", 1], "ptp": "{\\overset{-\\!\\triangleright}{p}}", "ptq": "{\\overset{-\\!\\triangleright}{q}}", "ptr": "{\\overset{-\\!\\triangleright}{e}}", "pti": "{\\overset{-\\!\\triangleright}{i}}", "ptpinv": "{(\\ptp)^{-1}}", "vkulma": ["{\\angle #1 }", 1], "re": "{\\text{Re}\\;}", "im": "{\\text{Im}\\;}", "DF": "{{\\mathcal{D}}}", "RF": "{{\\mathcal{R}}}", "invf": "{f^{-1}}", "inv": ["{{#1^{-1}}}", 1], "ordoO": ["{\\mathcal{O}(#1)}", 1], "Ord": ["{\\mathcal{O}(#1)}", 1], "ord": ["{\\textit{o}(#1)}", 1], "sijoitus": ["\\operatornamewithlimits{\\Bigl|}_{#1}^{#2}", 2], "pder": ["\\frac{\\partial #1}{\\partial #2}", 2], "av": ["#1$^\\dag$", 1], "nel": "\\,^\\square", "ohje": "\\vahv{Lukuohje}: Hakusana viittaa", "sov": "\\vahv{Sovellusesimerkit}:", "nim": "\\vahv{Nimetyt harjoitusteht\u00c3\u00a4v\u00c3\u00a4t}:"}},options:{}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script></head><body><div class="wrap"><p class="backnav" style="font-size:13px;margin:0 0 18px"><a href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi">← Harjoitustehtävien ratkaisut</a> · tarkastusaineistoa, ei linkitetty sivustolta</p><h1
+id="calculus-fennicus-i-ratkaisut-kohdat-joissa-ratkaisu-nojaa-tehtävänannon-tulkintaan">Calculus
+Fennicus I, ratkaisut: kohdat, joissa ratkaisu nojaa tehtävänannon
+tulkintaan</h1>
+<p>Näissä tehtävissä tehtävänanto sallii useamman luennan tai ratkaisun
+laajuus on harkinnanvarainen. Ratkaisussa on valittu yksi tulkinta, ja
+se sanotaan ratkaisun yhteydessä. Kirjan tekijän kanta näihin on
+erityisen arvokas.</p>
+<h2 id="luku-i2--kirja--ratkaisut">Luku I.2 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.1.2">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-2">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-I-2-14">Tehtävä
+14:</a></strong> "noin klo 3" ei sulje yksikäsitteisesti pois ratkaisua
+k=35 (klo 2.56.13, 3 min 47 s vaille); valittu lähin, k=36 (1 min 16 s
+yli)</li>
+</ul>
+<h2 id="luku-ii6--kirja--ratkaisut">Luku II.6 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.6">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-6">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-6-5">Tehtävä
+5:</a></strong> 'suuntainen' luettu kirjan merkityksessä yhdensuuntainen
+(±), jolloin kantoja on 4; jos tarkoitetaan samansuuntaista, kantoja on
+2. Kumpikin tapaus on todettu tekstissä, eikä kanta ole kummassakaan
+yksikäsitteinen.</li>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-6-8">Tehtävä
+8:</a></strong> Neljä pistettä eivät määrää suuntaissärmiötä
+yksikäsitteisesti: tilavuus on 1 riippumatta siitä, mikä pisteistä
+valitaan särmien yhteiseksi kärjeksi, mutta pinta-ala riippuu valinnasta
+(kärki P1: 101.0, P2: 118.2, P3: 124.5, P4: 94.68). Ratkaisussa yhteinen
+kärki on ensimmäinen piste (luvun käytäntö).</li>
+</ul>
+<h2 id="luku-ii8--kirja--ratkaisut">Luku II.8 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.2.8">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-8">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-II-8-7">Tehtävä
+7:</a></strong> napakulman kiertosuuntaa tasossa T ei ole määrätty;
+valittu kanta {i,(j-k)/√2} (oikeakätinen normaalin (j+k)/√2 kanssa).
+Molemmat riippumattomat ratkaisut päätyivät samaan valintaan.</li>
+</ul>
+<h2 id="luku-iv2--kirja--ratkaisut">Luku IV.2 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.4.2">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-IV-2">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-IV-2-2">Tehtävä
+2:</a></strong> "tarkasti, jos mahdollista" on tulkittu kirjan
+tähänastisin keinoin; juurilausekkeet vaatisivat kolmannen asteen
+yhtälön ratkaisukaavan, jota kirja ei esitä.</li>
+</ul>
+<h2 id="luku-iv4--kirja--ratkaisut">Luku IV.4 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.4.4">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-IV-4">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-IV-4-15">Tehtävä
+15:</a></strong> "positiivisen z-akselin suunnasta katsottuna
+vastapäivään" = katsotaan ylhäältä, kulma kasvaa x-akselilta
+y-akselille; vastakkainen luenta kääntäisi leikkauskysymyksen
+vastauksen.</li>
+</ul>
+<h2 id="luku-v1--kirja--ratkaisut">Luku V.1 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.5.1">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-V-1">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-V-1-7">Tehtävä
+7:</a></strong> Tieto sinin vähenemisestä välillä [π/2,3π/2] on
+annetulla välillä [-π/2,π/6] tarpeeton, joten väli on ehkä tarkoitettu
+muotoon [-π/2,7π/6]. Ratkaisu on kirjoitettu kirjan tekstin mukaiselle
+välille; vaihtoehtoinen vastaus huomautuksessa.</li>
+</ul>
+<h2 id="luku-vi1--kirja--ratkaisut">Luku VI.1 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.6.1">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-1">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-1-1">Tehtävä
+1:</a></strong> "jälkimmäinen joukko" = b-kohdan funktioperhe
+parametrina b∈R_+; tulkinta näkyy ratkaisutekstissä (b=1), erillistä
+huomautusta ei tarvita.</li>
+</ul>
+<h2 id="luku-vi3--kirja--ratkaisut">Luku VI.3 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.6.3">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-3">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-exp-3-12">Tehtävä
+12:</a></strong> vihjeen merkintä <span class="math inline">\(\Delta
+z=\Delta r\vkulma(\varphi+\psi)\)</span> tarkoittaa kirjaimellisesti
+<span class="math inline">\(\Delta r=\abs{\Delta z}\)</span>;
+ratkaisussa käytetään muunnelmaa <span class="math inline">\(z+\Delta
+z=(r+\Delta r)\vkulma{(\varphi+\psi)}\)</span>. Myös kirjaimellinen
+luenta johtaa todistukseen (tällöin <span
+class="math inline">\((z+\Delta z)/z=1+\frac{\Delta
+r}{r}\vkulma\psi\)</span>), joten vihje ei ole virheellinen; lopputulos
+on sama.</li>
+</ul>
+<h2 id="luku-vii2--kirja--ratkaisut">Luku VII.2 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.7.2">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dif-2">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dif-2-4">Tehtävä
+4:</a></strong> luetaanko a=0 (x-akseli kohtaa juurikäyrän sen
+päätepisteessä (b/2,0)) leikkaamiseksi; ratkaisussa luetaan, jolloin
+ehto on a ≥ 0, muuten a &gt; 0.</li>
+</ul>
+<h2 id="luku-vii4--kirja--ratkaisut">Luku VII.4 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.7.4">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dif-4">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dif-4-9">Tehtävä
+9:</a></strong> tehtävänannon käyrässä lienee painovirhe (x'=0 vain kun
+t=±1/2, y'=0 vain kun t=2, joten käyrällä ei ole yhtään pistettä, jossa
+x'=y'=0); tarkoitettua käyrää ei voi päätellä, joten tehtävä on
+ratkaistu kirjaimellisesti annetulle käyrälle.</li>
+</ul>
+<h2 id="luku-viii3--kirja--ratkaisut">Luku VIII.3 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.8.3">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-int-3">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-int-3-7">Tehtävä
+7:</a></strong> tehtävä 7: F ja G eivät ole yksikäsitteisiä; valittu
+tulkinta "alkeisfunktio tai koko välillä suppeneva potenssisarja", mikä
+kohdissa c ja d pakottaa vakiot F = cosh 1 ja F = sinh(1)/2.</li>
+</ul>
+<h2 id="luku-ix1--kirja--ratkaisut">Luku IX.1 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.9.1">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-1">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-1-4">Tehtävä
+4:</a></strong> kohdan d) tarkoitettu vastausmuoto. Kahden parametrin
+parven kertaluvun 2 yhtälö on välttämättä epäpolynominen (vakio C2
+esiintyy sekä siirtona että lisättävänä, eliminointi jättää logaritmin
+ja toisen asteen yhtälön juuren); kirjan tarkoitusta ei voi päätellä
+lähteestä. Matemaattinen sisältö on tarkistettu sijoittamalla.</li>
+</ul>
+<h2 id="luku-ix7--kirja--ratkaisut">Luku IX.7 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.9.7">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-7">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-dy-7-8">Tehtävä
+8:</a></strong> tehtävä tulkitaan niin, että haetaan A, jolla ratkaisu
+on lineaarinen (riittävä ehto, pätee kaikilla h). Yksikäsitteisyys
+kiinteällä h=0.1 varmennettu vain numeerisesti (25.11.2026,
+tmp/dy-7/vertailu8.py): A∈[-10^4,10^4], A≠-1, ensimmäisen askeleen
+virheen nollakohdat A=-2 (kaksoisnollakohta), A≈-2.6071, A≈-0.4534;
+kahdella jälkimmäisellä askel 2 poikkeaa (-3.0e-5 ja 1.6e-2); suurilla
+|A| virhe ≈ A(e^0.1-1.1) ≠ 0. Molemmat riippumattomat ratkaisut päätyvät
+samaan.</li>
+</ul>
+<h2 id="luku-x3--kirja--ratkaisut">Luku X.3 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.10.3">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-m-3">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-m-3-6">Tehtävä
+6:</a></strong> tehtävänanto ei mainitse nollarakenteen hyödyntämistä;
+väite n^3 pätee vain sillä oletuksella (muuten a: 1/3+1/2+1/2, b:
+1/3+1/2+1/2+1/3).</li>
+</ul>
+<h2 id="luku-x4--kirja--ratkaisut">Luku X.4 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.10.4">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-m-4">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-m-4-1">Tehtävä
+1:</a></strong> "ratkeaa Gaussin algoritmilla ilman tukioperaatioita" =
+kaikki tukialkiot a_kk^(k-1) ≠ 0, k = 1…n (Luvun X.3 muotoilu "ja myös
+a_nn^(n-1) ≠ 0"). Väite kohdalla k = n pätee vain tällä
+tulkinnalla.</li>
+</ul>
+<h2 id="luku-x7--kirja--ratkaisut">Luku X.7 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.10.7">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-m-7">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-m-7-10">Tehtävä
+10:</a></strong> "suunnasta v katsoen" luettu kuten Tehtävässä 4
+(katsoja v:n kärjen puolella); vastakkainen lukutapa vaihtaa φ:n
+merkin.</li>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-m-7-12">Tehtävä
+12:</a></strong> katselusuunta koneesta taloon, harjan korkeus 2
+maanpinnasta, räystäiden vaakasuora 0.2, yhdensuuntaisprojektio (kone
+kaukana) ja kuvatason kanta ovat luontevia valintoja, joita tehtävänanto
+ei määrää yksikäsitteisesti.</li>
+</ul>
+<h2 id="luku-xi4--kirja--ratkaisut">Luku XI.4 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.11.4">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-udif-4">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-udif-4-6">Tehtävä
+6:</a></strong> tehtävänanto ei sano, mitä ratkaisulta vaaditaan; väite
+"f ja g derivoituvia" edellyttää, että ratkaisulla on u_x:n ja u_xy:n
+lisäksi myös u_y. Kirjan merkintä (Luku XI.2) on u_xy=(u_x)_y.</li>
+</ul>
+<h2 id="luku-xi7--kirja--ratkaisut">Luku XI.7 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.11.7">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-udif-7">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-udif-7-10">Tehtävä
+10:</a></strong> tehtävänannon piste (a,b,c) ei toteuta yhtälöitä;
+pääratkaisu pisteessä (a/2,b/2,c/sqrt2), vaihtoehtoinen luenta (oikeat
+puolet 3 ja 5, piste (a,b,c)) huomautuksessa.</li>
+</ul>
+<h2 id="luku-xiii2--kirja--ratkaisut">Luku XIII.2 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.13.2">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-uint-2">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-uint-2-10">Tehtävä
+10:</a></strong> merkki ≠ luetaan niin, että oikean puolen iteroitu
+integraali ei ole olemassa (ulompi integroitava on Dirichlet'n funktio);
+kumpikin riippumaton ratkaisu päätyi samaan tulkintaan.</li>
+</ul>
+<h2 id="luku-xiii5--kirja--ratkaisut">Luku XIII.5 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.13.5">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-uint-5">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-uint-5-14">Tehtävä
+14:</a></strong> c-kohdassa betonipaino mallinnettu pelkkänä kärkeen A
+ripustettuna massana (kaatuminen akselin BC ympäri nostaisi sen); maan
+pito ja painon oma koko jätetty huomiotta. Molemmat riippumattomat
+ratkaisut päätyivät samaan malliin ja tulokseen m/6.</li>
+</ul>
+<h2 id="luku-xiii6--kirja--ratkaisut">Luku XIII.6 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.13.6">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-uint-6">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-uint-6-9">Tehtävä
+9:</a></strong> b-kohdassa köyden oletetaan kulkevan räystäspisteiden
+välillä katon pinnalla (paloittain jatkuvasti derivoituvana käyränä);
+pinnasta irti tai seinän kautta kulkevia köysiä ei b-kohdassa käsitellä.
+Toisen ratkaisijan yleinen todistus (projektio + nosto räystäälle +
+oikaisu) antaa saman arvon.</li>
+</ul>
+<h2 id="luku-xiv5--kirja--ratkaisut">Luku XIV.5 · <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=fi&amp;dest=section.14.5">kirja</a>
+· <a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-Gauss-5">ratkaisut</a></h2>
+<ul>
+<li><strong><a
+href="https://longshoreforrest.github.io/calculus-fennicus/viewer.html#doc=ratkaisut-fi&amp;label=R-Gauss-5-5">Tehtävä
+5:</a></strong> merkintä -\nabla f(r)\cos\varphi on kaksitulkintainen;
+luenta -\nabla[f(r)\cos\varphi] on ainoa, jolla tehtävän ehdot voivat
+toteutua.</li>
+</ul>
+</div><script>window.__MYPA_SITE__="calculus-fennicus";window.__MYPA_ENDPOINT__="https://mypa.longshoreforrest.workers.dev/collect";window.__MYPA_PAGE__="ratkaisut-tulkinnat";</script>
+<script>
+/*!
+ * MyPublicAnalytics beacon — selainpuolen snippet.
+ *
+ * Lähetys:
+ *   - 'pageview' automaattisesti sivun latautuessa
+ *   - Custom-eventit: window.mypa.send('section_view', { section: 'experience' })
+ *
+ * Sivukohtainen perus-extra (valinnainen, aseta ennen latausta):
+ *   window.__MYPA_EXTRA__ = { assignment: '0018' };   // liitetään joka eventtiin
+ *
+ * HUOM: lähetettävä `path` on pathname + search — location.hash EI koskaan
+ * kulje mukana. Salatut sivut (MyAssistant) pitävät purkuavaimen juuri
+ * #-osassa, joten avain ei päädy analytiikkaan.
+ *
+ * Käyttää navigator.sendBeacon() (eloonjäänti sivu-vaihdoksen yli) ja
+ * fetch keepalive:n fallbackia.
+ *
+ * Self-tagging (oman vierailusi erottelu):
+ *   Käy kerran sivulla URL:lla ?_mypa_self=1 → localStorageen tallentuu lippu,
+ *   ja kaikki tulevat eventit lähetetään {self:true}. Pois: ?_mypa_self=0.
+ */
+(function () {
+  if (typeof window === "undefined") return;
+  if (window.mypa && window.mypa.__initialized) return;
+
+  var SITE = window.__MYPA_SITE__ || "unknown";
+  var ENDPOINT = window.__MYPA_ENDPOINT__ || "";
+  var AUTO_EVENT = window.__MYPA_AUTO_EVENT__ || "pageview";
+
+  if (!ENDPOINT) return;
+
+  // Perus-extra, joka liitetään JOKAISEEN tämän sivun eventtiin. Julkaisija
+  // asettaa tämän ennen beaconin latausta, esim. MyAssistantin salattu
+  // raportti: window.__MYPA_EXTRA__ = { assignment: '0018', doc: 0 }.
+  // Näin sivukohtainen identiteetti kulkee mukana ilman että polkuun tai
+  // otsikkoon tarvitsee laittaa mitään sisällöstä kertovaa.
+  var BASE_EXTRA = null;
+  try {
+    var be = window.__MYPA_EXTRA__;
+    if (be && typeof be === "object") BASE_EXTRA = be;
+  } catch (e) {}
+
+  // Self-marker: URL-parametri tai localStorage-lippu.
+  var SELF = false;
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    if (sp.get("_mypa_self") === "1") {
+      try { localStorage.setItem("mypa_self", "1"); } catch (e) {}
+    } else if (sp.get("_mypa_self") === "0") {
+      try { localStorage.removeItem("mypa_self"); } catch (e) {}
+    }
+    try { SELF = localStorage.getItem("mypa_self") === "1"; } catch (e) {}
+  } catch (e) {}
+
+  function utm() {
+    try {
+      var p = new URLSearchParams(window.location.search);
+      return {
+        source: p.get("utm_source") || null,
+        medium: p.get("utm_medium") || null,
+        campaign: p.get("utm_campaign") || null,
+      };
+    } catch (e) {
+      return { source: null, medium: null, campaign: null };
+    }
+  }
+
+  // Käyttäjäidentiteetti (esim. Google Sign-In) jaetusta localStoragesta.
+  // Kirjoitettu muotoon { email, name, sub, idToken, t }. Worker varmentaa
+  // idTokenin RS256/JWKS:llä; user-kenttä on varauloskäynti (varmentamaton).
+  var IDENTITY_KEY = window.__MYPA_IDENTITY_KEY__ || "unitas:identity";
+  function identity() {
+    try {
+      var raw = localStorage.getItem(IDENTITY_KEY);
+      if (!raw) return null;
+      var o = JSON.parse(raw);
+      if (!o || !o.email) return null;
+      return o;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Korkean entropian UA Client Hints (tarkka laitemalli). Vain Chromium.
+  // navigator.userAgentData.getHighEntropyValues on asynkroninen, joten
+  // populoimme tämän kertaalleen ja liitämme sen kaikkiin lähetettäviin
+  // eventteihin. resolveHighEntropy() kutsuu callbackin joka tapauksessa —
+  // myös silloin kun rajapintaa ei ole tai se hylkää — jottei pageview jää
+  // lähettämättä.
+  var UACH = null;
+  function resolveHighEntropy(cb) {
+    try {
+      var uad = navigator.userAgentData;
+      if (uad && typeof uad.getHighEntropyValues === "function") {
+        uad
+          .getHighEntropyValues([
+            "model",
+            "platformVersion",
+            "architecture",
+            "bitness",
+            "uaFullVersion",
+          ])
+          .then(function (he) {
+            UACH = {
+              model: he.model || null,
+              platform_version: he.platformVersion || null,
+              arch: he.architecture || null,
+              bitness: he.bitness || null,
+              full_version: he.uaFullVersion || null,
+            };
+          })
+          .catch(function () {})
+          .then(function () { cb(); });
+        return;
+      }
+    } catch (e) {}
+    cb();
+  }
+
+  function clientContext() {
+    var ctx = {};
+    try {
+      ctx.screen_w = window.screen && screen.width || null;
+      ctx.screen_h = window.screen && screen.height || null;
+      ctx.viewport_w = window.innerWidth || null;
+      ctx.viewport_h = window.innerHeight || null;
+      ctx.dpr = window.devicePixelRatio || null;
+      ctx.language = (navigator.language || "").slice(0, 16);
+      ctx.languages = Array.isArray(navigator.languages)
+        ? navigator.languages.slice(0, 4).join(",")
+        : null;
+      ctx.color_scheme =
+        (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches)
+          ? "dark" : "light";
+      ctx.tz =
+        (Intl && Intl.DateTimeFormat &&
+         new Intl.DateTimeFormat().resolvedOptions().timeZone) || null;
+      ctx.tz_offset = -new Date().getTimezoneOffset();
+      var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (c) {
+        ctx.net_type = c.effectiveType || null;
+        ctx.net_downlink = c.downlink || null;
+        ctx.net_rtt = c.rtt || null;
+        ctx.net_save_data = !!c.saveData;
+      }
+      ctx.touch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+      ctx.hardware_concurrency = navigator.hardwareConcurrency || null;
+      ctx.device_memory = navigator.deviceMemory || null;
+    } catch (e) {}
+    return ctx;
+  }
+
+  function send(event, extra) {
+    try {
+      // Liitä client-konteksti pageview-eventtiin (kerran per session).
+      var ev = event || "pageview";
+      var enriched = Object.assign({}, BASE_EXTRA || {}, extra || {});
+      if (ev === "pageview" || ev === "login_pageview") {
+        Object.assign(enriched, clientContext());
+      }
+      var id = identity();
+      var body = JSON.stringify({
+        site: SITE,
+        path: window.location.pathname + window.location.search,
+        event: ev,
+        referrer: document.referrer || "",
+        utm: utm(),
+        extra: Object.keys(enriched).length ? enriched : null,
+        ch: UACH || undefined,
+        self: SELF || undefined,
+        user: id ? { email: id.email, name: id.name, sub: id.sub } : undefined,
+        idToken: id && id.idToken ? id.idToken : undefined,
+      });
+      if (
+        navigator.sendBeacon &&
+        navigator.sendBeacon(
+          ENDPOINT,
+          new Blob([body], { type: "text/plain;charset=UTF-8" }),
+        )
+      ) {
+        return;
+      }
+      fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "text/plain;charset=UTF-8" },
+        body: body,
+        keepalive: true,
+        mode: "cors",
+        credentials: "omit",
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  function autoSend() {
+    // Odota korkean entropian client hintit ennen ensimmäistä lähetystä, jotta
+    // laitemalli ehtii mukaan. UACH jää talteen myös custom-eventtejä varten.
+    resolveHighEntropy(function () { send(AUTO_EVENT); });
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    autoSend();
+  } else {
+    document.addEventListener("DOMContentLoaded", autoSend);
+  }
+
+  window.mypa = { send: send, __initialized: true, __self: SELF };
+})();
+
+</script>
+<script>
+/*!
+ * MyPublicAnalytics auto-instrument — generic behavioral tracking companion.
+ *
+ * Load this AFTER beacon/analytics.js. The beacon sends the automatic
+ * 'pageview'; this adds the richer behavioral events the dashboard already
+ * understands, WITHOUT any site-specific code:
+ *
+ *   - section_view   once per `section[id]` (or [data-section]) scrolled into view
+ *   - nav_jump       clicks on same-origin page navigation (*.html links)
+ *   - click          outbound links, mailto/tel, and PDF opens
+ *   - engagement_end visible time + total time + max scroll % + sections seen,
+ *                    sent on tab-hide / page-exit (checkpoint-safe)
+ *
+ * It is a no-op if the beacon (window.mypa) is not present, and never throws.
+ * CV does its own bespoke instrumentation in script.js, so it does NOT load
+ * this file — this is for sites (PhD, future) that just want sensible defaults.
+ *
+ * Optional config (set before this script runs):
+ *   window.__MYPA_AUTO__ = { sections: true, nav: true, clicks: true, engagement: true,
+ *                            hash: true };
+ *
+ * `hash: false` riisuu #-fragmentin kaikista lähetettävistä osoitteista. Käytä
+ * sivustoilla, joilla fragmentti on salaisuus — esim. MyAssistantin salatut
+ * raportit, joiden purkuavain on linkin #-osassa. Oletus (true) säilyttää
+ * fragmentin, koska muilla sivustoilla se on merkityksellistä navigaatiotietoa.
+ */
+(function () {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+  if (window.__mypaAutoInit) return;
+  window.__mypaAutoInit = true;
+
+  var CFG = window.__MYPA_AUTO__ || {};
+  var DO_SECTIONS    = CFG.sections    !== false;
+  var DO_NAV         = CFG.nav         !== false;
+  var DO_CLICKS      = CFG.clicks      !== false;
+  var DO_ENGAGEMENT  = CFG.engagement  !== false;
+  var KEEP_HASH      = CFG.hash        !== false;
+  var PAGE = window.__MYPA_PAGE__ || null;
+
+  // Riisu #-fragmentti kun se on salaisuus (KEEP_HASH === false).
+  function safeUrl(s) {
+    var v = String(s == null ? "" : s);
+    return KEEP_HASH ? v : v.split("#")[0];
+  }
+
+  function send(event, extra) {
+    try {
+      if (window.mypa && window.mypa.send) {
+        var e = extra || {};
+        if (PAGE && e.page == null) e.page = PAGE;
+        window.mypa.send(event, e);
+      }
+    } catch (err) { /* never break the page */ }
+  }
+
+  // ── section_view ───────────────────────────────────────────────────────────
+  var sentSections = {};
+  var seenCount = 0;
+  function observeSections() {
+    if (!DO_SECTIONS || typeof IntersectionObserver === "undefined") return;
+    var nodes = document.querySelectorAll(
+      "section[id], [data-section], article[id], h2[id], h3[id]"
+    );
+    if (!nodes.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var t = entry.target;
+        var id = t.getAttribute("data-section") || t.id;
+        if (!id || sentSections[id]) return;
+        sentSections[id] = true;
+        seenCount++;
+        send("section_view", { section: String(id).slice(0, 80) });
+      });
+    }, { threshold: 0.25 });
+    nodes.forEach(function (n) { io.observe(n); });
+  }
+
+  // ── nav_jump + click (outbound / pdf / contact) ─────────────────────────────
+  function onClick(e) {
+    try {
+      var a = e.target && e.target.closest && e.target.closest("a[href]");
+      if (!a) return;
+      var href = a.getAttribute("href") || "";
+      if (!href || href.charAt(0) === "#") return;            // in-page anchor
+      var label = (a.textContent || "").trim().slice(0, 80);
+
+      if (href.indexOf("mailto:") === 0) {
+        if (DO_CLICKS) send("click", { target: "email", href: href.slice(0, 160) });
+        return;
+      }
+      if (href.indexOf("tel:") === 0) {
+        if (DO_CLICKS) send("click", { target: "phone", href: href.slice(0, 160) });
+        return;
+      }
+
+      // Resolve to compare origins reliably.
+      var url = null;
+      try { url = new URL(href, window.location.href); } catch (e2) {}
+      var external = url && url.origin !== window.location.origin;
+
+      if (/\.pdf($|[?#])/i.test(href)) {
+        if (DO_CLICKS) send("click", { target: "pdf", label: label, href: safeUrl(href).slice(0, 160) });
+        return;
+      }
+      if (external) {
+        if (DO_CLICKS) send("click", { target: "outbound", label: label, href: safeUrl(href).slice(0, 160) });
+        return;
+      }
+      // Same-origin navigation to another page bundle (*.html) → nav_jump.
+      if (DO_NAV && /\.html($|[?#])/i.test(href)) {
+        var dest = url
+          ? (url.pathname.split("/").pop() + (KEEP_HASH ? (url.hash || "") : ""))
+          : safeUrl(href);
+        send("nav_jump", { to: String(dest).slice(0, 120), label: label });
+      }
+    } catch (err) { /* ignore */ }
+  }
+  if (DO_NAV || DO_CLICKS) {
+    document.addEventListener("click", onClick, true);
+  }
+
+  // ── engagement_end (visible time, total time, max scroll %, sections) ────────
+  var startMs = nowMs();
+  var visibleAccum = 0;
+  var lastVisibleStart = document.visibilityState === "visible" ? nowMs() : 0;
+  var maxScrollPct = 0;
+  var sent = false;
+
+  function nowMs() {
+    try { return (performance && performance.now) ? performance.timeOrigin + performance.now() : +new Date(); }
+    catch (e) { return +new Date(); }
+  }
+  function updateScrollDepth() {
+    try {
+      var sh = document.documentElement.scrollHeight - window.innerHeight;
+      // Many pages scroll an inner container, not the window — pick the larger.
+      var main = document.querySelector(".content, main, .page");
+      if (main && main.scrollHeight - main.clientHeight > sh) {
+        var sh2 = main.scrollHeight - main.clientHeight;
+        if (sh2 > 0) {
+          var p2 = Math.round((main.scrollTop / sh2) * 100);
+          if (p2 > maxScrollPct) maxScrollPct = Math.min(100, p2);
+        }
+        return;
+      }
+      if (sh <= 0) return;
+      var pct = Math.round((window.scrollY / sh) * 100);
+      if (pct > maxScrollPct) maxScrollPct = Math.min(100, pct);
+    } catch (e) {}
+  }
+
+  function sendEngagement(reason) {
+    if (!DO_ENGAGEMENT || sent) return;
+    sent = true;
+    if (lastVisibleStart) {
+      visibleAccum += nowMs() - lastVisibleStart;
+      lastVisibleStart = 0;
+    }
+    send("engagement_end", {
+      reason: reason,
+      time_visible_ms: Math.round(visibleAccum),
+      time_total_ms: Math.round(nowMs() - startMs),
+      max_scroll_pct: maxScrollPct,
+      sections_seen: seenCount
+    });
+  }
+
+  function initEngagement() {
+    if (!DO_ENGAGEMENT) return;
+    window.addEventListener("scroll", updateScrollDepth, { passive: true, capture: true });
+    updateScrollDepth();
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        sendEngagement("hidden");           // checkpoint — may not be a real exit
+      } else if (document.visibilityState === "visible" && sent) {
+        sent = false;                        // user returned — new engagement window
+        startMs = nowMs();
+        visibleAccum = 0;
+        lastVisibleStart = nowMs();
+      } else if (document.visibilityState === "visible") {
+        lastVisibleStart = nowMs();
+      }
+    });
+    window.addEventListener("pagehide", function () { sendEngagement("pagehide"); });
+  }
+
+  function boot() {
+    observeSections();
+    initEngagement();
+  }
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    boot();
+  } else {
+    document.addEventListener("DOMContentLoaded", boot);
+  }
+})();
+
+</script>
+</body></html>
