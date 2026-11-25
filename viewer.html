@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://accounts.google.com">
-<link rel="stylesheet" href="reader/reader.css?v=20260913-0948">
-<script src="reader/config.js?v=20260913-0948"></script>
+<link rel="stylesheet" href="reader/reader.css?v=20261125-1639">
+<script src="reader/config.js?v=20261125-1639"></script>
 <style>
 :root{--bg:#eceef1;--chrome:#fff;--chrome-2:#f5f5f7;--ink:#1a1f36;--soft:#4a5568;--muted:#718096;--border:#e5e7eb;--accent:#4f46e5;--accent-soft:#eef2ff;--warn:#d97706;--sh:0 1px 3px rgba(15,23,42,.08)}
 [data-theme=slate]{--bg:#0b1020;--chrome:#161b22;--chrome-2:#1e242c;--ink:#e7ecf2;--soft:#cbd5e1;--muted:#94a3b8;--border:#2a323c;--accent:#818cf8;--accent-soft:rgba(129,140,248,.16);--sh:0 1px 3px rgba(0,0,0,.4)}
@@ -71,6 +71,10 @@ a{color:var(--accent);text-decoration:none}
 .loading .bar.indet>i{width:35%;animation:indet 1.1s ease-in-out infinite}
 @keyframes indet{0%{margin-left:-35%}100%{margin-left:100%}}
 #fsbtn{padding:6px 8px}
+/* solutions document: review badge + "Solutions" jump from a book chapter */
+.review{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:20px;padding:4px 10px;white-space:nowrap;cursor:help}
+.review[hidden],#solBtn[hidden],.seg button[hidden]{display:none}
+#solBtn{color:var(--accent);background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
 body.fs .back{display:none}
 @media(max-width:900px){.title,.loc{display:none}}
 @media(max-width:680px){.search{min-width:120px}}
@@ -80,10 +84,12 @@ body.fs .back{display:none}
 <div class="vtop">
   <a class="back" href="index.html"><span>←</span> Calculus Fennicus</a>
   <span class="title">Reader</span>
-  <div class="seg" role="group" aria-label="Language">
-    <button id="doc-en" class="active" onclick="app.setDoc('en')">EN</button>
-    <button id="doc-fi" onclick="app.setDoc('fi')">FI</button>
+  <div class="seg" role="group" aria-label="Document">
+    <button id="doc-en" data-doc="en" class="active" onclick="app.setDoc('en')">EN</button>
+    <button id="doc-fi" data-doc="fi" onclick="app.setDoc('fi')">FI</button>
+    <button id="doc-ratkaisut-fi" data-doc="ratkaisut-fi" hidden onclick="app.setDoc('ratkaisut-fi')" title="Harjoitustehtävien ratkaisut (suomeksi, tarkastusversio) · Worked solutions to the exercises (Finnish, review version)">Ratkaisut</button>
   </div>
+  <span class="review" id="reviewBadge" hidden title="Tarkastusversio: ratkaisut ovat vielä tarkastettavana. Jos huomaat virheen, jätä kommentti (💬). · Review version: the solutions are still being checked. If you spot an error, please leave a comment (💬).">Tarkastusversio</span>
   <div class="seg" role="group" aria-label="View mode">
     <button id="mode-single" class="active" onclick="app.setMode('single')" title="One page at a time">▭ Page</button>
     <button id="mode-cont" onclick="app.setMode('continuous')" title="Continuous scroll">☰ Scroll</button>
@@ -100,6 +106,7 @@ body.fs .back{display:none}
     <button class="sbtn" id="s-next" onclick="app.searchStep(1)" disabled aria-label="Next match">›</button>
   </div>
   <span class="loc" id="loc"></span>
+  <button class="iconbtn" id="solBtn" type="button" hidden onclick="app.openSolutions()">Solutions</button>
   <span class="spacer"></span>
   <a class="loc" href="links.html" style="color:var(--accent)">Link directory ↗</a>
   <a class="iconbtn" id="dlpdf" href="calculus-en.pdf" download title="Download this PDF to your device" onclick="app.trackDownload()">
@@ -118,15 +125,27 @@ body.fs .back{display:none}
 import * as pdfjsLib from './vendor/pdfjs/pdf.min.mjs';
 pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdfjs/pdf.worker.min.mjs';
 
+const CFG0 = window.CF_VIEWER_CONFIG || {};
 const DOCS = {
-  en: { pdf: ['calculus-en.pdf', '../en/calculus.pdf'], labels: 'labels-en.json' },
-  fi: { pdf: ['calculus-fi.pdf', '../fi/calculus.pdf'], labels: 'labels-fi.json' },
+  en: { pdf: ['calculus-en.pdf', '../en/calculus.pdf'], labels: 'labels-en.json', dests: 'dests-en.json', dl: 'Calculus-Fennicus-EN.pdf' },
+  fi: { pdf: ['calculus-fi.pdf', '../fi/calculus.pdf'], labels: 'labels-fi.json', dests: 'dests-fi.json', dl: 'Calculus-Fennicus-FI.pdf' },
 };
+// Third document: the worked solutions (config.js `solutions`). Offered only when
+// ratkaisut-map.json and the PDF exist (publish.mjs ships them together).
+const SOLCFG = CFG0.solutions && CFG0.solutions.doc ? CFG0.solutions : null;
+const SOL = SOLCFG ? SOLCFG.doc : null;
+if (SOL) DOCS[SOL] = { pdf: SOLCFG.pdf || [SOL + '.pdf'], labels: (CFG0.labels || {})[SOL] || ('labels-' + SOL + '.json'), dests: (CFG0.dests || {})[SOL] || ('dests-' + SOL + '.json'), dl: 'Calculus-Fennicus-Ratkaisut-FI-tarkastusversio.pdf' };
+// Anchor families: comments and deep-link targets carry over only within a family
+// (fi <-> en share hyperref names; the solutions' names may collide but mean other things).
+const family = (d) => (SOL && d === SOL) ? 'solutions' : 'book';
+const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV'];
+const VQ = CFG0.buildVersion && CFG0.buildVersion !== 'dev' ? '?v=' + encodeURIComponent(CFG0.buildVersion) : '';
+const sol = { available: false, map: {}, byFile: {}, ready: Promise.resolve(false), secCache: {} };
 const $ = (id) => document.getElementById(id);
 const stage = $('stage'), pagesEl = $('pages');
 const st = {
   doc: 'en', pdf: null, pdfUrl: '', labels: {}, numPages: 0, curPage: 1,
-  zoom: 0, pageOffset: 0, sections: [], target: null,
+  zoom: 0, pageOffset: 0, sections: [], target: null, secDests: null,
   mode: 'single', baseW: 612, baseH: 792,
   rendered: new Map(), tasks: new Map(), observer: null, renderId: 0,
   textCache: new Map(), search: { q: '', matches: [], idx: -1, running: false },
@@ -170,6 +189,8 @@ const Reader = {
   },
   setDoc: (d) => app.setDoc(d),
   toast: (m) => toast(m),
+  family, solutionsDoc: SOL,
+  get docs() { return Object.keys(DOCS); },
 };
 window.Reader = Reader;
 
@@ -179,7 +200,8 @@ window.Reader = Reader;
 const EMBEDDED = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 function track(ev, extra) { try { if (window.mypa && window.mypa.send) window.mypa.send(ev, Object.assign({ page: 'viewer', doc: st.doc, embedded: EMBEDDED }, extra || {})); } catch (e) {} }
 function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1700); }
-const LANGNAME = { en: 'English', fi: 'Finnish' };
+const LOADMSG = { en: 'Loading the English edition…', fi: 'Loading the Finnish edition…' };
+if (SOL) LOADMSG[SOL] = 'Loading the solutions (Finnish)…';
 function setLoading(on, msg) {
   const l = $('loading'); if (!l) return;
   if (on) {
@@ -207,10 +229,98 @@ async function computeOffset() {
   for (const k in st.labels) { const L = st.labels[k]; if ((L.kind === 'section' || L.kind === 'chapter') && L.dest && L.page > 0) { const ph = await resolveDestPage(L.dest); if (ph) { st.pageOffset = ph - L.page; return; } } }
 }
 function nearestSection(phys) { const pr = phys - st.pageOffset; let best = null; for (const s of st.sections) { if (s.page <= pr) best = s; else break; } return best; }
-function updateLoc(meta) { const L = meta || nearestSection(st.curPage); $('loc').innerHTML = L ? ('<b>§' + (L.ref || '') + '</b> ' + (L.title || '')) : ''; }
+function updateLoc(meta) { const L = meta || nearestSection(st.curPage); $('loc').innerHTML = L ? ('<b>§' + (L.ref || '') + '</b> ' + (L.title || '')) : ''; updateSolBtn(); }
+
+// ---------- solutions: availability, book chapter -> solutions chapter ----------
+async function firstExisting(cands) { for (const u of cands) { try { const r = await fetch(u, { method: 'HEAD' }); if (r.ok) return u; } catch (e) {} } return null; }
+function initSolutions() {
+  if (!SOL) return;
+  sol.ready = (async () => {
+    try { const r = await fetch(SOLCFG.map + VQ, { cache: 'no-cache' }); if (!r.ok) return false; sol.map = await r.json(); } catch (e) { return false; }
+    if (!(await firstExisting(DOCS[SOL].pdf))) return false;
+    for (const ref in sol.map) sol.byFile[sol.map[ref]] = ref;
+    sol.available = true;
+    const b = $('doc-' + SOL); if (b) b.hidden = false;
+    if (family(st.doc) === 'book') loadSecDests(st.doc);
+    return true;
+  })();
+}
+// Book chapter boundaries from the destination table: section.P.S -> "ROMAN(P).S";
+// chapter.P (part title pages) resets to none.
+function loadSecDests(doc) {
+  const apply = (l) => { if (st.doc === doc) { st.secDests = l; updateSolBtn(); } };
+  if (sol.secCache[doc]) { apply(sol.secCache[doc]); return; }
+  fetch(DOCS[doc].dests + VQ).then(r => r.ok ? r.json() : {}).then(raw => {
+    const l = [];
+    for (const name in raw) {
+      let m = /^section\.(\d+)\.(\d+)$/.exec(name);
+      if (m) { l.push([raw[name][0], raw[name][1], (ROMAN[+m[1]] || m[1]) + '.' + m[2]]); continue; }
+      if (/^chapter\.\d+$/.test(name)) l.push([raw[name][0], raw[name][1], null]);
+    }
+    l.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    sol.secCache[doc] = l; apply(l);
+  }).catch(() => {});
+}
+function curBookRef() {
+  if (st.secDests) { let best = null; for (const s of st.secDests) { if (s[0] <= st.curPage) best = s; else break; } return best ? best[2] : null; }
+  const L = nearestSection(st.curPage); return L && L.kind === 'section' ? L.ref : null;
+}
+function updateSolBtn() {
+  const b = $('solBtn'); if (!b) return;
+  const ref = sol.available && family(st.doc) === 'book' ? curBookRef() : null;
+  const file = ref ? sol.map[ref] : null;
+  b.hidden = !file;
+  if (!file) return;
+  b.dataset.ref = ref; b.dataset.file = file;
+  b.textContent = (UI_LANG === 'fi' ? 'Ratkaisut' : 'Solutions') + ' · ' + ref;
+  b.title = 'Luvun ' + ref + ' harjoitustehtävien ratkaisut (suomeksi, tarkastusversio) · Worked solutions to the exercises of §' + ref + ' (Finnish, review version)';
+}
+// The solutions' chapter labels are R-<file>; give them section kind + the book ref
+// so the location line, page offset and chapter navigation work as in the book.
+function normalizeSolLabels() {
+  const secs = [];
+  for (const k in st.labels) {
+    if (!/^R-/.test(k)) continue;
+    const file = k.slice(2), ref = sol.byFile[file];
+    const ex = ref ? null : /^(.+)-(\d+)$/.exec(file);   // exercise label R-<file>-<N>
+    if (ex && sol.byFile[ex[1]]) { st.labels[k] = Object.assign({}, st.labels[k], { ref: sol.byFile[ex[1]], title: 'Tehtävä ' + ex[2] }); continue; }
+    if (!ref) continue;
+    const L = st.labels[k] = Object.assign({}, st.labels[k]);
+    if (L.kind !== 'section' && L.kind !== 'chapter') L.kind = 'section';
+    if (!L.ref || /^[\d.]*$/.test(L.ref) && L.ref !== ref) L.ref = ref;
+    try { if (/[ÃÂ]/.test(L.title || '')) L.title = decodeURIComponent(escape(L.title)); } catch (e) {}   // gen-labels reads .aux as latin1
+    // The typeset chapter heading is a link macro: \kirjalinkki… {dest}{VI.2\ \ Title} → keep the title only.
+    L.title = String(L.title || '').replace(/^\\kirjalinkki[a-zA-Z]*\s*\{[^}]*\}\{([\s\S]*)\}$/, '$1').replace(/\\ /g, ' ').replace(/^\s*[IVXLA]+\.\d+\s+/, '');
+    L.title = L.title.replace(/\$/g, '').replace(/\\([a-zA-Z]+)/g, '$1').replace(/\s+/g, ' ').trim();
+    L._key = k; secs.push(L);
+  }
+  return secs.sort((a, b) => a.page - b.page);
+}
+// Counterpart when switching between families: book §ref <-> solutions chapter R-<file>.
+function counterpart(from, to) {
+  if (!sol.available || family(from) === family(to)) return null;
+  if (to === SOL) { const ref = curBookRef(); const f = ref && sol.map[ref]; return f ? { label: 'R-' + f } : null; }
+  const L = nearestSection(st.curPage); const ref = L && L._key ? sol.byFile[L._key.slice(2)] : null;
+  const m = ref && /^([IVX]+)\.(\d+)$/.exec(ref);
+  return m && ROMAN.indexOf(m[1]) > 0 ? { dest: 'section.' + ROMAN.indexOf(m[1]) + '.' + m[2] } : null;
+}
+// A URL link inside a PDF that points at this reader (siteBaseUrls or this page):
+// returns its hash so it opens in place (document switch, no page load), else null.
+function readerHash(url) {
+  let u; try { u = new URL(url, location.href); } catch (e) { return null; }
+  if (!/(^|\/)viewer\.html$/.test(u.pathname) || !u.hash) return null;
+  const dir = (p) => p.replace(/viewer\.html$/, '');
+  const here = location.origin + dir(location.pathname);
+  const bases = (CFG0.siteBaseUrls || []).concat([here]).map(b => b.replace(/\/?$/, '/'));
+  return bases.includes(u.origin + dir(u.pathname)) ? u.hash : null;
+}
+function goHash(hash) {
+  if (location.hash === hash) onHashChange(); else location.hash = hash;   // history entry → Back returns
+}
+
 function parseHash() {
   const h = new URLSearchParams((location.hash || '').replace(/^#/, ''));
-  const doc = h.get('doc') === 'fi' ? 'fi' : 'en';
+  const doc = DOCS[h.get('doc')] ? h.get('doc') : 'en';
   const label = h.get('label'), dest = h.get('dest'), page = parseInt(h.get('page'), 10);
   let target = null; if (label) target = { label }; else if (dest) target = { dest }; else if (page) target = { page };
   return { doc, target };
@@ -220,14 +330,16 @@ function writeHash() { const t = st.target || {}; const p = new URLSearchParams(
 // ---------- loading ----------
 async function loadDoc(doc) {
   st.doc = doc;
-  $('doc-en').classList.toggle('active', doc === 'en'); $('doc-fi').classList.toggle('active', doc === 'fi');
-  setLoading(true, 'Loading the ' + (LANGNAME[doc] || '') + ' edition…');
+  document.querySelectorAll('.seg button[data-doc]').forEach(b => b.classList.toggle('active', b.dataset.doc === doc));
+  const rb = $('reviewBadge'); if (rb) rb.hidden = !(doc === SOL && SOLCFG.review);
+  st.secDests = null;
+  setLoading(true, LOADMSG[doc] || 'Loading…');
   st.textCache.clear(); clearSearch();
   try { st.labels = await (await fetch(DOCS[doc].labels)).json(); } catch (e) { st.labels = {}; }
   if (st.pdf) { try { await st.pdf.destroy(); } catch (e) {} }
   const url = await pickUrl(DOCS[doc].pdf);
   st.pdfUrl = url;
-  const dl = $('dlpdf'); if (dl) { dl.href = url; dl.setAttribute('download', doc === 'fi' ? 'Calculus-Fennicus-FI.pdf' : 'Calculus-Fennicus-EN.pdf'); }
+  const dl = $('dlpdf'); if (dl) { dl.href = url; dl.setAttribute('download', DOCS[doc].dl); }
   const task = pdfjsLib.getDocument({ url, disableAutoFetch: true, disableStream: false });
   task.onProgress = (p) => { if (p) setLoadProgress(p.loaded, p.total); };
   try { st.pdf = await task.promise; }
@@ -235,7 +347,9 @@ async function loadDoc(doc) {
   st.numPages = st.pdf.numPages;
   const vp1 = (await st.pdf.getPage(1)).getViewport({ scale: 1 });
   st.baseW = vp1.width; st.baseH = vp1.height;
-  st.sections = Object.keys(st.labels).map(k => st.labels[k]).filter(L => L.kind === 'section' || L.kind === 'chapter').sort((a, b) => a.page - b.page);
+  st.sections = doc === SOL ? normalizeSolLabels()
+    : Object.keys(st.labels).map(k => st.labels[k]).filter(L => L.kind === 'section' || L.kind === 'chapter').sort((a, b) => a.page - b.page);
+  if (sol.available && family(doc) === 'book') loadSecDests(doc);
   await computeOffset();
   $('pagetotal').textContent = '/ ' + printed(st.numPages);
   buildStage();
@@ -295,7 +409,12 @@ async function addLinkLayer(el, page, vp, rid) {
       const w = Math.abs(r[2] - r[0]), h = Math.abs(r[3] - r[1]);
       const link = document.createElement('a');
       link.style.cssText = `left:${left}px;top:${top}px;width:${w}px;height:${h}px`;
-      if (a.url) { link.href = a.url; link.target = EMBEDDED ? '_top' : '_blank'; link.rel = 'noopener'; link.title = a.url; }
+      const rh = a.url ? readerHash(a.url) : null;
+      if (rh) {   // link into this reader (e.g. solutions -> book): switch document in place
+        link.href = rh; link.title = a.url;
+        link.addEventListener('click', (ev) => { ev.preventDefault(); track('viewer_link', { to: rh.slice(0, 200) }); goHash(rh); });
+      }
+      else if (a.url) { link.href = a.url; link.target = EMBEDDED ? '_top' : '_blank'; link.rel = 'noopener'; link.title = a.url; }
       else {
         link.href = '#';
         link.addEventListener('click', async (ev) => {
@@ -386,9 +505,11 @@ async function goTarget(target) {
   if (target.label && st.labels[target.label]) { meta = st.labels[target.label]; page = (await resolveDestPage(meta.dest)) || physical(meta.page); }
   else if (target.dest) { page = await resolveDestPage(target.dest); }
   else if (target.page) { page = physical(target.page); }
-  if (!page) { track('viewer_deeplink', { target: target.label || target.dest || target.page, found: false }); toast('Target not found'); return; }
+  else if (target.label) { page = await resolveDestPage(target.label); }   // label not in the table: try it as a named destination
+  if (!page) { track('viewer_deeplink', { target: target.label || target.dest || target.page, found: false }); toast('Target not found'); return false; }
   if (target.label || target.dest) track('viewer_deeplink', { target: target.label || target.dest, ref: meta && meta.ref, kind: meta && meta.kind, dpage: printed(page), found: true });
   await goToPage(page, true); if (meta) updateLoc(meta); writeHash();
+  return true;
 }
 
 // ---------- search ----------
@@ -450,7 +571,24 @@ function refreshVisibleHighlights() {
 
 // ---------- controls ----------
 window.app = {
-  async setDoc(doc) { if (doc === st.doc) return; const t = st.target; if (!(await loadDoc(doc))) return; track('viewer_lang', { to: doc }); if (t && (t.label || t.dest)) await goTarget(t); else await goToPage(Math.min(st.curPage, st.numPages), false); setLoading(false); },
+  // Switch document. Within a family (EN <-> FI) the current label/dest target carries
+  // over; across families (book <-> solutions) the matching chapter does, if any.
+  async setDoc(doc, tgt) {
+    if (!DOCS[doc]) return;
+    if (doc === SOL && !(await sol.ready)) { toast('The solutions are not available'); return; }
+    if (doc === st.doc) { if (tgt) await goTarget(tgt); return; }
+    const from = st.doc, t = st.target, cur = st.curPage, cross = family(from) !== family(doc);
+    const go = tgt || (cross ? counterpart(from, doc) : (t && (t.label || t.dest) ? t : null));
+    if (!(await loadDoc(doc))) return;
+    track('viewer_lang', { to: doc, from });
+    if (!(go && await goTarget(go))) { await goToPage(cross ? 1 : Math.min(cur, st.numPages), false); st.target = { page: printed(st.curPage) }; writeHash(); }
+    setLoading(false);
+  },
+  openSolutions() {
+    const b = $('solBtn'); const f = b && b.dataset.file; if (!f) return;
+    track('viewer_solutions', { from: st.doc, ref: b.dataset.ref, file: f });
+    goHash('#doc=' + encodeURIComponent(SOL) + '&label=' + encodeURIComponent('R-' + f));
+  },
   async setMode(m) { if (m === st.mode) return; st.mode = m; try { localStorage.setItem('cf_mode', m); } catch (e) {} track('viewer_mode', { mode: m }); const cur = st.curPage; buildStage(); await goToPage(cur, false); if (st.search.q && st.mode === 'continuous') refreshVisibleHighlights(); },
   rel(d) { st.target = null; goToPage(st.curPage + d, false).then(() => { st.target = { page: printed(st.curPage) }; writeHash(); }); },
   goto(v) { const n = parseInt(v, 10); if (n) { st.target = { page: n }; goToPage(physical(n), st.mode === 'single'); writeHash(); } },
@@ -481,7 +619,8 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('fullscreenchange', () => document.body.classList.toggle('fs', !!document.fullscreenElement));
 let stcr; stage.addEventListener('scroll', () => { clearTimeout(stcr); stcr = setTimeout(updateCurFromScroll, 80); });
 let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { const c = st.curPage; buildStage(); goToPage(c, false); }, 200); });
-window.addEventListener('hashchange', async () => { const { doc, target } = parseHash(); if (doc !== st.doc) { await app.setDoc(doc); await goTarget(target); } else goTarget(target); });
+async function onHashChange() { const { doc, target } = parseHash(); if (doc !== st.doc) await app.setDoc(doc, target); else goTarget(target); }
+window.addEventListener('hashchange', onHashChange);
 if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'slate');
 
 // When embedded in the landing-page iframe, break same-origin nav out to the
@@ -489,10 +628,12 @@ if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) doc
 if (EMBEDDED) document.querySelectorAll('.vtop a[href]').forEach(a => { if (!a.target) a.target = '_top'; });
 
 let readyResolve; Reader.ready = new Promise((r) => { readyResolve = r; });
+initSolutions();
 (async function () {
-  const { doc, target } = parseHash();
+  let { doc, target } = parseHash();
+  if (doc === SOL && !(await sol.ready)) { doc = 'fi'; target = null; setTimeout(() => toast('The solutions are not available'), 400); }
   if (!(await loadDoc(doc))) return;
-  if (target) await goTarget(target); else { await goToPage(1, false); writeHash(); }
+  if (!(target && await goTarget(target))) { await goToPage(1, false); st.target = { page: 1 }; writeHash(); }
   setLoading(false);
   readyResolve(Reader);
   track('viewer_open', { deeplink: target ? (target.label || target.dest || ('page ' + target.page)) : null, fs: !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen) });

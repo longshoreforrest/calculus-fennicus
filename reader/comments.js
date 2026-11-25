@@ -27,7 +27,7 @@ const STR = {
     hint: 'Comments go only to the translator; they are never shown publicly.', cancel: 'Cancel', send: 'Send', sending: 'Sending…',
     thanks: 'Thank you! Comment saved.', failed: 'Sending failed: ', empty: 'Write or dictate a comment.', noSpeech: 'This browser has no dictation. Try Chrome or Safari.',
     mine: 'Your comment', mineIn: (d, p) => 'Your comment in the ' + (d === 'fi' ? 'Finnish' : 'English') + ' edition, p. ' + p, voice: '(voice)',
-    edition: { fi: 'FI', en: 'EN' },
+    edition: { fi: 'FI', en: 'EN', 'ratkaisut-fi': 'Solutions (FI)' },
   },
   fi: {
     fab: '💬 Kommentoi', pageBtn: '💬 Kommentoi sivua', title: 'Kommentti', titleSel: (p) => 'Kommentti · sivu ' + p, titlePage: (p) => 'Kommentti koko sivusta ' + p,
@@ -37,7 +37,7 @@ const STR = {
     hint: 'Kommentit tulevat vain kääntäjälle, eivät näy julkisesti.', cancel: 'Peruuta', send: 'Lähetä', sending: 'Lähetetään…',
     thanks: 'Kiitos! Kommentti tallennettu.', failed: 'Lähetys epäonnistui: ', empty: 'Kirjoita tai sanele kommentti.', noSpeech: 'Selain ei tue sanelua. Kokeile Chromea tai Safaria.',
     mine: 'Oma kommenttisi', mineIn: (d, p) => 'Oma kommenttisi ' + (d === 'fi' ? 'suomenkielisessä' : 'englanninkielisessä') + ' laitoksessa, s. ' + p, voice: '(ääni)',
-    edition: { fi: 'FI', en: 'EN' },
+    edition: { fi: 'FI', en: 'EN', 'ratkaisut-fi': 'Ratkaisut' },
   },
 };
 
@@ -174,7 +174,7 @@ function openComposer(kind) {
   fillCategories();
   q.style.display = (kind === 'selection' && sel && sel.quote) ? '' : 'none';
   if (kind === 'selection' && sel) q.textContent = '“' + (sel.quote.length > 300 ? sel.quote.slice(0, 300) + '…' : sel.quote) + '”';
-  ctx.textContent = (kind === 'selection' ? T.titleSel : T.titlePage)(R.printed(page)) + ' · ' + T.edition[R.doc];
+  ctx.textContent = (kind === 'selection' ? T.titleSel : T.titlePage)(R.printed(page)) + ' · ' + (T.edition[R.doc] || R.doc);
   document.getElementById('cmtText').value = '';
   c.classList.add('show');
   positionComposer();
@@ -344,12 +344,19 @@ function paintMine(n, layer) {
       if (c.page !== n) continue;
       if (c.rects.length) paintRects(layer, c.rects, 'mine', c.message || T.mine, String(c.ts), () => R.toast(T.mine + ': ' + (c.message || T.voice)));
       else paintBadge(layer, 'mine', '💬', c.message || T.mine, () => R.toast(T.mine + ': ' + (c.message || T.voice)));
-    } else if (c.anchor && A.has(doc)) {
+    } else if (c.anchor && A.has(doc) && sameFamily(c.doc, doc)) {   // EN <-> FI only; never book <-> solutions
       const res = A.resolve(doc, c.anchor);
       if (!res || res.page !== n) continue;
       paintXlang(layer, res.y, 'mine', '💬 ' + T.edition[c.doc] + ' ' + (c.printed || c.page), T.mineIn(c.doc, c.printed || c.page) + '\n' + (c.quote ? '“' + c.quote.slice(0, 160) + '”\n' : '') + (c.message || ''), () => R.toast(T.mine + ': ' + (c.message || T.voice)));
     }
   }
+}
+
+/* Anchors carry over only within a family (book fi/en); the solutions' destination
+   names (section.3.2 …) collide with the book's but point at other content. */
+export function sameFamily(a, b) {
+  const fam = (d) => (window.Reader && window.Reader.family ? window.Reader.family(d) : (d === 'fi' || d === 'en' || !d ? 'book' : d));
+  return fam(a) === fam(b);
 }
 
 /* ---------------- shared marker painters (owner.js imports these) ---------------- */

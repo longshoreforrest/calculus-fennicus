@@ -12,8 +12,11 @@
  *     edition being read, dashed margin markers (anchor-resolved) for comments
  *     made in the other edition,
  *   - keeps the "N" counter on the toolbar button.
+ * Documents form anchor families (R.family): the book (fi + en) and the worked
+ * solutions (ratkaisut-fi). The list, the counter and the markers show only the
+ * family being read, so solutions comments never land on book pages (or back).
  */
-import { parseExtra, paintRects, paintBadge, paintXlang } from './comments.js?v=20260913-0948';
+import { parseExtra, paintRects, paintBadge, paintXlang, sameFamily } from './comments.js?v=20261125-1639';
 
 const STR = {
   en: { title: 'All comments', filter: 'Filter: name, text, p. 19, FI, EN…', reload: 'Reload', close: 'Close', loading: 'Loading…',
@@ -46,6 +49,10 @@ export function initOwner(R, CFG, A, uiLang) {
   };
   const st = { open: false, items: [], loading: false, filter: '' };
   const OTHER = { fi: 'en', en: 'fi' };
+  const SHORT = { fi: 'FI', en: 'EN', 'ratkaisut-fi': 'RATK' };
+  const short = (d) => SHORT[d] || String(d).toUpperCase();
+  const inFamily = (it) => sameFamily(it.doc, R.doc);
+  const loadTables = () => Promise.all([A.load('fi'), A.load('en'), A.load(R.doc)]);
 
   function identity() { return window.CfAuth && window.CfAuth.getIdentity ? window.CfAuth.getIdentity() : null; }
   function isOwner() { const id = identity(); return !!(id && id.email && owners.includes(String(id.email).toLowerCase())); }
@@ -59,13 +66,14 @@ export function initOwner(R, CFG, A, uiLang) {
   window.addEventListener('cf-auth-change', refreshVisibility);
   R.ready.then(refreshVisibility);
   setTimeout(refreshVisibility, 1500);   // CfAuth may initialise after us
-  R.on('doc', async () => { await Promise.all([A.load('fi'), A.load('en')]); render(); repaintAll(); });
+  R.on('doc', async () => { await loadTables(); updateCount(); render(); repaintAll(); });
+  function updateCount() { btn.querySelector('#ownerN').textContent = String(st.items.filter(inFamily).length); }
 
   async function load() {
     const id = identity(); if (!id || !id.idToken) return;
     st.loading = true; ui.status.textContent = T.loading;
     try {
-      await Promise.all([A.load('fi'), A.load('en')]);
+      await loadTables();
       const r = await fetch(endpoint + '?site=' + encodeURIComponent(CFG.site || 'calculus-fennicus') + '&id_token=' + encodeURIComponent(id.idToken), { mode: 'cors' });
       if (r.status === 401) throw new Error(T.expired);
       if (r.status === 403) throw new Error(T.forbidden);
@@ -73,7 +81,7 @@ export function initOwner(R, CFG, A, uiLang) {
       const data = await r.json();
       st.items = (data.feedback || []).map(normalize).filter(Boolean).sort((a, b) => b.ts - a.ts);
       ui.status.textContent = '';
-      btn.querySelector('#ownerN').textContent = String(st.items.length);
+      updateCount();
       render(); repaintAll();
     } catch (e) {
       ui.status.textContent = T.failed + (e.message || e);
@@ -82,7 +90,7 @@ export function initOwner(R, CFG, A, uiLang) {
   function normalize(row) {
     const x = parseExtra(row);
     const page = Number(x.page) || 0;
-    const doc = x.doc === 'fi' || x.doc === 'en' ? x.doc : '';
+    const doc = typeof x.doc === 'string' ? x.doc : '';
     return {
       id: row.id, ts: Number(row.ts) || 0, name: row.user_name || row.user_email || '?', email: row.user_email || '',
       verified: Number(row.user_verified) === 1, doc, page, printed: Number(x.printed) || page, kind: x.kind || 'page', category: x.category || '',
@@ -92,6 +100,7 @@ export function initOwner(R, CFG, A, uiLang) {
 
   /* Where does this comment sit in edition `doc`? {page, y, approx, exact} or null. */
   function locate(it, doc) {
+    if (!sameFamily(it.doc, doc)) return null;
     if (it.doc === doc && it.page) {
       const y = it.rects.length ? Math.min(...it.rects.map((r) => r.y)) : 0;
       return { page: it.page, y, approx: false, exact: true };
@@ -118,17 +127,18 @@ export function initOwner(R, CFG, A, uiLang) {
   function render() {
     const f = st.filter.trim().toLowerCase();
     const hay = (it) => (it.name + ' ' + it.email + ' ' + it.message + ' ' + it.quote + ' ' + it.doc + ' s. ' + it.printed + ' ' + anchorLabel(it) + ' ' + (T.cats[it.category] || '')).toLowerCase();
-    const items = f ? st.items.filter((it) => hay(it).includes(f)) : st.items;
-    ui.count.textContent = T.count(items.length, f ? st.items.length : null);
+    const fam = st.items.filter(inFamily);
+    const items = f ? fam.filter((it) => hay(it).includes(f)) : fam;
+    ui.count.textContent = T.count(items.length, f ? fam.length : null);
     ui.list.innerHTML = '';
-    if (!items.length) { ui.list.innerHTML = '<div class="ownerEmpty">' + (st.items.length ? T.nohit : T.empty) + '</div>'; return; }
+    if (!items.length) { ui.list.innerHTML = '<div class="ownerEmpty">' + (fam.length ? T.nohit : T.empty) + '</div>'; return; }
     const frag = document.createDocumentFragment();
     for (const it of items) {
       const li = document.createElement('div'); li.className = 'ownerItem' + (it.doc && it.doc !== R.doc ? ' other' : '');
       const other = it.doc ? OTHER[it.doc] : '';
       li.innerHTML =
         '<div class="oh"><span class="who">' + esc(it.name) + (it.verified ? ' <span class="ok" title="' + T.verified + '">✓</span>' : ' <span class="unv" title="' + T.unverified + '">?</span>') + '</span>' +
-        (it.doc ? '<span class="ed ' + it.doc + '">' + it.doc.toUpperCase() + '</span>' : '') +
+        (it.doc ? '<span class="ed ' + esc(it.doc) + '">' + esc(short(it.doc)) + '</span>' : '') +
         '<span class="pg">' + esc(pageLabel(it, it.doc || R.doc)) + (other && locate(it, other) ? ' <span class="pg2 ' + other + '">' + other.toUpperCase() + ' ' + esc(pageLabel(it, other)) + '</span>' : '') + '</span>' +
         '<span class="kind">' + (it.kind === 'selection' ? T.sel : T.page) + '</span>' +
         (it.category ? '<span class="cat">' + esc(T.cats[it.category] || it.category) + '</span>' : '') +
@@ -176,7 +186,7 @@ export function initOwner(R, CFG, A, uiLang) {
       const open = () => { show(); ui.filter.value = (it.message || it.name).slice(0, 40); st.filter = ui.filter.value; render(); };
       if (loc.exact && it.kind === 'selection' && it.rects.length) paintRects(layer, it.rects, 'other', title, String(it.ts), open);
       else if (loc.exact) paintBadge(layer, 'other', '💬 ' + it.name.split(' ')[0], title, open);
-      else paintXlang(layer, loc.y, 'other', '💬 ' + it.doc.toUpperCase() + ' ' + it.printed + ' · ' + it.name.split(' ')[0], (it.quote ? '“' + it.quote.slice(0, 160) + '”\n' : '') + title, open);
+      else paintXlang(layer, loc.y, 'other', '💬 ' + short(it.doc) + ' ' + it.printed + ' · ' + it.name.split(' ')[0], (it.quote ? '“' + it.quote.slice(0, 160) + '”\n' : '') + title, open);
     }
   }
   function repaintAll() { for (let n = 1; n <= R.numPages; n++) if (R.isRendered(n)) paint(n, R.cmtLayer(n)); }

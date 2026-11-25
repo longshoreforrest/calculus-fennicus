@@ -83,6 +83,7 @@ main{margin-left:var(--sidebar-w);flex:1;min-width:0;transition:margin-left .28s
 .lead{font-size:17px;max-width:66ch;color:var(--text)}
 .cover-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:30px 0 0}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.flag{display:inline-flex;vertical-align:-1px;margin-right:7px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px var(--border)}.flag svg{display:block}
 .stat-num{font-family:var(--display);font-weight:700;font-size:26px;color:var(--accent-strong);line-height:1}
 .stat-label{font-size:12px;color:var(--text-muted);margin-top:6px}
 /* section */
@@ -115,6 +116,21 @@ main{margin-left:var(--sidebar-w);flex:1;min-width:0;transition:margin-left .28s
 .reader-embed{position:relative;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-md);background:var(--surface-2);height:min(78vh,880px);min-height:460px}
 .reader-embed iframe{width:100%;height:100%;border:0;display:block}
 .dlrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 0}
+.doccards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0 6px}
+.doccard{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 18px 16px;box-shadow:var(--shadow-sm);transition:border-color .15s,box-shadow .15s}
+.doccard.active{border-color:var(--accent);box-shadow:var(--shadow-md)}
+.doccard .lang{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.doccard .ct{font-family:var(--display);font-size:19px;font-weight:700;margin:6px 0 4px}
+.doccard .cm{color:var(--text-muted);font-size:13.5px;flex:1}
+.doccard .docmeta{font-size:12.5px;color:var(--text-muted);font-weight:600;margin-top:10px}
+.docact{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.doccard{position:relative}.doccard:hover{border-color:var(--accent);box-shadow:var(--shadow-md);transform:translateY(-2px)}.doccard{transition:border-color .15s,box-shadow .15s,transform .15s}
+.docbtn.stretch::after{content:"";position:absolute;inset:0;border-radius:16px}.docact .docbtn:not(.stretch){position:relative;z-index:1}
+.docbtn{display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--body);color:var(--accent);border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:8px 12px;text-decoration:none;cursor:pointer}
+.docbtn:hover{border-color:var(--accent);background:var(--accent-soft)}
+.docbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.docbtn.primary:hover{filter:brightness(1.08);background:var(--accent)}
+.docbtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .dlbtn{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);transition:border-color .15s,transform .15s,box-shadow .15s}
 .dlbtn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-md)}
 .dlbtn .dlicon{flex:0 0 auto;width:40px;height:40px;border-radius:11px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center}
@@ -156,8 +172,8 @@ footer{margin-top:56px;border-top:1px solid var(--border-soft);padding-top:22px;
 
     <div class="sidebar-tools">
       <div class="seg" role="group" aria-label="Language">
-        <button class="lang-btn active" data-lang="en" onclick="setLang('en')" aria-pressed="true">EN</button>
-        <button class="lang-btn" data-lang="fi" onclick="setLang('fi')" aria-pressed="false">FI</button>
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')" aria-pressed="true"><span class="flag"><svg viewBox="0 0 60 36" width="18" height="11" aria-hidden="true" preserveAspectRatio="none"><rect width="60" height="36" fill="#012169"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#fff" stroke-width="7"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#C8102E" stroke-width="2.5"/><path d="M30,0 v36 M0,18 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v36 M0,18 h60" stroke="#C8102E" stroke-width="7"/></svg></span>EN</button>
+        <button class="lang-btn" data-lang="fi" onclick="setLang('fi')" aria-pressed="false"><span class="flag"><svg viewBox="0 0 18 11" width="18" height="11" aria-hidden="true"><rect width="18" height="11" fill="#fff"/><rect x="5" width="3" height="11" fill="#003580"/><rect y="4" width="18" height="3" fill="#003580"/></svg></span>FI</button>
       </div>
     </div>
 
@@ -195,14 +211,15 @@ footer{margin-top:56px;border-top:1px solid var(--border-soft);padding-top:22px;
         <p class="byline">Juhani Pitkäranta</p>
         <p class="affil" data-i18n="affil">Advanced first-year mathematics at Helsinki University of Technology (2000–2013)</p>
         <div class="kw-list">
-          <span class="kw" data-i18n="kwEn">English translation</span>
-          <span class="kw" data-i18n="kwFi">Finnish original</span>
+          <span class="kw"><span class="flag"><svg viewBox="0 0 60 36" width="18" height="11" aria-hidden="true" preserveAspectRatio="none"><rect width="60" height="36" fill="#012169"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#fff" stroke-width="7"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#C8102E" stroke-width="2.5"/><path d="M30,0 v36 M0,18 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v36 M0,18 h60" stroke="#C8102E" stroke-width="7"/></svg></span><span data-i18n="kwEn">English translation</span></span>
+          <span class="kw"><span class="flag"><svg viewBox="0 0 18 11" width="18" height="11" aria-hidden="true"><rect width="18" height="11" fill="#fff"/><rect x="5" width="3" height="11" fill="#003580"/><rect y="4" width="18" height="3" fill="#003580"/></svg></span><span data-i18n="kwFi">Finnish original</span></span>
           <span class="kw">CC BY 4.0</span>
         </div>
         <p class="lead" data-i18n="lead">A rigorous, from-the-foundations introduction to calculus and linear algebra — built up, with proofs, from the construction of the real numbers to the theorems of Gauss and Stokes. Distilled from thirteen years of teaching the advanced first-year mathematics at Helsinki University of Technology, it is written for anyone who would rather understand mathematics than merely compute with it. This page offers the Finnish original and a complete English translation as freely downloadable PDFs.</p>
         <div class="cover-stats">
-          <div class="stat"><div class="stat-num">1102</div><div class="stat-label" data-i18n="stEnPp">pages · English</div></div>
-          <div class="stat"><div class="stat-num">1020</div><div class="stat-label" data-i18n="stFiPp">pages · Finnish</div></div>
+          <div class="stat"><div class="stat-num">1102</div><div class="stat-label"><span class="flag"><svg viewBox="0 0 60 36" width="18" height="11" aria-hidden="true" preserveAspectRatio="none"><rect width="60" height="36" fill="#012169"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#fff" stroke-width="7"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#C8102E" stroke-width="2.5"/><path d="M30,0 v36 M0,18 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v36 M0,18 h60" stroke="#C8102E" stroke-width="7"/></svg></span><span data-i18n="stEnPp">pages · English</span></div></div>
+          <div class="stat"><div class="stat-num">1020</div><div class="stat-label"><span class="flag"><svg viewBox="0 0 18 11" width="18" height="11" aria-hidden="true"><rect width="18" height="11" fill="#fff"/><rect x="5" width="3" height="11" fill="#003580"/><rect y="4" width="18" height="3" fill="#003580"/></svg></span><span data-i18n="stFiPp">pages · Finnish</span></div></div>
+          <div class="stat"><div class="stat-num">1206</div><div class="stat-label"><span class="flag"><svg viewBox="0 0 18 11" width="18" height="11" aria-hidden="true"><rect width="18" height="11" fill="#fff"/><rect x="5" width="3" height="11" fill="#003580"/><rect y="4" width="18" height="3" fill="#003580"/></svg></span><span data-i18n="stSolPp">pages · solutions (Finnish)</span></div></div>
           <div class="stat"><div class="stat-num">14</div><div class="stat-label" data-i18n="stParts">parts (I–XIV)</div></div>
           <div class="stat"><div class="stat-num">CC BY</div><div class="stat-label" data-i18n="stLicense">free to share &amp; adapt</div></div>
         </div>
@@ -210,32 +227,47 @@ footer{margin-top:56px;border-top:1px solid var(--border-soft);padding-top:22px;
 
       <section id="downloads" class="page" data-collapsed="false">
         <div class="section-head">
-          <div><div class="section-num" data-i18n="dlNum">Downloads</div><h2 class="page-title" data-i18n="dlTitle">Read the book</h2></div>
+          <div><div class="section-num" data-i18n="dlNum">Documents</div><h2 class="page-title" data-i18n="dlTitle">Read online</h2></div>
           <button class="collapse-toggle" onclick="toggleSection(this)" aria-label="Toggle section"><span class="chev">▾</span></button>
         </div>
         <div class="section-body">
-          <p class="lead" style="font-size:16px;margin:0" data-i18n="dlEmbedLead">Read the whole book right here — page-by-page or continuous scroll, full-text search, and deep links to any section, theorem or definition. Choose the language, or open it full-screen.</p>
-          <div class="reader-bar">
-            <div class="reader-lang" role="group" aria-label="Reader language">
-              <button class="active" data-rdoc="en" onclick="setReaderDoc('en')">EN</button>
-              <button data-rdoc="fi" onclick="setReaderDoc('fi')">FI</button>
+          <p class="lead" style="font-size:16px;margin:0" data-i18n="dlEmbedLead">Each document opens in the browser reader: page-by-page or continuous scroll, full-text search, comments, and deep links to any section, theorem or exercise. Each one can also be downloaded as a PDF.</p>
+          <div class="doccards">
+            <div class="doccard" data-doc="en">
+              <div class="lang"><span class="flag"><svg viewBox="0 0 60 36" width="18" height="11" aria-hidden="true" preserveAspectRatio="none"><rect width="60" height="36" fill="#012169"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#fff" stroke-width="7"/><path d="M0,0 L60,36 M60,0 L0,36" stroke="#C8102E" stroke-width="2.5"/><path d="M30,0 v36 M0,18 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v36 M0,18 h60" stroke="#C8102E" stroke-width="7"/></svg></span><span data-i18n="docEnLang">English</span></div>
+              <div class="ct" data-i18n="docEnT">Calculus Fennicus</div>
+              <div class="cm"><span data-i18n="docEnD">The English translation of the whole book.</span></div>
+              <div class="docmeta" data-i18n="dlDlEnSub">English translation · 1102 pp · 7.5 MB</div>
+              <div class="docact">
+                <a class="docbtn primary stretch" href="viewer.html#doc=en"><span data-i18n="docRead">Read in the browser</span> →</a>
+                <a class="docbtn" href="calculus-en.pdf" download="Calculus-Fennicus-EN.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span data-i18n="docDl">Download PDF</span></a>
+              </div>
             </div>
-            <a class="ghost-btn" id="open-full" href="viewer.html" target="_blank" rel="noopener"><span data-i18n="dlOpenFull">Open full-screen</span> ↗</a>
+            <div class="doccard" data-doc="fi">
+              <div class="lang"><span class="flag"><svg viewBox="0 0 18 11" width="18" height="11" aria-hidden="true"><rect width="18" height="11" fill="#fff"/><rect x="5" width="3" height="11" fill="#003580"/><rect y="4" width="18" height="3" fill="#003580"/></svg></span><span data-i18n="docFiLang">Finnish</span></div>
+              <div class="ct" data-i18n="docFiT">Calculus Fennicus</div>
+              <div class="cm"><span data-i18n="docFiD">The Finnish original by Juhani Pitkäranta.</span></div>
+              <div class="docmeta" data-i18n="dlDlFiSub">Finnish original · 1020 pp · 7.2 MB</div>
+              <div class="docact">
+                <a class="docbtn primary stretch" href="viewer.html#doc=fi"><span data-i18n="docRead">Read in the browser</span> →</a>
+                <a class="docbtn" href="calculus-fi.pdf" download="Calculus-Fennicus-FI.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span data-i18n="docDl">Download PDF</span></a>
+              </div>
+            </div>
+            
+            <div class="doccard" data-doc="ratkaisut-fi">
+              <div class="lang"><span class="flag"><svg viewBox="0 0 18 11" width="18" height="11" aria-hidden="true"><rect width="18" height="11" fill="#fff"/><rect x="5" width="3" height="11" fill="#003580"/><rect y="4" width="18" height="3" fill="#003580"/></svg></span><span data-i18n="solLang">Finnish</span><span class="soon" data-i18n="solBadge">Under review</span></div>
+              <div class="ct" data-i18n="solTitle">Solutions to the exercises</div>
+              <div class="cm"><span data-i18n="solDesc">Worked solutions to all 1,074 exercises in the book, in Finnish. Prepared by Tapio Pitkäranta.</span></div>
+              <div class="docmeta" data-i18n="solMeta">Solutions · 1206 pp · 9.3 MB</div>
+              <div class="docact">
+                <a class="docbtn primary stretch" href="viewer.html#doc=ratkaisut-fi" rel="nofollow"><span data-i18n="docRead">Read in the browser</span> →</a>
+                <a class="docbtn" href="ratkaisut-fi.pdf" download="Calculus-Fennicus-Ratkaisut-FI.pdf" rel="nofollow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span data-i18n="docDl">Download PDF</span></a>
+              </div>
+            </div>
+            
           </div>
-          <div class="reader-embed">
-            <iframe id="reader-frame" title="Calculus Fennicus — embedded reader" src="viewer.html" loading="lazy" allow="fullscreen; identity-credentials-get" allowfullscreen></iframe>
-          </div>
-          <div class="dlrow">
-            <a class="dlbtn" href="calculus-en.pdf" download="Calculus-Fennicus-EN.pdf">
-              <span class="dlicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
-              <span class="dlmeta"><b data-i18n="dlDlEn">Download PDF</b><span data-i18n="dlDlEnSub">English translation · 1102 pp · 7.5 MB</span></span>
-            </a>
-            <a class="dlbtn" href="calculus-fi.pdf" download="Calculus-Fennicus-FI.pdf">
-              <span class="dlicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
-              <span class="dlmeta"><b data-i18n="dlDlFi">Download PDF</b><span data-i18n="dlDlFiSub">Finnish original · 1020 pp · 7.2 MB</span></span>
-            </a>
-          </div>
-          <div class="callout"><span data-i18n="dlHint">Both PDFs have a clickable table of contents and internal cross-reference links.</span></div>
+          <div class="callout" style="margin-top:8px"><span data-i18n="solReview">The solutions are a review version: they are still being checked, and you can report an error by leaving a comment in the reader.</span></div>
+          <div class="callout"><span data-i18n="dlHint">The PDFs have a clickable table of contents and internal cross-reference links.</span></div>
         </div>
       </section>
 
@@ -293,12 +325,18 @@ const I18N = {
   brandSub:{en:"Advanced first-year mathematics",fi:"Laaja ensimmäisen vuoden matematiikka"},
   themePaper:{en:"Paper",fi:"Paperi"}, themeSlate:{en:"Slate",fi:"Tumma"},
   navBook:{en:"The book",fi:"Kirja"}, navOverview:{en:"Overview",fi:"Yleiskatsaus"},
-  navDownloads:{en:"Read the book",fi:"Lue kirja"}, navAbout:{en:"About the book",fi:"Tietoa kirjasta"},
+  navDownloads:{en:"Read online",fi:"Lue verkossa"}, navAbout:{en:"About the book",fi:"Tietoa kirjasta"},
   navMore:{en:"More",fi:"Lisää"}, navMath:{en:"Mathematics",fi:"Matematiikka"}, navLicense:{en:"License",fi:"Lisenssi"},
   navAuthorPage:{en:"The author — Juhani Pitkäranta",fi:"Kirjan tekijä — Juhani Pitkäranta"},
   navReader:{en:"Full-screen reader",fi:"Koko näytön lukija"},
-  dlEmbedLead:{en:"Read the whole book right here — page-by-page or continuous scroll, full-text search, and deep links to any section, theorem or definition. Choose the language, or open it full-screen.",fi:"Lue koko kirja suoraan tässä — sivu kerrallaan tai jatkuvana vierityksenä, tekstihaku ja deep-linkit mihin tahansa sektioon, lauseeseen tai määritelmään. Valitse kieli tai avaa koko näytölle."},
+  dlEmbedLead:{en:"Each document opens in the browser reader: page-by-page or continuous scroll, full-text search, comments, and deep links to any section, theorem or exercise. Each one can also be downloaded as a PDF.",fi:"Jokainen dokumentti aukeaa selaimen lukijaan: sivu kerrallaan tai jatkuvana vierityksenä, tekstihaulla, kommentoinnilla ja syvälinkeillä mihin tahansa lukuun, lauseeseen tai tehtävään. Jokaisen voi myös ladata PDF:nä."},
   dlOpenFull:{en:"Open full-screen",fi:"Avaa koko näytölle"},
+  docEnLang:{en:"English",fi:"Englanniksi"}, docFiLang:{en:"Finnish",fi:"Suomeksi"},
+  docEnT:{en:"Calculus Fennicus",fi:"Calculus Fennicus"}, docFiT:{en:"Calculus Fennicus",fi:"Calculus Fennicus"},
+  docEnD:{en:"The English translation of the whole book.",fi:"Koko kirjan englanninkielinen käännös."},
+  docFiD:{en:"The Finnish original by Juhani Pitkäranta.",fi:"Juhani Pitkärannan suomenkielinen alkuteos."},
+  docRead:{en:"Read in the browser",fi:"Lue selaimessa"}, docDl:{en:"Download PDF",fi:"Lataa PDF"},
+  solMeta:{en:"Solutions · 1206 pp · 9.3 MB",fi:"Ratkaisut · 1206 s. · 9,3 MB"},
   dlDlEn:{en:"Download PDF",fi:"Lataa PDF"}, dlDlFi:{en:"Download PDF",fi:"Lataa PDF"},
   dlDlEnSub:{en:"English translation · 1102 pp · 7.5 MB",fi:"Englanninkielinen käännös · 1102 s. · 7,5 MB"},
   dlDlFiSub:{en:"Finnish original · 1020 pp · 7.2 MB",fi:"Suomenkielinen alkuteos · 1020 s. · 7,2 MB"},
@@ -311,12 +349,19 @@ const I18N = {
   lead:{en:"A rigorous, from-the-foundations introduction to calculus and linear algebra — built up, with proofs, from the construction of the real numbers to the theorems of Gauss and Stokes. Distilled from thirteen years of teaching the advanced first-year mathematics at Helsinki University of Technology, it is written for anyone who would rather understand mathematics than merely compute with it. This page offers the Finnish original and a complete English translation as freely downloadable PDFs.",
         fi:"Täsmällinen, perusteista rakentuva johdatus analyysiin ja lineaarialgebraan — todistuksin, reaalilukujen konstruktiosta Gaussin ja Stokesin lauseisiin. Se on tislattu kolmentoista vuoden opetuksesta Teknillisen korkeakoulun laajassa ensimmäisen vuoden matematiikassa, ja se on kirjoitettu jokaiselle, joka haluaa mieluummin ymmärtää matematiikan kuin vain laskea sillä. Tältä sivulta saat suomenkielisen alkuteoksen ja täyden englanninkielisen käännöksen vapaasti ladattavina PDF-tiedostoina."},
   stEnPp:{en:"pages · English",fi:"sivua · englanti"}, stFiPp:{en:"pages · Finnish",fi:"sivua · suomi"},
+  stSolPp:{en:"pages · solutions (Finnish)",fi:"sivua · ratkaisut (suomi)"},
   stParts:{en:"parts (I–XIV)",fi:"osaa (I–XIV)"}, stLicense:{en:"free to share &amp; adapt",fi:"vapaa jakaa ja muokata"},
-  dlNum:{en:"Downloads",fi:"Lataukset"}, dlTitle:{en:"Read the book",fi:"Lue kirja"},
+  dlNum:{en:"Documents",fi:"Dokumentit"}, dlTitle:{en:"Read online",fi:"Lue verkossa"},
   dlEnMeta:{en:"English translation · 1102 pages · PDF",fi:"Englanninkielinen käännös · 1102 sivua · PDF"},
   dlFiMeta:{en:"Finnish original · 1020 pages · PDF",fi:"Alkuperäinen suomenkielinen · 1020 sivua · PDF"},
   dlDownload:{en:"Download →",fi:"Lataa →"}, dlDownloadFi:{en:"Download →",fi:"Lataa →"},
-  dlHint:{en:"Both PDFs have a clickable table of contents and internal cross-reference links.",fi:"Molemmissa PDF:issä on klikattava sisällysluettelo ja sisäiset ristiviittauslinkit."},
+  solLang:{en:"Finnish",fi:"Suomeksi"}, solBadge:{en:"Under review",fi:"Tarkastuksessa"},
+  solTitle:{en:"Solutions to the exercises",fi:"Harjoitustehtävien ratkaisut"},
+  solDesc:{en:"Worked solutions to all 1,074 exercises in the book, in Finnish. Prepared by Tapio Pitkäranta.",
+           fi:"Esimerkkiratkaisut kirjan kaikkiin 1&nbsp;074 harjoitustehtävään, suomeksi. Laatinut Tapio Pitkäranta."},
+  solReview:{en:"The solutions are a review version: they are still being checked, and you can report an error by leaving a comment in the reader.",
+           fi:"Ratkaisut ovat tarkastusversio: niitä tarkastetaan vielä, ja virheestä voi ilmoittaa jättämällä kommentin lukijassa."},
+  dlHint:{en:"The PDFs have a clickable table of contents and internal cross-reference links.",fi:"PDF-tiedostoissa on klikattava sisällysluettelo ja sisäiset ristiviittauslinkit."},
   abNum:{en:"About",fi:"Tietoa"}, abTitle:{en:"About the book",fi:"Tietoa kirjasta"},
   abP1:{en:"Compared with typical calculus textbooks, <em>Calculus Fennicus</em> is more ambitious: a unified, logically progressing introduction — starting from the very foundations — to the basic ideas of mathematics and to modern computational technique. It is intended for a demanding audience for whom mathematics is not only technique and formulas but an intellectual challenge.",
        fi:"Tavanomaisiin calculus-oppikirjoihin verrattuna <em>Calculus Fennicus</em> on kunnianhimoisempi: yhtenäinen, loogisesti etenevä johdatus — aivan perusteista lähtien — matematiikan perusideoihin ja moderniin laskutekniikkaan. Se on tarkoitettu vaativalle yleisölle, jolle matematiikka ei ole vain tekniikkaa ja kaavoja vaan älyllinen haaste."},
@@ -355,12 +400,13 @@ function toggleSidebar(){
        try{localStorage.setItem('cf_sidebar',hidden?'hidden':'shown');}catch(e){}}
 }
 function toggleSection(btn){const s=btn.closest('.page');s.dataset.collapsed=s.dataset.collapsed==='true'?'false':'true';}
-function setReaderDoc(d){
+function setReaderDoc(d,scroll){
   const f=document.getElementById('reader-frame');
   const of=document.getElementById('open-full');
   if(of)of.href='viewer.html#doc='+d;
   document.querySelectorAll('.reader-lang button').forEach(b=>b.classList.toggle('active',b.dataset.rdoc===d));
   if(f&&f.getAttribute('src').replace(/#.*/,'')==='viewer.html')f.src='viewer.html#doc='+d;
+  if(scroll){const t=document.getElementById('reader-top');if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
 }
 function cycleTheme(){
   const cur=document.documentElement.getAttribute('data-theme')==='slate'?'slate':'paper';

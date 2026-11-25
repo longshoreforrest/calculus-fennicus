@@ -1,3 +1,4 @@
 User-agent: *
+Disallow: /calculus-fennicus/ratkaisut-fi.pdf
 Allow: /
 Sitemap: https://longshoreforrest.github.io/calculus-fennicus/sitemap.xml
